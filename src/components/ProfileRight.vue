@@ -23,6 +23,7 @@ export default {
 
 .contentRight{
     background-color: #ffffff;
+  padding-bottom: 50px;
 }
 
 </style>

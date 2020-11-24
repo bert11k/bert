@@ -4,27 +4,27 @@
     <div class="infoProfileRight">
       <div>
         <p>ФИО</p>
-        <div>Каримов Альберт Линарович</div>
+        <div>{{user.fio}}</div>
       </div>
 
       <div>
         <p>Полное название должности</p>
-        <div>Дилер</div>
+        <div>{{user.position}}</div>
       </div>
 
       <div>
         <p>Мобильный телефон</p>
-        <div>+8(917)953-95-95</div>
+        <div>{{user.phonehome}}</div>
       </div>
 
       <div>
         <p>Рабочий телефон</p>
-        <div>+8(917)953-95-95</div>
+        <div>{{user.phonework}}</div>
       </div>
 
       <div>
         <p>Email</p>
-        <div>karimov@yandex.ru</div>
+        <div>{{user.email}}</div>
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@
 <script>
 export default {
   name: "ProfileLeft",
-  components: {},
+  props: ['user']
 };
 </script>
 <style lang="scss" scoped>

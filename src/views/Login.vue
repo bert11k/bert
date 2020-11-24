@@ -2,22 +2,24 @@
   <div class="">
     <div class="auth">
       <h2>Войти в систему</h2>
-      <form>
+      <form @submit.prevent="login">
         <div>
           <img src="../assets/user.png" alt="1" />
-          <input type="text" placeholder="Логин"  required/>
+          <input type="email" placeholder="Почта"  required v-model.trim="email"/>
         </div>
 
         <div>
           <img src="../assets/pass.png" alt="2" />
-          <input type="text" placeholder="Пароль" required />
+          <input type="text" placeholder="Пароль" required v-model.trim="password"/>
         </div>
 
         <div class="checkpass">
-          <input id="checkbox" type="checkbox" />
+          <input id="checkbox" type="checkbox" v-model="isChecked" required/>
           <label for="checkbox">Запомнить меня?</label><br />
         </div>
         <button type="submit">Авторизоваться</button>
+        <br>  
+        <small class="error" :class="{'display':error}">Неверный логин или пароль</small>
       </form>
     </div>
   </div>
@@ -26,19 +28,56 @@
 <script>
 export default {
   name: "Login",
-  components: {},
+  data: ()=>({
+    email: '',
+    password: '',
+    isChecked: false,
+    error: false
+  }),
+  mounted() {
+    if(this.$store.getters.isLogin){
+      this.$router.push('/')
+    }
+  },
+  methods:{
+    async login(){
+      let formData = {
+        email: this.email,
+        password: this.password
+      }
+      try {
+        await this.$store.dispatch("login", formData)
+        await this.$router.push("/")
+      } catch (e) {
+        this.error = true
+      }
+      this.email = ''
+      this.password = ''
+      this.isChecked = ''
+    },
+
+  }
 };
 </script>
 <style lang="scss" scoped>
 
 .auth {
-  margin: auto;
-  margin-top: calc(50vh - 100px);
-  height: 245px;
+  margin: calc(50vh - 100px) auto auto;
   width: 400px;
   background-color: #39a098;
   border-radius: 10px;
-  padding: 30px;
+  padding: 30px 30px 20px;
+}
+
+.error{
+  margin-top: 15px;
+  color: #202a40;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: none;
+}
+.display{
+  display: block;
 }
 
 .auth h2 {
