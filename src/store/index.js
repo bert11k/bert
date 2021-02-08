@@ -1,5 +1,5 @@
-import { createStore } from 'vuex'
-import firebase from "firebase/app";
+import {createStore} from 'vuex'
+import firebase from 'firebase/app'
 
 export default createStore({
   state: {
@@ -9,24 +9,28 @@ export default createStore({
     }
   },
   mutations: {
-    setUser(state, {uid}){
+    setUser(state, {uid}) {
       state.user.isLogin = true
       state.user.uId = uid
+    },
+    clearInfo(state){
+      state.user = {}
+      state.user.isLogin = false
     }
   },
   actions: {
-    async login({commit}, {email, password}){
+    async login({commit}, {email, password}) {
       try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-        commit('setUser', firebase.auth().currentUser);
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+        commit('setUser', firebase.auth().currentUser)
       } catch (e) {
-        throw e;
+        throw e
       }
     },
-    async fetchUserData({commit, getters}){
+    async fetchUserData({commit, getters}) {
       try {
         const uid = getters.getUid
-        if(uid === null){
+        if (uid === null) {
           throw 'error'
         }
         const userData =
@@ -34,18 +38,37 @@ export default createStore({
             await firebase
               .database()
               .ref(`/users/${uid}`)
-              .once("value")
-          ).val();
+              .once('value')
+          ).val()
         return userData
-      }catch (e) {
+      } catch (e) {
+        throw e
+      }
+    },
+    async createUser({dispatch, commit, getters}, {email, password, fio, phone, phoneWork, position}) {
+      try {
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+        const uid = firebase.auth().currentUser.uid
+        await firebase
+          .database()
+          .ref(`/users/${uid}/`)
+          .set({
+            email,
+            fio,
+            phonehome: phone,
+            phonework: phoneWork,
+            position
+          })
+        await firebase.auth().signOut();
+        commit("clearInfo");
+      } catch (e) {
         throw e
       }
     }
   },
-  modules: {
-  },
-  getters:{
+  modules: {},
+  getters: {
     isLogin: s => s.user.isLogin,
-    getUid: s=> s.user.uId
+    getUid: s => s.user.uId
   }
 })

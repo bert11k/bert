@@ -17,6 +17,11 @@ const routes = [
     name: 'projects',
     component: () => import('../views/Profile.vue')
   },
+  {
+    path: '/createUser',
+    name: 'createUser',
+    component: () => import('../views/CreateUser.vue')
+  },
 ]
 
 const router = createRouter({
