@@ -6,6 +6,7 @@
       <button @click="checkAuth">Войти</button>
     </div>
     <form @submit.prevent="submitHandler" v-else>
+    <h2>Добавить работника</h2>
       <input placeholder="Почта" required type="email" v-model="email"><br>
       <input placeholder="Пароль" required type="password" v-model="password"><br>
       <input placeholder="ФИО" required type="text" v-model="fio"><br>
@@ -55,5 +56,20 @@
   }
 </script>
 <style lang="scss" scoped>
-
+  form{
+    width: 300px;
+    margin: 10px auto;
+    input{
+      margin: 10px 5px;
+        width: 225px;
+        height: 35px;
+    }
+    button{
+        width: 225px;
+      margin: 0 5px;
+      height: 35px;
+      
+    }
+  }
 </style>
+

@@ -48,7 +48,7 @@ export default createStore({
     async createUser({dispatch, commit, getters}, {email, password, fio, phone, phoneWork, position}) {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
-        const uid = firebase.auth().currentUser.uid
+        const uid = await firebase.auth().currentUser.uid
         await firebase
           .database()
           .ref(`/users/${uid}/`)
