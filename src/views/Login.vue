@@ -127,5 +127,13 @@ button{
   border:0;
   outline: none;
   cursor: pointer;
+  &:hover{
+    background:#35938b;
+    box-shadow: 1px 1px 2px rgba(0,0,0, .3);
+    border: 1px solid black;
+    }
+
+
 }
+
 </style>
