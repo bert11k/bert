@@ -14,7 +14,14 @@
     <div class="profiles">
       <img alt="2" src="../assets/profiles.jpg"/>
       <a href="#">{{fio}}</a>
-      <img alt="3" id="down" src="../assets/down.svg"/>
+    </div>
+    <div >
+      
+     <img style="width: 20px; height: 20px; cursor: pointer;" v-if="!showDropmenu"  @click="showDropmenu = !showDropmenu"  alt="3" id="down" src="../assets/down.svg"/>
+     <div v-else  @click="showDropmenu = !showDropmenu" style="cursor: pointer;text-align: center; font-size: 25px;" >&times;</div>
+    </div>
+    <div class="dropmenu" :class="{hide: !showDropmenu}"> 
+      <p @click="signOut" style="cursor: pointer;">Выйти</p>
     </div>
   </header>
 </template>
@@ -22,6 +29,11 @@
 <script>
   export default {
     name: 'header',
+    data(){
+      return{
+        showDropmenu: false,
+      }
+    },
     props: ['fio']
   }
 </script>
@@ -37,7 +49,15 @@
     height: 100px;
     background-color: #ffffff;
   }
-
+  .dropMenu{
+    display: block !important;
+    cursor: pointer;
+    transition: all .3s;
+    background: white;
+  }
+  .hide{
+    display: none !important;
+  }
   form {
     position: relative;
     /*width: 50%;*/
