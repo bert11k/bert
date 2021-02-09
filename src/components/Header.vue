@@ -40,6 +40,7 @@
 <style lang="scss" scoped>
   header {
     margin: auto;
+    margin-left: 71px;
     display: flex;
     align-items: center;
     justify-content: space-between;

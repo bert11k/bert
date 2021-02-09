@@ -1,4 +1,5 @@
 <template>
+  <layout-login>
   <div class="">
     <div class="auth">
       <h2>Войти в систему</h2>
@@ -23,9 +24,11 @@
       </form>
     </div>
   </div>
+</layout-login>
 </template>
 
 <script>
+import LayoutLogin from "../layouts/LayoutLogin.vue"
 export default {
   name: "Login",
   data: ()=>({
@@ -34,6 +37,7 @@ export default {
     isChecked: false,
     error: false
   }),
+  components: {LayoutLogin},
   mounted() {
     if(this.$store.getters.isLogin){
       this.$router.push('/')

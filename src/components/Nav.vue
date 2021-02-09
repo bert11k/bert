@@ -32,6 +32,8 @@
     outline: 1px solid black;
     z-index: 999;
     transition: all 0.5s ease-in-out;
+    position: absolute;
+    min-height: 100%;
   }
 
   .container .control {
