@@ -20,7 +20,7 @@ const routes = [
   },
   {
     path: '/createUser',
-    name: 'createUser',
+    name: 'createuser',
     component: () => import('../views/CreateUser.vue')
   },
 ]

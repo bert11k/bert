@@ -37,6 +37,5 @@ import LayoutMain from "../layouts/LayoutMain.vue"
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 1fr 3fr;
-    margin-left: 71px;
   }
 </style>

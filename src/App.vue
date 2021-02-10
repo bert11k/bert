@@ -1,16 +1,25 @@
 <template>
-  <div v-if="!loading">
+  <div v-if="!loading" :class="{grid: nav}">
+    <div v-if="nav">      
+      <Nav />
+    </div>
     <router-view />
   </div>
   <p v-else>1</p>
 </template>
 <script>
+import Nav from "./components/Nav.vue";
 export default {
   name: "App",
+  components: {Nav},
   data() {
     return {
       loading: true,
+      nav: false
     };
+  },
+  watch:{
+    $route: "updateMav",
   },
   computed: {
     layout() {
@@ -27,6 +36,12 @@ export default {
     }
     this.loading = false;
   },
+  methods: {
+    updateMav(){
+      this.$route.name.toLowerCase() !== 'login' ? this.nav = true : null
+    }
+  }
+
 };
 </script>
 <style lang="scss">
@@ -39,6 +54,13 @@ export default {
 body {
   background-color: #c0c0c0;
   font-family: "Nunito", sans-serif;
+}
+
+.grid{
+  width: 80%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 71px auto;
 }
 
 a {

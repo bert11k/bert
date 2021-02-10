@@ -1,6 +1,6 @@
 <template>
 	<div id="content" v-if="!loading">
-		<Nav  />
+		<!-- <Nav  /> -->
 		<Header :fio="userdata.fio"/>
 		<slot @userdata="userdata" />
 	</div>
@@ -20,17 +20,13 @@ export default {
 		$route: "updateRoute",
 	},
 	mounted() {
-		// this.$set(this.userdata, )
 		this.userdata = this.$store.getters.getUserData
-		console.log(this.userdata.fio)
 		this.loading = false
 	},
 };
 </script>
 <style lang="scss">
 #content {
-	width: 80%;
-	margin: 0 auto;
 	position: relative;
 }
 </style>
