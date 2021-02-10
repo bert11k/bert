@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import firebase from 'firebase'
 import 'firebase/database'
+import 'firebase/storage'
 
 let config = {
   apiKey: "AIzaSyAIgQOB9LHJA6bbAr3zgW9fk6mxVAu4Vrc",
@@ -16,5 +17,6 @@ let config = {
   appId: "1:836300345681:web:1b9e5c3ac3f94980f08370"
 };
 firebase.initializeApp(config);
+firebase.storage()
 
 createApp(App).use(store).use(router).mount('#app')

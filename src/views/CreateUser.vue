@@ -6,7 +6,8 @@
         <input type="password" id="pass" v-model="authPass" />
         <button @click="checkAuth">Войти</button>
       </div>
-      <form @submit.prevent="submitHandler" v-else>
+      <div class="mainPart" v-else>
+      <form @submit.prevent="submitHandler" >
         <h2>Добавить работника</h2>
         <input
           placeholder="Почта"
@@ -39,9 +40,13 @@
           type="text"
           v-model="position"
         /><br />
+        <input required @change="loadPhoto" accept=".jpg,.png,.bmp,.jpeg" type="file" style="display:none" ref="file"/>
+        <button @click="addPhoto">Добавить фото</button>
         <button type="submit">Добавить пользователя</button>
         <br />
       </form>
+      <img ref="img"/>
+    </div>
     </div>
   </layout-main>
 </template>
@@ -72,7 +77,8 @@ export default {
         position: this.position,
       };
       try {
-        this.$store.dispatch("createUser", data);
+        await this.$store.dispatch('savePhoto', this.$refs.file.files[0])
+        await this.$store.dispatch("createUser", data);
       } catch (e) {
         console.log(e);
       }
@@ -82,13 +88,25 @@ export default {
         this.auth = false;
       }
     },
+    addPhoto(){
+      this.$refs.file.click()
+    },
+    loadPhoto(e){
+      const reader = new FileReader()
+
+      reader.onload = (ev) => {
+        this.$refs.img.src = ev.target.result
+      }
+
+      reader.readAsDataURL(e.srcElement.files[0])
+    }
   },
 };
 </script>
 <style lang="scss" scoped>
 .createUser {
+  margin-top: 10px;
   background: white;
-  min-height:100%;
   padding: 5px 5px;
   form {
     width: 300px;
@@ -100,9 +118,19 @@ export default {
     }
     button {
       width: 225px;
-      margin: 0 5px;
+      margin: 5px 5px;
       height: 35px;
       cursor: pointer;
+    }
+  }
+  
+  .mainPart{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    img{
+      width: 250px;
+      margin-top: 25px;
     }
   }
 }

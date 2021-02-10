@@ -70,6 +70,10 @@ export default createStore({
       } catch (e) {
         throw e
       }
+    },
+    async savePhoto({}, file){
+      const ref = firebase.storage().ref(`images/${file.name}`)
+      const task = ref.put(file)
     }
   },
   modules: {},
