@@ -22,7 +22,9 @@ const routes = [
     name: 'createUser',
     component: () => import('../views/CreateUser.vue')
   },
+  
 ]
+
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
