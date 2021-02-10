@@ -66,7 +66,7 @@ export default {
 <style lang="scss" scoped>
 
 .auth {
-  margin: calc(50vh - 100px) auto auto;
+  margin: calc(50vh - 250px / 2) auto auto;
   width: 400px;
   background-color: #39a098;
   border-radius: 10px;

@@ -22,6 +22,7 @@
         :class="{ active: active === 'createuser' }"
         class="item"
         to="/createUser"
+        v-if="isAdmin"
       >
         <img alt="user" src="../assets/userwhite.png" />
       </router-link>
@@ -46,6 +47,7 @@
           :class="{ active: active === 'createuser' }"
           key="3"
           v-show="showLink"
+          v-if="isAdmin"
         >
           Добавить пользователя
         </div>
@@ -61,9 +63,18 @@ export default {
     showSidebar: false,
     showLink: false,
     active: "profile",
+    email: ''
   }),
   watch: {
     $route: "updateActive",
+  },
+  computed:{
+    isAdmin(){
+      return this.$store.getters.getUserData.email === 'admin@mail.ru'
+    }
+  },
+  mounted(){
+      this.email = this.$store.getters.getUserData.email
   },
   methods: {
     showNav() {
@@ -91,10 +102,11 @@ export default {
   padding-top: 25px;
   background-color: #374664;
   width: 70px;
-  outline: 1px solid black;
+  outline: 0;
   z-index: 999;
-  transition: all 0.5s ease-in-out;
   min-height: 100%;
+  transition: all .5s;
+  position: relative;
 }
 
 .container .control {

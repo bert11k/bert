@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     updateMav(){
-      this.$route.name.toLowerCase() !== 'login' ? this.nav = true : null
+      this.$route.name.toLowerCase() !== 'login' ? this.nav = true : this.nav = false;
     }
   }
 

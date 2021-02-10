@@ -6,7 +6,7 @@ export default createStore({
     user: {
       isLogin: false,
       uId: null,
-      userData: null
+      userData: null,
     }
   },
   mutations: {
@@ -20,6 +20,11 @@ export default createStore({
     },
     setUserData(state, value){
       state.userData = value
+    },
+    signOut(state){
+      state.user.isLogin = false;
+      state.user.uId = null;
+      state.user.useData = null;
     }
   },
   actions: {
