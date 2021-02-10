@@ -5,7 +5,8 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/Login.vue'),
+    meta: {layout: 'Login'}
   },
   {
     path: '/',
@@ -19,7 +20,7 @@ const routes = [
   },
   {
     path: '/createUser',
-    name: 'createUser',
+    name: 'createuser',
     component: () => import('../views/CreateUser.vue')
   },
   

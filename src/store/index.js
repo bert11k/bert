@@ -5,7 +5,8 @@ export default createStore({
   state: {
     user: {
       isLogin: false,
-      uId: null
+      uId: null,
+      userData: null,
     }
   },
   mutations: {
@@ -16,13 +17,22 @@ export default createStore({
     clearInfo(state){
       state.user = {}
       state.user.isLogin = false
+    },
+    setUserData(state, value){
+      state.userData = value
+    },
+    signOut(state){
+      state.user.isLogin = false;
+      state.user.uId = null;
+      state.user.useData = null;
     }
   },
   actions: {
-    async login({commit}, {email, password}) {
+    async login({dispatch, commit}, {email, password}) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password)
         commit('setUser', firebase.auth().currentUser)
+        await dispatch('fetchUserData')
       } catch (e) {
         throw e
       }
@@ -40,6 +50,7 @@ export default createStore({
               .ref(`/users/${uid}`)
               .once('value')
           ).val()
+        commit('setUserData', userData)
         return userData
       } catch (e) {
         throw e
@@ -64,11 +75,16 @@ export default createStore({
       } catch (e) {
         throw e
       }
+    },
+    async savePhoto({}, file){
+      const ref = firebase.storage().ref(`images/${file.name}`)
+      const task = ref.put(file)
     }
   },
   modules: {},
   getters: {
     isLogin: s => s.user.isLogin,
-    getUid: s => s.user.uId
+    getUid: s => s.user.uId,
+    getUserData: s => s.userData
   }
 })
