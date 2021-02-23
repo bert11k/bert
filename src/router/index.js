@@ -28,6 +28,11 @@ const routes = [
     name: 'Workplace',
     component: () => import('../views/Workplace.vue')
   },
+  {
+    path: '/storage',
+    name: 'storage',
+    component: () => import('../views/Storage.vue')
+  },
 ]
 
 
