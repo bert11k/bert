@@ -1,14 +1,25 @@
 <template>
  <div>
-     
+     <h3>Задачи</h3>
+     <TaskItem v-for="i of 4" :key="i" />
  </div>
   </template>
 
 <script>
+  
+import TaskItem from './TaskItem.vue'
 export default {
+  components: { TaskItem },
     name:"Task"
 }
 </script>
 <style lang="scss" scoped>
-
+div{
+  background-color: white;
+  overflow: auto;
+  h3{
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+}
 </style>

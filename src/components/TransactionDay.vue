@@ -18,7 +18,6 @@ export default {
 <style lang="scss" scoped>
 div{
     background-color: white;
-    max-height: 45%;
     overflow: auto;
     h3{
         margin-top: 20px;
