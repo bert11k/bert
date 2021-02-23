@@ -23,6 +23,11 @@ const routes = [
     name: 'createuser',
     component: () => import('../views/CreateUser.vue')
   },
+  {
+    path: '/storage',
+    name: 'storage',
+    component: () => import('../views/Storage.vue')
+  },
 ]
 
 const router = createRouter({

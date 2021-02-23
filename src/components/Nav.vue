@@ -26,6 +26,13 @@
       >
         <img alt="user" src="../assets/userwhite.png" />
       </router-link>
+      <router-link
+        :class="{ active: active === 'storage' }"
+        class="item"
+        to="/storage"
+      >
+        <img alt="user" src="../assets/userwhite.png" />
+      </router-link>
     </div>
     <div class="nav-links">
       <transition-group name="fade">
@@ -50,6 +57,13 @@
           v-if="isAdmin"
         >
           Добавить пользователя
+        </div>
+        <div
+          :class="{ active: active === 'storage' }"
+          key="4"
+          v-show="showLink"
+        >
+          Склад
         </div>
       </transition-group>
     </div>

@@ -1,6 +1,5 @@
 <template>
 	<div id="content" v-if="!loading">
-		<!-- <Nav  /> -->
 		<Header :fio="userdata.fio"/>
 		<slot @userdata="userdata" />
 	</div>
