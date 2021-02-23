@@ -69,12 +69,17 @@
     grid-gap: 10px;
     grid-template-columns: 1fr 3fr;
   }
-
+  .filter{
+    max-height: 80%;
+    overflow: auto;
+  }
   .content div {
     background-color: #fff;
   }
   .catalog{
     padding: 1rem;
+    max-height: 80%;
+    overflow: auto;
     h2{
       margin-bottom: .5rem;
     }
