@@ -26,9 +26,9 @@ export default {
 section{
     display: grid;
     grid-template-columns: 1fr 1fr ;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 35vh auto;
     grid-gap: 10px;
     margin: 10px auto auto;
-    
+
 }
 </style>
