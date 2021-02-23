@@ -4,11 +4,11 @@
       <section class="content">
         <div class="filter">
           <ul>
-            <FilterItem :key="i" id="i" v-for="i of 6" :actv="false" :value="'значение ' + i"/>
+            <FilterItem @selectFilter="selectFilter" :key="i.id" :id="i.id" v-for="i of filter" :actv="i.active" :value="i.value"/>
           </ul>
         </div>
         <div class="catalog">
-          <h2>Значение</h2>
+          <h2>{{catalog.title}}</h2>
           <CatalogItem v-for="i of 7" :key="i"/>
         </div>
       </section>
@@ -23,7 +23,43 @@
 
   export default {
     name: 'Storage',
-    components: {FilterItem, LayoutMain, CatalogItem}
+    data(){
+      return {
+        filter: [
+          {
+            id: 0,
+            value: 1,
+            active: false
+          },
+          {
+            id: 1,
+            value: 2,
+            active: false
+          },
+          {
+            id: 2,
+            value: 3,
+            active: false
+          },
+          {
+            id: 3,
+            value: 4,
+            active: false
+          },
+        ],
+        catalog:{
+          title: "Каталог"
+        }
+      }
+    },
+    components: {FilterItem, LayoutMain, CatalogItem},
+    methods:{
+      selectFilter(id){
+        this.filter.forEach(item => item.active = false)
+        this.filter[id].active = true
+        this.catalog.title = this.filter[id].value
+      }
+    }
   }
 </script>
 <style lang="scss" scoped>

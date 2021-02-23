@@ -1,11 +1,16 @@
 <template>
-  <li :class="{'active' : !!actv}"><input  :id="id" name="filter" type="radio"><label :for="id">{{value}}</label></li>
+  <li @click="click" :class="{'active' : !!actv}"><input  :id="id" name="filter" type="radio"><label :for="id">{{value}}</label></li>
 </template>
 
 <script>
   export default {
     name: 'FilterItem',
-    props: ['value', 'id', 'actv']
+    props: ['value', 'id', 'actv'],
+    methods:{
+      click(){
+        this.$emit('selectFilter', this.id)
+      }
+    }
   }
 </script>
 
@@ -14,6 +19,12 @@
     display: none;
   }
 
+  label{
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
   li {
     padding: .5rem;
     border-bottom: 1px solid #3c3c3c;
@@ -26,6 +37,7 @@
   }
 
   .active{
+    color: white;
     background-color: #39a098;
   }
 </style>
