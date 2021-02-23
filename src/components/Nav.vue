@@ -12,9 +12,9 @@
         <img alt="user" src="../assets/userwhite.png" />
       </router-link>
       <router-link
-        :class="{ active: active === 'projects' }"
+        :class="{ active: active === 'Workplace' }"
         class="item"
-        to="/projects"
+        to="/Workplace"
       >
         <img alt="projects" src="../assets/projects.png" />
       </router-link>

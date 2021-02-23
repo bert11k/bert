@@ -23,7 +23,11 @@ const routes = [
     name: 'createuser',
     component: () => import('../views/CreateUser.vue')
   },
-  
+  {
+    path: '/Workplace',
+    name: 'Workplace',
+    component: () => import('../views/Workplace.vue')
+  },
 ]
 
 
