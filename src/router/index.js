@@ -24,11 +24,17 @@ const routes = [
     component: () => import('../views/CreateUser.vue')
   },
   {
+    path: '/Workplace',
+    name: 'Workplace',
+    component: () => import('../views/Workplace.vue')
+  },
+  {
     path: '/storage',
     name: 'storage',
     component: () => import('../views/Storage.vue')
   },
 ]
+
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
