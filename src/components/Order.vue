@@ -20,20 +20,23 @@ section div {
   justify-content: left;
   margin-left: 20px;
   padding: 10px;
+  position: relative;
   a {
-    font-size: 10px;
+    font-size: 1rem;
   }
   img {
     margin-right: 10px;
     width: 40px;
   }
   button {
-    width: 100px;
+    width: 120px;
     height: 30px;
     background-color: #39a098;
     border: 0;
     border-radius: 10px;
-    margin-left: 420px;
+    position: absolute;
+    padding: 0 10px;
+    right: 25px;
   }
 }
 </style>

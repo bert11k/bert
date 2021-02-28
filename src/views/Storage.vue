@@ -106,10 +106,10 @@
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 1fr 3fr;
+    grid-template-rows: 60vh;
   }
 
   .filter {
-    max-height: 50%;
     overflow: auto;
     min-height: 369px;
   }
@@ -120,7 +120,6 @@
 
   .catalog {
     padding: 1rem;
-    max-height: 50%;
     min-height: 369px;
     overflow: auto;
 

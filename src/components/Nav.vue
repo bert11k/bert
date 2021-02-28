@@ -31,7 +31,7 @@
         class="item"
         to="/storage"
       >
-        <img alt="user" src="../assets/userwhite.png" />
+        <img alt="sklad" src="../assets/skladWhite.png" />
       </router-link>
     </div>
     <div class="nav-links">

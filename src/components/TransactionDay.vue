@@ -18,6 +18,7 @@ div {
   overflow: auto;
   h3 {
     margin-top: 20px;
+    font-size: 1.3rem;
     margin-left: 20px;
   }
 }

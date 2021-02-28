@@ -1,6 +1,6 @@
 <template>
   <div class="referitem">
-    <div><img src="./../assets/sklad.png" alt="1" /><a href="#">Склады</a></div>
+    <div><img src="../assets/sklad.png" alt="1" /><a href="#">Склады</a></div>
     <div>
       <img src="./../assets/prodaj.png" alt="2" /><a href="#">Продажи</a>
     </div>

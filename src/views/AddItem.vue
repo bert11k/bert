@@ -58,7 +58,7 @@
       title: '',
       num: '',
       cost: '',
-      loading: true,
+      loading: false,
     }),
     methods: {
       async submitHandler() {
