@@ -61,17 +61,31 @@ export default createStore({
         await firebase.auth().createUserWithEmailAndPassword(email, password)
         const uid = await firebase.auth().currentUser.uid
         await firebase
-          .database()
-          .ref(`/users/${uid}/`)
-          .set({
-            email,
-            fio,
-            phonehome: phone,
-            phonework: phoneWork,
-            position
-          })
+            .database()
+            .ref(`/users/${uid}/`)
+            .set({
+              email,
+              fio,
+              phonehome: phone,
+              phonework: phoneWork,
+              position
+            })
         await firebase.auth().signOut();
         commit("clearInfo");
+      } catch (e) {
+        throw e
+      }
+    },
+    async createProduct({dispatch, commit, getters}, {title, num, cost,category}) {
+      try {
+        await firebase
+            .database()
+            .ref(`/products/${category}/${title}`)
+            .set({
+              title,
+              num,
+              cost,
+            })
       } catch (e) {
         throw e
       }
@@ -79,7 +93,12 @@ export default createStore({
     async savePhoto({}, file){
       const ref = firebase.storage().ref(`images/${file.name}`)
       const task = ref.put(file)
-    }
+    },
+    async saveProductImg({}, file){
+      const ref = firebase.storage().ref(`product/${file.name}`)
+      const task = ref.put(file)
+    },
+
   },
   modules: {},
   getters: {
