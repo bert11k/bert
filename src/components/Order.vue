@@ -2,7 +2,7 @@
   <section>
     <div>
       <img src="./../assets/transact.png" alt="transact" />
-      <p>Сделка №2421<br /><a href="#">ООО Татнефть</a></p>
+      <p><router-link to="/deal">Сделка №2421<br /></router-link><a href="#">ООО Татнефть</a></p>
       <button>Сменить статус</button>
     </div>
   </section>

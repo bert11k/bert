@@ -38,6 +38,11 @@ const routes = [
     name: 'addItem',
     component: () => import('../views/AddItem.vue')
   },
+  {
+    path: '/deal',
+    name: 'deal',
+    component: () => import('../views/Deal.vue')
+  },
 ]
 
 
