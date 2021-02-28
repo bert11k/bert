@@ -1,7 +1,12 @@
 <template>
   <layout-main>
-    <div>
-      <section class="content">
+      <div class="scrndHeader">
+        <h1>Продукты</h1>
+        <div>
+          <router-link class="btn" to="addItem">Добавить продукт</router-link>
+        </div>
+      </div>
+      <div class="content">
         <div class="filter">
           <ul>
             <FilterItem @selectFilter="selectFilter" :key="i.id" :id="i.id" v-for="i of filter" :actv="i.active" :value="i.value"/>
@@ -11,8 +16,7 @@
           <h2>{{catalog.title}}</h2>
           <CatalogItem v-for="i of 7" :key="i"/>
         </div>
-      </section>
-    </div>
+      </div>
   </layout-main>
 </template>
 
@@ -63,11 +67,23 @@
   }
 </script>
 <style lang="scss" scoped>
+  .scrndHeader{
+    background-color: #fff;
+    margin: 5px 0;
+    padding: 10px;
+    .btn{
+      color: #5c6bd4;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+
   .content {
-    margin: 10px auto auto;
+    margin: 5px auto auto;
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 1fr 3fr;
+
   }
   .filter{
     max-height: 80%;

@@ -33,6 +33,11 @@ const routes = [
     name: 'storage',
     component: () => import('../views/Storage.vue')
   },
+  {
+    path: '/additem',
+    name: 'addItem',
+    component: () => import('../views/AddItem.vue')
+  },
 ]
 
 
