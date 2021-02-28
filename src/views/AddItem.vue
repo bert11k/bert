@@ -70,6 +70,11 @@
         try {
           await this.$store.dispatch('saveProductImg', this.$refs.file.files[0])
           await this.$store.dispatch("createProduct", data);
+          this.category = 1
+          this.title = ''
+          this.num = ''
+          this.cost = ''
+          this.type = ''
         } catch (e) {
           console.log(e)
         }
