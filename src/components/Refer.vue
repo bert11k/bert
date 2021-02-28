@@ -1,14 +1,24 @@
 <template>
- <div>
-     
- </div>
-  </template>
+  <div class="referdiv">
+    <h3>Справочники</h3>
+    <Referitem />
+  </div>
+</template>
 
 <script>
+import Referitem from "./Referitem.vue";
 export default {
-    name:"Refer"
-}
+  components: { Referitem },
+  name: "Refer",
+};
 </script>
 <style lang="scss" scoped>
+.referdiv{
+  background-color:white;
 
+  h3 {
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+}
 </style>
