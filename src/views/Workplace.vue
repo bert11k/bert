@@ -1,12 +1,12 @@
 <template>
   <layout-main>
-    <div>
-      <section>
+    <div class="workplace">
+    
         <TransactionDay />
         <Transaction />
         <Task /> 
         <Refer />
-      </section>
+  
     </div>
   </layout-main>
 </template>
@@ -23,10 +23,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-section{
+.workplace{
     display: grid;
     grid-template-columns: 1fr 1fr ;
-    grid-template-rows: 35vh auto;
+    grid-template-rows: 35vh 50vh;
     grid-gap: 10px;
     margin: 10px auto auto;
     

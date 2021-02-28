@@ -1,23 +1,22 @@
 <template>
-
- <div>
-   <h3>Все сделки</h3>
-     <Order v-for="i of 7" :key="i"/>
- </div>
-  </template>
+  <div>
+    <h3>Все сделки</h3>
+    <Order v-for="i of 7" :key="i" />
+  </div>
+</template>
 
 <script>
-import Order from './Order.vue'
+import Order from "./Order.vue";
 export default {
   components: { Order },
-    name:"Transaction"
-}
+  name: "Transaction",
+};
 </script>
 <style lang="scss" scoped>
-div{
+div {
   background-color: white;
   overflow: auto;
-  h3{
+  h3 {
     margin-left: 20px;
     margin-top: 20px;
   }
