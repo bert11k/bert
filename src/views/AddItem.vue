@@ -1,6 +1,7 @@
 <template>
   <main-layout>
-    <div class="addItem">
+    <Loader v-if="loading"/>
+    <div class="addItem" v-else>
       <form @submit.prevent="submitHandler">
         <h2>Добавить товар</h2>
         <select required v-model="category">
@@ -47,16 +48,17 @@
 
 <script>
   import MainLayout from '../layouts/LayoutMain'
+  import Loader from '../components/Loader'
 
   export default {
     name: 'AddItem',
-    components: {MainLayout},
+    components: {Loader, MainLayout},
     data: () => ({
       category: null,
       title: '',
       num: '',
       cost: '',
-
+      loading: true,
     }),
     methods: {
       async submitHandler() {
@@ -74,6 +76,8 @@
           this.title, this.num, this.cost, this.type = ''
         } catch (e) {
           console.log(e)
+        } finally {
+          this.loading = false
         }
       },
       addPhoto() {
