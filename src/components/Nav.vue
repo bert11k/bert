@@ -12,7 +12,7 @@
         <img alt="user" src="../assets/userwhite.png" />
       </router-link>
       <router-link
-        :class="{ active: active === 'Workplace' }"
+        :class="{ active: active === 'workplace' }"
         class="item"
         to="/Workplace"
       >
@@ -44,7 +44,7 @@
           Профиль
         </div>
         <div
-          :class="{ active: active === 'projects' }"
+          :class="{ active: active === 'workplace' }"
           key="2"
           v-show="showLink"
         >
