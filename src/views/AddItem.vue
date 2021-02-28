@@ -3,7 +3,7 @@
     <div class="addItem">
       <form @submit.prevent="submitHandler">
         <h2>Добавить товар</h2>
-        <select v-model="category">
+        <select v-model="category" required>
           <option disabled selected value="null">Категория</option>
           <option value="1">Категория 1</option>
           <option value="2">Категория 2</option>
@@ -13,8 +13,14 @@
         <input
             placeholder="Название"
             required
-            type="title"
+            type="text"
             v-model="title"
+        /><br/>
+        <input
+            placeholder="Тип"
+            required
+            type="text"
+            v-model="type"
         /><br/>
         <input
             placeholder="Наличие"
@@ -29,7 +35,7 @@
             v-model="cost"
         /><br/>
 
-        <input @change="loadPhoto" accept=".jpg,.png,.bmp,.jpeg" ref="file" required style="display:none" type="file"/>
+        <input @change="loadPhoto" ref="file" accept=".jpg,.png,.bmp,.jpeg" required style="display:none" type="file"/>
         <button @click="addPhoto">Добавить фото</button>
         <button type="submit">Добавить товар</button>
         <br/>
@@ -59,6 +65,7 @@
           title: this.title,
           num: this.num,
           cost: this.cost,
+          type: this.type,
         }
         try {
           await this.$store.dispatch('saveProductImg', this.$refs.file.files[0])

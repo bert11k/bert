@@ -3,23 +3,24 @@
     <div>
       <img alt="img" src="./../assets/placeholder.jpg">
       <div class="info">
-        <div><h3>Название продукта</h3></div>
+        <div><h3>{{item.title}}</h3></div>
         <div>
-          <p>Категория: .....</p>
-          <p>Тип: .....</p>
-          <p>Наличие: .....</p>
+          <p>Категория: {{item.category}}</p>
+          <p>Тип: {{item.type}}</p>
+          <p>Наличие: {{item.num}}</p>
         </div>
       </div>
     </div>
     <div class="cost">
-      <p>Цена: <br> 0000р.</p>
+      <p>Цена: <br> {{item.cost}}р.</p>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'CatalogItem'
+    name: 'CatalogItem',
+    props: ['item']
   }
 </script>
 

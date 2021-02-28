@@ -3,6 +3,7 @@ import firebase from 'firebase/app'
 
 export default createStore({
   state: {
+    catalog: [],
     user: {
       isLogin: false,
       uId: null,
@@ -10,21 +11,24 @@ export default createStore({
     }
   },
   mutations: {
+    setCatalog(state, value) {
+      state.catalog = value
+    },
     setUser(state, {uid}) {
       state.user.isLogin = true
       state.user.uId = uid
     },
-    clearInfo(state){
+    clearInfo(state) {
       state.user = {}
       state.user.isLogin = false
     },
-    setUserData(state, value){
+    setUserData(state, value) {
       state.userData = value
     },
-    signOut(state){
-      state.user.isLogin = false;
-      state.user.uId = null;
-      state.user.useData = null;
+    signOut(state) {
+      state.user.isLogin = false
+      state.user.uId = null
+      state.user.useData = null
     }
   },
   actions: {
@@ -44,17 +48,21 @@ export default createStore({
           throw 'error'
         }
         const userData =
-          (
-            await firebase
-              .database()
-              .ref(`/users/${uid}`)
-              .once('value')
-          ).val()
+            (
+                await firebase
+                    .database()
+                    .ref(`/users/${uid}`)
+                    .once('value')
+            ).val()
         commit('setUserData', userData)
         return userData
       } catch (e) {
         throw e
       }
+    },
+    async fetchCatalog({commit}) {
+      const data = (await firebase.database().ref(`/catalog`).get()).val()
+      commit('setCatalog', data)
     },
     async createUser({dispatch, commit, getters}, {email, password, fio, phone, phoneWork, position}) {
       try {
@@ -70,31 +78,33 @@ export default createStore({
               phonework: phoneWork,
               position
             })
-        await firebase.auth().signOut();
-        commit("clearInfo");
+        await firebase.auth().signOut()
+        commit('clearInfo')
       } catch (e) {
         throw e
       }
     },
-    async createProduct({dispatch, commit, getters}, {title, num, cost,category}) {
+    async createProduct({dispatch, commit, getters}, {title, num, cost, category, type}) {
       try {
         await firebase
             .database()
-            .ref(`/products/${category}/${title}`)
+            .ref(`/catalog/${title}`)
             .set({
               title,
               num,
               cost,
+              category,
+              type,
             })
       } catch (e) {
         throw e
       }
     },
-    async savePhoto({}, file){
+    async savePhoto({}, file) {
       const ref = firebase.storage().ref(`images/${file.name}`)
       const task = ref.put(file)
     },
-    async saveProductImg({}, file){
+    async saveProductImg({}, file) {
       const ref = firebase.storage().ref(`product/${file.name}`)
       const task = ref.put(file)
     },
@@ -104,6 +114,7 @@ export default createStore({
   getters: {
     isLogin: s => s.user.isLogin,
     getUid: s => s.user.uId,
-    getUserData: s => s.userData
+    getUserData: s => s.userData,
+    getCatalog: s => s.catalog
   }
 })

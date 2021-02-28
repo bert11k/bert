@@ -1,5 +1,7 @@
 <template>
   <layout-main>
+    <Loader v-if="loading"/>
+    <div v-else>
       <div class="scrndHeader">
         <h1>Продукты</h1>
         <div>
@@ -9,14 +11,16 @@
       <div class="content">
         <div class="filter">
           <ul>
-            <FilterItem @selectFilter="selectFilter" :key="i.id" :id="i.id" v-for="i of filter" :actv="i.active" :value="i.value"/>
+            <FilterItem :actv="i.active" :id="i.id" :key="i.id" :value="i.value" @selectFilter="selectFilter"
+                        v-for="i of filter"/>
           </ul>
         </div>
         <div class="catalog">
           <h2>{{catalog.title}}</h2>
-          <CatalogItem v-for="i of 7" :key="i"/>
+          <CatalogItem :item="item" :key="item.title" v-for="item of catalog.items"/>
         </div>
       </div>
+    </div>
   </layout-main>
 </template>
 
@@ -24,11 +28,17 @@
   import LayoutMain from '../layouts/LayoutMain.vue'
   import FilterItem from '../components/FilterItem'
   import CatalogItem from '../components/CatalogItem'
+  import Loader from '../components/Loader'
 
   export default {
     name: 'Storage',
-    data(){
+    data() {
       return {
+        loading: true,
+        catalog: {
+          title: 'Каталог',
+          items: [],
+        },
         filter: [
           {
             id: 0,
@@ -51,27 +61,40 @@
             active: false
           },
         ],
-        catalog:{
-          title: "Каталог"
-        }
+
       }
     },
-    components: {FilterItem, LayoutMain, CatalogItem},
-    methods:{
-      selectFilter(id){
+    components: {Loader, FilterItem, LayoutMain, CatalogItem},
+    methods: {
+      async selectFilter(id) {
+        this.loading = true
         this.filter.forEach(item => item.active = false)
         this.filter[id].active = true
         this.catalog.title = this.filter[id].value
+
+        const catalogTmp = Object.values(await this.$store.getters.getCatalog)
+        this.catalog.items = catalogTmp.filter(item => {
+
+          if (+item.category === this.filter[id].value) return item
+
+        })
+        this.loading = false
       }
+    },
+    async mounted() {
+      await this.$store.dispatch('fetchCatalog')
+      this.catalog.items = this.$store.getters.getCatalog
+      this.loading = false
     }
   }
 </script>
 <style lang="scss" scoped>
-  .scrndHeader{
+  .scrndHeader {
     background-color: #fff;
     margin: 5px 0;
     padding: 10px;
-    .btn{
+
+    .btn {
       color: #5c6bd4;
       font-weight: bold;
       cursor: pointer;
@@ -83,20 +106,25 @@
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 1fr 3fr;
+  }
 
-  }
-  .filter{
-    max-height: 80%;
+  .filter {
+    max-height: 50%;
     overflow: auto;
+    min-height: 369px;
   }
+
   .content div {
     background-color: #fff;
   }
-  .catalog{
+
+  .catalog {
     padding: 1rem;
-    max-height: 80%;
+    max-height: 50%;
+    min-height: 369px;
     overflow: auto;
-    h2{
+
+    h2 {
       margin-bottom: .5rem;
     }
   }
