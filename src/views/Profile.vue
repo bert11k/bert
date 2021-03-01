@@ -1,11 +1,10 @@
 <template>
   <layout-main>
-    <div>
-      <section class="content">
+      <Loader v-if="loading"/>
+      <section class="content" v-else>
         <ProfileLeft :user="userData"/>
         <ProfileRight/>
       </section>
-    </div>
   </layout-main>
 </template>
 
@@ -14,19 +13,23 @@
   import Header from '../components/Header'
   import ProfileLeft from '../components/ProfileLeft'
   import ProfileRight from '../components/ProfileRight'
+  import Loader from '../components/Loader'
 
   export default {
     name: 'Profile',
     data: () => ({
-      userData: {}
+      userData: {},
+      loading: true,
     }),
-    components: {Header, ProfileLeft, ProfileRight, LayoutMain},
+    components: {Loader, Header, ProfileLeft, ProfileRight, LayoutMain},
     async mounted() {
       try {
         if (!this.$store.getters.getUserData) throw new Error()
         this.userData = await this.$store.dispatch('fetchUserData')
       } catch (e) {
         this.$router.push('/login')
+      } finally {
+        this.loading = false
       }
     }
   }
