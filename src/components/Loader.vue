@@ -48,8 +48,9 @@
        transform: translate(-50%,-50%) rotate(135deg)
      }
   .loadingio-spinner-gear-0s58hh19vf1 {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
+    min-height: 60vh;
     display: inline-block;
     overflow: hidden;
     background: #ffffff;
@@ -60,6 +61,7 @@
     position: relative;
     transform: translateZ(0) scale(1);
     backface-visibility: hidden;
+    padding: 5% 40%;
     transform-origin: 0 0; /* see note above */
   }
   .ldio-0ec3gvsr97xo div { box-sizing: content-box; }

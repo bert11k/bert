@@ -1,14 +1,15 @@
 <template>
   <layout-main>
-    <Loader v-if="loading"/>
-    <div v-else>
+
+    <div>
       <div class="scrndHeader">
         <h1>Продукты</h1>
         <div>
           <router-link class="btn" to="addItem">Добавить продукт</router-link>
         </div>
       </div>
-      <div class="content">
+      <Loader v-if="loading"/>
+      <div class="content" v-else>
         <div class="filter">
           <ul>
             <FilterItem :actv="i.active" :id="i.id" :key="i.id" :value="i.value" @selectFilter="selectFilter"
