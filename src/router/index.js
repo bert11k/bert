@@ -25,7 +25,8 @@ const routes = [
   },
   {
     path: '/Workplace',
-    name: 'Workplace',
+    name: 'WorkplaceDiler',
+    meta: {show: 'workplace'},
     component: () => import('../views/Workplace.vue')
   },
   {
@@ -45,7 +46,8 @@ const routes = [
   },
   {
     path: '/WorkplaceManager',
-    name: 'WorkplaceManager',
+    name: 'Workplace',
+    meta: {show: 'workplace'},
     component: () => import('../views/WorkplaceManager.vue')
   },
   {
