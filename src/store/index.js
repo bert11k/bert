@@ -8,7 +8,9 @@ export default createStore({
       isLogin: false,
       uId: null,
       userData: null,
-    }
+    },
+    tasks: null,
+    transactions: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -29,6 +31,12 @@ export default createStore({
       state.user.isLogin = false
       state.user.uId = null
       state.user.useData = null
+    },
+    setTransactions(state, value) {
+      state.transaction = value
+    },
+    setTasks(state, value) {
+      state.tasks = value
     }
   },
   actions: {
@@ -104,13 +112,13 @@ export default createStore({
       }
     },
 
-    async createTransaction({dispatch, commit}, {title, date, address, status, type}) {
+    async createTransaction({dispatch, commit}, {title, date, address, status, type, customer}) {
       try {
         await firebase
             .database()
             .ref(`/transactions`)
             .push().set({
-        
+              customer,
               title,
               date,
               address,
@@ -120,6 +128,15 @@ export default createStore({
       } catch (e) {
         throw e
       }
+    },
+
+    async fetchTransactions({commit}) {
+      const data = (await firebase.database().ref(`/transactions`).get()).val()
+      commit('setTransactions', data)
+    },
+    async fetchTasks({commit}) {
+      const data = (await firebase.database().ref(`/task`).get()).val()
+      commit('setTasks', data)
     },
 
     async savePhoto({}, file) {
@@ -138,6 +155,8 @@ export default createStore({
     isLogin: s => s.user.isLogin,
     getUid: s => s.user.uId,
     getUserData: s => s.userData,
-    getCatalog: s => s.catalog
+    getCatalog: s => s.catalog,
+    getTransactions: s => s.transaction,
+    getTasks: s => s.tasks,
   }
 })

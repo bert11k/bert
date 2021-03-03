@@ -5,12 +5,17 @@
       <form @submit.prevent="submitHandler">
         <h2>Создать сделку</h2>
         <input
+            placeholder="Название"
+            required
+            type="text"
+            v-model="title"
+        /><br />
+        <input
           placeholder="Заказчик"
           required
           type="text"
-          v-model="title"
+          v-model="customer"
         /><br />
-        <!-- <label for="date">Дата заключение сделки:</label> -->
         <input id="date" required type="date" v-model="date" /><br />
         <input
           placeholder="Адрес заказчика"
@@ -48,6 +53,7 @@ export default {
     address: "",
     status: "",
     type: "",
+    customer: "",
     loading: false,
   }),
   methods: {
@@ -59,10 +65,11 @@ export default {
         address: this.address,
         status: this.status,
         type: this.type,
+        customer: this.customer
       };
       try {
         await this.$store.dispatch("createTransaction", data)
-        this.title = this.date = this.address = this.status = this.type = ""
+        this.title = this.date = this.address = this.status = this.type = this.customer =""
         this.$toast.success('Сохранено')
       } catch (e) {
         this.$toast.error(e.message)

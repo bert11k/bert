@@ -1,15 +1,16 @@
 <template>
   <div>
     <h3>Все сделки</h3>
-    <Order v-for="i of 7" :key="i" />
+    <Order :transaction="transaction" v-for="transaction of transactions" :key="transaction.title" />
   </div>
 </template>
 
 <script>
 import Order from "./Order.vue";
 export default {
-  components: { Order },
   name: "Transaction",
+  props: ['transactions'],
+  components: { Order },
 };
 </script>
 <style lang="scss" scoped>

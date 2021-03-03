@@ -2,7 +2,7 @@
   <section>
     <div>
       <img src="./../assets/transact.png" alt="transact" />
-      <p><router-link to="/deal">Сделка №2421<br /></router-link><a href="#">ООО Татнефть</a></p>
+      <p><router-link to="/deal">{{transaction.title}}<br /></router-link>{{transaction.customer}}</p>
       <button>Сменить статус</button>
     </div>
   </section>
@@ -11,6 +11,7 @@
 <script>
 export default {
   name: "Order",
+  props: ['transaction'],
 };
 </script>
 <style lang="scss" scoped>
