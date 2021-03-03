@@ -2,7 +2,7 @@
   <layout-login>
   <div class="">
     <Loader v-if="loading"/>
-    <div class="auth">
+    <div class="auth" v-else>
       <h2>Войти в систему</h2>
       <form @submit.prevent="login">
         <div>

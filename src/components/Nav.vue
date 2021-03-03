@@ -12,9 +12,18 @@
         <img alt="user" src="../assets/userwhite.png" />
       </router-link>
       <router-link
+          v-if="isManager"
         :class="{ active: active === 'workplace' }"
         class="item"
         to="/WorkplaceManager"
+      >
+        <img alt="projects" src="../assets/projects.png" />
+      </router-link>
+      <router-link
+          v-if="isDiler"
+          :class="{ active: active === 'workplace' }"
+          class="item"
+          to="/Workplace"
       >
         <img alt="projects" src="../assets/projects.png" />
       </router-link>
@@ -84,8 +93,14 @@ export default {
   },
   computed:{
     isAdmin(){
-      return this.$store.getters.getUserData.email === 'admin@mail.ru'
-    }
+      return this.$store.getters.getUserData.position === 'Администратор'
+    },
+    isDiler(){
+      return this.$store.getters.getUserData.position === 'Дилер'
+    },
+    isManager(){
+      return this.$store.getters.getUserData.position === 'Менеджер'
+    },
   },
   mounted(){
       this.email = this.$store.getters.getUserData.email
@@ -105,7 +120,9 @@ export default {
       }
     },
     updateActive() {
-      this.active = this.$route.name.toLowerCase();
+      if(this.$route.meta.show) this.active = this.$route.meta.show.toLowerCase()
+      else this.active = this.$route.name.toLowerCase();
+
     },
   },
 };
