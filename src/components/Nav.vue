@@ -14,7 +14,7 @@
       <router-link
         :class="{ active: active === 'workplace' }"
         class="item"
-        to="/Workplace"
+        to="/WorkplaceManager"
       >
         <img alt="projects" src="../assets/projects.png" />
       </router-link>

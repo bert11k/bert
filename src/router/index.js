@@ -43,6 +43,16 @@ const routes = [
     name: 'deal',
     component: () => import('../views/Deal.vue')
   },
+  {
+    path: '/WorkplaceManager',
+    name: 'WorkplaceManager',
+    component: () => import('../views/WorkplaceManager.vue')
+  },
+  {
+    path: '/AddTransaction',
+    name: 'AddTransaction',
+    component: () => import('../views/AddTransaction.vue')
+  },
 ]
 
 
