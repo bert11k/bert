@@ -104,6 +104,22 @@ export default createStore({
       }
     },
 
+    async createTask({dispatch, commit}, {title, date, contact, description}) {
+      try {
+        await firebase
+            .database()
+            .ref(`/task`)
+            .push().set({
+              title,
+              date,
+              contact,
+              description,
+            })
+      } catch (e) {
+        throw e
+      }
+    },
+
     async createTransaction({dispatch, commit}, {title, date, address, status, type}) {
       try {
         await firebase
@@ -121,7 +137,6 @@ export default createStore({
         throw e
       }
     },
-
     async savePhoto({}, file) {
       const ref = firebase.storage().ref(`images/${file.name}`)
       const task = ref.put(file)
