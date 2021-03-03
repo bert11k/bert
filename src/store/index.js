@@ -112,6 +112,22 @@ export default createStore({
       }
     },
 
+    async createTask({dispatch, commit}, {title, date, contact, description}) {
+      try {
+        await firebase
+            .database()
+            .ref(`/task`)
+            .push().set({
+              title,
+              date,
+              contact,
+              description,
+            })
+      } catch (e) {
+        throw e
+      }
+    },
+
     async createTransaction({dispatch, commit}, {title, date, address, status, type, customer}) {
       try {
         await firebase
@@ -129,7 +145,6 @@ export default createStore({
         throw e
       }
     },
-
     async fetchTransactions({commit}) {
       const data = (await firebase.database().ref(`/transactions`).get()).val()
       commit('setTransactions', data)
@@ -138,7 +153,6 @@ export default createStore({
       const data = (await firebase.database().ref(`/task`).get()).val()
       commit('setTasks', data)
     },
-
     async savePhoto({}, file) {
       const ref = firebase.storage().ref(`images/${file.name}`)
       const task = ref.put(file)
