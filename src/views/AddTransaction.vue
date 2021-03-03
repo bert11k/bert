@@ -61,11 +61,12 @@ export default {
         type: this.type,
       };
       try {
-        await this.$store.dispatch("createTransaction", data);
-
-        this.title = this.date = this.address = this.status = this.type = "";
+        await this.$store.dispatch("createTransaction", data)
+        this.title = this.date = this.address = this.status = this.type = ""
+        this.$toast.success('Сохранено')
       } catch (e) {
-        console.log(e);
+        this.$toast.error(e.message)
+        console.error(e);
       } finally {
         this.loading = false;
       }
