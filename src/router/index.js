@@ -55,6 +55,11 @@ const routes = [
     name: 'AddTransaction',
     component: () => import('../views/AddTransaction.vue')
   },
+  {
+    path: '/AddTask',
+    name: 'AddTask',
+    component: () => import('../views/AddTask.vue')
+  },
 ]
 
 
