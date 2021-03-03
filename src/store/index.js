@@ -92,7 +92,7 @@ export default createStore({
         await firebase
             .database()
             .ref(`/catalog`)
-            .push().set(({
+            .push().set({
               title,
               num,
               cost,
