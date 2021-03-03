@@ -88,8 +88,8 @@ export default createStore({
       try {
         await firebase
             .database()
-            .ref(`/catalog/${title}`)
-            .set({
+            .ref(`/catalog`)
+            .push().set(({
               title,
               num,
               cost,
@@ -100,6 +100,25 @@ export default createStore({
         throw e
       }
     },
+
+    async createTransaction({dispatch, commit}, {title, date, address, status, type}) {
+      try {
+        await firebase
+            .database()
+            .ref(`/transactions`)
+            .push().set({
+        
+              title,
+              date,
+              address,
+              status,
+              type,
+            })
+      } catch (e) {
+        throw e
+      }
+    },
+
     async savePhoto({}, file) {
       const ref = firebase.storage().ref(`images/${file.name}`)
       const task = ref.put(file)
