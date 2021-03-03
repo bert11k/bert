@@ -1,6 +1,7 @@
 <template>
   <layout-login>
   <div class="">
+    <Loader v-if="loading"/>
     <div class="auth">
       <h2>Войти в систему</h2>
       <form @submit.prevent="login">
@@ -29,15 +30,17 @@
 
 <script>
 import LayoutLogin from "../layouts/LayoutLogin.vue"
+import Loader from '../components/Loader'
 export default {
   name: "Login",
   data: ()=>({
     email: '',
     password: '',
     isChecked: false,
-    error: false
+    error: false,
+    loading: false,
   }),
-  components: {LayoutLogin},
+  components: {Loader, LayoutLogin},
   mounted() {
     if(this.$store.getters.isLogin){
       this.$router.push('/')
@@ -45,6 +48,7 @@ export default {
   },
   methods:{
     async login(){
+      this.loading = true
       let formData = {
         email: this.email,
         password: this.password
@@ -58,6 +62,7 @@ export default {
       this.email = ''
       this.password = ''
       this.isChecked = ''
+      this.loading = false
     },
 
   }

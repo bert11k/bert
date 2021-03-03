@@ -75,7 +75,9 @@
           await this.$store.dispatch('createProduct', data)
           this.category = 1
           this.title = this.num = this.cost = this.type = ''
+          this.$toast.success('Сохранено')
         } catch (e) {
+          this.$toast.error(e.message)
           console.log(e)
         } finally {
           this.loading = false

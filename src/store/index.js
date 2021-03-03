@@ -66,6 +66,7 @@ export default createStore({
     },
     async createUser({dispatch, commit, getters}, {email, password, fio, phone, phoneWork, position}) {
       try {
+        const userTmp = {uid: getters._user.uId}
         await firebase.auth().createUserWithEmailAndPassword(email, password)
         const uid = await firebase.auth().currentUser.uid
         await firebase
@@ -80,6 +81,8 @@ export default createStore({
             })
         await firebase.auth().signOut()
         commit('clearInfo')
+        commit('setUser', userTmp)
+        await dispatch('fetchUserData')
       } catch (e) {
         throw e
       }
@@ -112,6 +115,7 @@ export default createStore({
   },
   modules: {},
   getters: {
+    _user: s => s.user,
     isLogin: s => s.user.isLogin,
     getUid: s => s.user.uId,
     getUserData: s => s.userData,

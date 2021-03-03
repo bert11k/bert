@@ -1,6 +1,7 @@
 <template>
   <layout-main>
-    <div class="createUser">
+    <Loader v-if="loading"/>
+    <div class="createUser" v-else>
       <div class="auth" v-if="auth">
         <label for="pass">Введите пароль</label>
         <input type="password" id="pass" v-model="authPass" />
@@ -34,12 +35,10 @@
           type="tel"
           v-model="phoneWork"
         /><br />
-        <input
-          placeholder="Должность"
-          required
-          type="text"
-          v-model="position"
-        /><br />
+        <select v-model="position" required>
+          <option value="Дилер">Дилер</option>
+          <option value="Менеджер">Менеджер</option>
+        </select><br />
         <input required @change="loadPhoto" accept=".jpg,.png,.bmp,.jpeg" type="file" style="display:none" ref="file"/>
         <button @click="addPhoto">Добавить фото</button>
         <button type="submit">Добавить пользователя</button>
@@ -53,9 +52,11 @@
 
 <script>
 import LayoutMain from "../layouts/LayoutMain.vue";
+import Loader from '../components/Loader'
 export default {
   name: "CreateUser",
   data: () => ({
+    loading: false,
     auth: true,
     authPass: "",
     email: "",
@@ -65,9 +66,10 @@ export default {
     phoneWork: "",
     position: "",
   }),
-  components: { LayoutMain },
+  components: {Loader, LayoutMain },
   methods: {
     async submitHandler() {
+      this.loading = true
       const data = {
         email: this.email,
         password: this.password,
@@ -79,8 +81,12 @@ export default {
       try {
         await this.$store.dispatch('savePhoto', this.$refs.file.files[0])
         await this.$store.dispatch("createUser", data);
+        this.$toast.success(`Сохранено`)
       } catch (e) {
-        console.log(e);
+        this.$toast.error(e.message)
+        console.error()
+      } finally {
+        this.loading = false
       }
     },
     checkAuth() {
@@ -111,7 +117,7 @@ export default {
   form {
     width: 300px;
     margin: 20px auto;
-    input {
+    input, select {
       margin: 10px 5px;
       width: 225px;
       height: 35px;
