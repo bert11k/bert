@@ -1,15 +1,16 @@
 <template>
   <div class="taskdiv">
     <h3>Задачи</h3>
-    <TaskItem v-for="i of 5" :key="i" />
+    <TaskItem :task="i" v-for="i of tasks" :key="i.title" />
   </div>
 </template>
 
 <script>
 import TaskItem from "./TaskItem.vue";
 export default {
-  components: { TaskItem },
   name: "Task",
+  props:['tasks'],
+  components: { TaskItem },
 };
 </script>
 <style lang="scss" scoped>

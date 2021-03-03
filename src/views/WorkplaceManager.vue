@@ -1,17 +1,21 @@
 <template>
   <layout-main>
-    <div class="scrndHeader">
-      <div>
-        <router-link class="btn" to="AddTransaction">Cоздать сделку</router-link>
+    <Loader v-if="loading"/>
+    <div v-else>
+      <div class="scrndHeader">
+        <div>
+          <router-link class="btn" to="AddTransaction">Создать сделку</router-link>
+        </div>
+        <div>
+          <router-link class="btn" to="addTask">Добавить задачу</router-link>
+        </div>
       </div>
-      <div>
-        <router-link class="btn" to="addTask">Добавить задачу</router-link>
+      <div class="workplacemanager">
+        <Transaction :transactions="transactions"/>
+        <Task :tasks="tasks"/>
       </div>
     </div>
-    <div class="workplacemanager">
-      <Transaction />
-      <Task />
-    </div>
+
   </layout-main>
 </template>
 
@@ -19,10 +23,30 @@
 import LayoutMain from "../layouts/LayoutMain.vue";
 import Transaction from "../components/Transaction.vue";
 import Task from "../components/Task.vue";
+import Loader from '../components/Loader'
 
 export default {
   name: "Workplace",
-  components: { LayoutMain, Task, Transaction },
+  data(){
+    return{
+      loading: true,
+      transactions: null,
+      tasks: null,
+    }
+  },
+  components: {Loader, LayoutMain, Task, Transaction },
+  async mounted() {
+    try {
+      await this.$store.dispatch('fetchTransactions')
+      await this.$store.dispatch('fetchTasks')
+      this.transactions = this.$store.getters.getTransactions
+      this.tasks = this.$store.getters.getTasks
+    } catch (e) {
+      this.$toast.error(e.message)
+    } finally {
+      this.loading = false
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

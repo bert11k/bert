@@ -1,12 +1,11 @@
 <template>
   <layout-main>
-    <div class="workplace">
-    
-        <TransactionDay />
-        <Transaction />
-        <Task /> 
+    <Loader v-if="loading"/>
+    <div class="workplace" v-else>
+        <TransactionDay :transactions="transactions"/>
+        <Transaction :transactions="transactions"/>
+        <Task :tasks="tasks"/>
         <Refer />
-  
     </div>
   </layout-main>
 </template>
@@ -17,9 +16,29 @@ import TransactionDay from "../components/TransactionDay.vue";
 import Task from "../components/Task.vue";
 import Transaction from "../components/Transaction.vue";
 import Refer from "../components/Refer.vue";
+import Loader from '../components/Loader'
 export default {
   name: "Workplace",
-  components: { LayoutMain, TransactionDay, Task, Transaction, Refer },
+  components: {Loader, LayoutMain, TransactionDay, Task, Transaction, Refer },
+  data(){
+    return{
+      loading: true,
+      transactions: null,
+      tasks: null,
+    }
+  },
+  async mounted() {
+    try {
+      await this.$store.dispatch('fetchTransactions')
+      await this.$store.dispatch('fetchTasks')
+      this.transactions = this.$store.getters.getTransactions
+      this.tasks = this.$store.getters.getTasks
+    } catch (e) {
+      this.$toast.error(e.message)
+    } finally {
+      this.loading = false
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>

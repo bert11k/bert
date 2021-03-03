@@ -53,7 +53,6 @@
     min-height: 60vh;
     display: inline-block;
     overflow: hidden;
-    background: #ffffff;
   }
   .ldio-0ec3gvsr97xo {
     width: 100%;

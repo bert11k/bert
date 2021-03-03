@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Сделки на сегодня</h3>
-    <Order v-for="i of 3" :key="i" />
+    <Order :transaction="transaction" v-for="transaction of transactions" :key="transaction.title" />
   </div>
 </template>
 
@@ -9,6 +9,7 @@
 import Order from "../components/Order";
 export default {
   name: "TransactionDay",
+  props: ['transactions'],
   components: { Order },
 };
 </script>
