@@ -76,6 +76,9 @@
         margin: 10px 0;
         height: 35px;
         cursor: pointer;
+        background-color: #39A098;
+        border: 0;
+      
       }
     }
 

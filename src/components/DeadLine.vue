@@ -2,7 +2,7 @@
   <div>
     <div class="DeadLine">
       <p>До сдачи отчета за неделю осталось: 2 дня</p>
-      <button id="btnDeadline">Сдать отчёт</button>
+      <router-link to="/report">Сдать отчёт </router-link> 
     </div>
   </div>
 </template>
@@ -25,8 +25,9 @@ export default {
     padding-top: 10px;
     margin-left: 100px;
   }
-  #btnDeadline {
-    width: 100px;
+  a {
+    display: block;
+    padding: 5px 10px;
     height: 30px;
     margin-top: 7px;
     margin-left: 70px;
@@ -35,6 +36,10 @@ export default {
     border: 0;
     outline: 0;
     cursor: pointer;
+    text-align: center;
+  }
+  a:hover{
+    color:white;
   }
 }
 </style>
