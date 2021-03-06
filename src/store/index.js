@@ -11,6 +11,7 @@ export default createStore({
     },
     tasks: null,
     transactions: null,
+    deal: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -37,6 +38,9 @@ export default createStore({
     },
     setTasks(state, value) {
       state.tasks = value
+    },
+    setDeal(state, value) {
+      state.deal = value
     }
   },
   actions: {
@@ -128,19 +132,24 @@ export default createStore({
       }
     },
 
-    async createTransaction({dispatch, commit}, {title, date, address, status, type, customer}) {
+    async createTransaction({dispatch, commit}, {title, date, address, status, type, customer, num, subjects}) {
       try {
-        await firebase
+        const ref = await firebase
             .database()
             .ref(`/transactions`)
-            .push().set({
-              customer,
-              title,
-              date,
-              address,
-              status,
-              type,
-            })
+            .push()
+        const key = ref.key
+        await ref.set({
+          key,
+          num,
+          customer,
+          title,
+          date,
+          address,
+          status,
+          type,
+          subjects,
+        })
       } catch (e) {
         throw e
       }
@@ -153,13 +162,20 @@ export default createStore({
       const data = (await firebase.database().ref(`/task`).get()).val()
       commit('setTasks', data)
     },
+    async fetchDeal({commit}, key) {
+      const data = (await firebase.database().ref(`/transactions/${key}`).get()).val()
+      commit('setDeal', data)
+    },
+    async changeDealStatus({commit}, deal){
+      await firebase.database().ref(`/transactions/${deal.key}`).set(deal)
+    },
     async savePhoto({}, file) {
-      const ref = firebase.storage().ref(`images/${file.name}`)
-      const task = ref.put(file)
+      const ref = await firebase.storage().ref(`images/${file.name}`)
+      await ref.put(file)
     },
     async saveProductImg({}, file) {
-      const ref = firebase.storage().ref(`product/${file.name}`)
-      const task = ref.put(file)
+      const ref = await firebase.storage().ref(`product/${file.name}`)
+      await ref.put(file)
     },
 
   },
@@ -172,5 +188,6 @@ export default createStore({
     getCatalog: s => s.catalog,
     getTransactions: s => s.transaction,
     getTasks: s => s.tasks,
+    getDeal: s => s.deal,
   }
 })

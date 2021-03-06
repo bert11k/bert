@@ -2,8 +2,9 @@
 node_modules
 /dist
 .idea
-
-
+.firebase
+.firebaserc
+firebase.json
 # local env files
 .env.local
 .env.*.local

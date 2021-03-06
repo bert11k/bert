@@ -2,8 +2,8 @@
   <section>
     <div>
       <img src="./../assets/transact.png" alt="transact" />
-      <p><router-link to="/deal">{{transaction.title}}<br /></router-link>{{transaction.customer}}</p>
-      <button>Сменить статус</button>
+      <p><router-link :to="'/deal/' + transaction.key">{{transaction.title}}<br /></router-link>{{transaction.customer}}</p>
+      <div class="btn"><router-link :to="'/deal/' + transaction.key">Сменить статус</router-link></div>
     </div>
   </section>
 </template>
@@ -29,8 +29,9 @@ section div {
     margin-right: 10px;
     width: 40px;
   }
-  button {
-    width: 120px;
+  .btn {
+    text-align: center;
+    width: auto;
     height: 30px;
     background-color: #39a098;
     border: 0;
@@ -38,6 +39,9 @@ section div {
     position: absolute;
     padding: 0 10px;
     right: 25px;
+  }
+  .btn a {
+    color: white;
   }
 }
 </style>
