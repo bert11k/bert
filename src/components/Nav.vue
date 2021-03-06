@@ -15,7 +15,7 @@
           v-if="isManager"
         :class="{ active: active === 'workplace' }"
         class="item"
-        to="/WorkplaceManager"
+        to="/workplaceManager"
       >
         <img alt="projects" src="../assets/projects.png" />
       </router-link>
@@ -23,7 +23,7 @@
           v-if="isDiler"
           :class="{ active: active === 'workplace' }"
           class="item"
-          to="/Workplace"
+          to="/workplace"
       >
         <img alt="projects" src="../assets/projects.png" />
       </router-link>
