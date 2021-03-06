@@ -2,7 +2,7 @@
   <section>
     <div>
       <img src="./../assets/transact.png" alt="transact" />
-      <p><router-link to="/deal">{{transaction.title}}<br /></router-link>{{transaction.customer}}</p>
+      <p><router-link :to="'/deal/' + transaction.key">{{transaction.title}}<br /></router-link>{{transaction.customer}}</p>
       <button>Сменить статус</button>
     </div>
   </section>

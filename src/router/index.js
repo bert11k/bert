@@ -24,7 +24,7 @@ const routes = [
     component: () => import('../views/CreateUser.vue')
   },
   {
-    path: '/Workplace',
+    path: '/workplace',
     name: 'WorkplaceDiler',
     meta: {show: 'workplace'},
     component: () => import('../views/Workplace.vue')
@@ -32,32 +32,37 @@ const routes = [
   {
     path: '/storage',
     name: 'storage',
+    meta: {show: 'storage'},
     component: () => import('../views/Storage.vue')
   },
   {
     path: '/additem',
     name: 'addItem',
+    meta: {show: 'storage'},
     component: () => import('../views/AddItem.vue')
   },
   {
-    path: '/deal',
+    path: '/deal/:key',
     name: 'deal',
+    meta: {show: 'workplace'},
     component: () => import('../views/Deal.vue')
   },
   {
-    path: '/WorkplaceManager',
+    path: '/workplaceManager',
     name: 'Workplace',
     meta: {show: 'workplace'},
     component: () => import('../views/WorkplaceManager.vue')
   },
   {
-    path: '/AddTransaction',
+    path: '/addTransaction',
     name: 'AddTransaction',
+    meta: {show: 'workplace'},
     component: () => import('../views/AddTransaction.vue')
   },
   {
-    path: '/AddTask',
+    path: '/addTask',
     name: 'AddTask',
+    meta: {show: 'workplace'},
     component: () => import('../views/AddTask.vue')
   },
 ]
