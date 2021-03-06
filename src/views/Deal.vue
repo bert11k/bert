@@ -3,7 +3,7 @@
     <Loader v-if="loading"/>
     <div class="deal" v-else>
       <Dealitem :deal="deal"/>
-      <Dealpred/>
+      <Dealpred :subjects="deal.subjects"/>
     </div>
   </layout-main>
 </template>

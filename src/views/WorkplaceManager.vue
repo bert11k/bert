@@ -4,10 +4,10 @@
     <div v-else>
       <div class="scrndHeader">
         <div>
-          <router-link class="btn" to="AddTransaction">Создать сделку</router-link>
+          <router-link class="btn" to="/addTransaction">Создать сделку</router-link>
         </div>
         <div>
-          <router-link class="btn" to="addTask">Добавить задачу</router-link>
+          <router-link class="btn" to="/addTask">Добавить задачу</router-link>
         </div>
       </div>
       <div class="workplacemanager">

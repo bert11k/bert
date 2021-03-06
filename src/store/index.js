@@ -132,7 +132,7 @@ export default createStore({
       }
     },
 
-    async createTransaction({dispatch, commit}, {title, date, address, status, type, customer, num}) {
+    async createTransaction({dispatch, commit}, {title, date, address, status, type, customer, num, subjects}) {
       try {
         const ref = await firebase
             .database()
@@ -148,6 +148,7 @@ export default createStore({
           address,
           status,
           type,
+          subjects,
         })
       } catch (e) {
         throw e

@@ -1,60 +1,65 @@
 <template>
   <main-layout>
     <Loader v-if="loading"/>
-    <div class="addtransaction" v-else>
-      <form @submit.prevent="submitHandler">
-        <h2>Создать сделку</h2>
-        <input
-            placeholder="Название"
-            required
-            type="text"
-            v-model="title"
-        /><br/>
-        <input
-            placeholder="Заказчик"
-            required
-            type="text"
-            v-model="customer"
-        /><br/>
-        <input id="date" required type="date" v-model="date"/><br/>
-        <input
-            placeholder="Адрес заказчика"
-            required
-            type="text"
-            v-model="address"
-        /><br/>
-        <input
-            placeholder="Номер договора"
-            required
-            type="text"
-            v-model="num"
-        /><br/>
-        <select required v-model="status">
-          <option disabled selected value="">Статус</option>
-          <option value="1">В обработке</option>
-          <option value="2">В ожидании</option>
-          <option value="3">Выполняется</option>
-          <option value="4">Отклонен</option>
-        </select
-        ><br/>
-        <select required v-model="type">
-          <option disabled selected value="">Вид сделки:</option>
-          <option value="оптовая">Оптовая</option>
-          <option value="розничная">Розничная</option>
-        </select
-        ><br/>
-        <button type="submit">Cоздать сделку</button>
-      </form>
+    <div class="addtransaction"  v-else>
+      <div >
+        <form @submit.prevent="submitHandler">
+          <h2>Создать сделку</h2>
+          <input
+              placeholder="Название"
+              required
+              type="text"
+              v-model="title"
+          /><br/>
+          <input
+              placeholder="Заказчик"
+              required
+              type="text"
+              v-model="customer"
+          /><br/>
+          <input id="date" required type="date" v-model="date"/><br/>
+          <input
+              placeholder="Адрес заказчика"
+              required
+              type="text"
+              v-model="address"
+          /><br/>
+          <input
+              placeholder="Номер договора"
+              required
+              type="text"
+              v-model="num"
+          /><br/>
+          <select required v-model="status">
+            <option disabled selected value="">Статус</option>
+            <option value="1">В обработке</option>
+            <option value="2">В ожидании</option>
+            <option value="3">Выполняется</option>
+            <option value="4">Отклонен</option>
+          </select
+          ><br/>
+          <select required v-model="type">
+            <option disabled selected value="">Вид сделки:</option>
+            <option value="оптовая">Оптовая</option>
+            <option value="розничная">Розничная</option>
+          </select
+          ><br/>
+          <button type="submit">Cоздать сделку</button>
+        </form>
+      </div>
+      <Subjects :subjs="subjects" @subjects="subject"/>
     </div>
+
   </main-layout>
 </template>
 <script>
   import MainLayout from '../layouts/LayoutMain'
   import Loader from '../components/Loader'
+  import Subjects from '../components/transaction/Subjects'
 
   export default {
     name: 'AddTransaction',
-    components: {Loader, MainLayout},
+    components: {Subjects, Loader, MainLayout},
     data(){
       return {
         title: '',
@@ -64,6 +69,7 @@
         type: '',
         customer: '',
         num: '',
+        subjects: [],
         loading: false,
       }
     },
@@ -81,19 +87,24 @@
           type: this.type,
           customer: this.customer,
           num: this.num,
+          subjects: this.subjects,
         }
         try {
           await this.$store.dispatch('createTransaction', data)
-          this.$toast.success('Сохранено')
+          this.$toast.success('Сделка создана')
         } catch (e) {
           this.$toast.error(e.message)
           console.error(e)
         } finally {
           this.title = this.address = this.status = this.type = this.customer = this.num =  ''
           this.date = this.getDate
+          this.subjects = []
           this.loading = false
         }
       },
+      subject(subjects){
+        this.subjects = subjects
+      }
     },
     computed: {
       getDate(){
