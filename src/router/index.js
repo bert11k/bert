@@ -36,6 +36,11 @@ const routes = [
     component: () => import('../views/Storage.vue')
   },
   {
+    path: '/report',
+    name: 'report',
+    component: () => import('../views/Report.vue')
+  },
+  {
     path: '/additem',
     name: 'addItem',
     meta: {show: 'storage'},

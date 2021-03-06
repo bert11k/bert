@@ -42,6 +42,13 @@
       >
         <img alt="sklad" src="../assets/skladWhite.png" />
       </router-link>
+      <router-link
+        :class="{ active: active === 'report' }"
+        class="item"
+        to="/report"
+      >
+        <img alt="report" src="../assets/whitereport.png" />
+      </router-link>
     </div>
     <div class="nav-links">
       <transition-group name="fade">
@@ -73,6 +80,13 @@
           v-show="showLink"
         >
           Склад
+        </div>
+        <div
+          :class="{ active: active === 'report' }"
+          key="5"
+          v-show="showLink"
+        >
+          Отчётность
         </div>
       </transition-group>
     </div>
