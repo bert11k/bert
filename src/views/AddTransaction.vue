@@ -107,6 +107,8 @@ form {
     margin: 5px 5px;
     height: 35px;
     cursor: pointer;
+    background-color: #39A098;
+    border: 0;
   }
 }
 </style>
