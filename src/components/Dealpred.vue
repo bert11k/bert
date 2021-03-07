@@ -5,10 +5,12 @@
       <div class="line">
         <h3>Наименование товара</h3>
         <h3>Количество</h3>
+        <h3>Стоимость</h3>
       </div>
       <div :key="subject.title" class="line" v-for="subject of subjects">
         <h4>{{subject.title}}</h4>
         <h4>{{subject.num}}</h4>
+        <h4>{{subject.sum}}р.</h4>
       </div>
     </div>
   </div>

@@ -42,9 +42,8 @@
         const data = {
           title: this.title,
           type: this.type,
-          date: (new Date()).toLocaleString('ru', {year: 'numeric', month: 'long', day: 'numeric'}),
-          profit: '',
         }
+
         try {
           await this.$store.dispatch('createReport', data)
           this.title = ''

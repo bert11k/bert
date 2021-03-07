@@ -1,8 +1,8 @@
 <template>
   <main-layout>
     <Loader v-if="loading"/>
-    <div class="addtransaction"  v-else>
-      <div >
+    <div class="addtransaction" v-else>
+      <div>
         <form @submit.prevent="submitHandler">
           <h2>Создать сделку</h2>
           <input
@@ -60,7 +60,7 @@
   export default {
     name: 'AddTransaction',
     components: {Subjects, Loader, MainLayout},
-    data(){
+    data() {
       return {
         title: '',
         date: '',
@@ -93,35 +93,42 @@
           num: this.num,
           subjects: this.subjects,
         }
-        try {
-          await this.$store.dispatch('createTransaction', data)
-          this.$toast.success('Сделка создана')
-        } catch (e) {
-          this.$toast.error(e.message)
-          console.error(e)
-        } finally {
-          this.title = this.address = this.status = this.type = this.customer = this.num =  ''
-          this.date = this.getDate
-          this.subjects = []
-          this.loading = false
+        if(this.subjects.length){
+          try {
+            await this.$store.dispatch('createTransaction', data)
+            for (const subj of this.subjects) {
+              const num = +this.catalog[subj.itemKey].num - +subj.num
+              await this.$store.dispatch('changeCatalogNum', {key: subj.itemKey, num })
+            }
+            this.$toast.success('Сделка создана')
+          } catch (e) {
+            this.$toast.error(e.message)
+            console.error(e)
+          } finally {
+            this.title = this.address = this.status = this.type = this.customer = this.num = ''
+            this.date = this.getDate
+            this.subjects = []
+            this.loading = false
+          }
         }
+
       },
-      subject(subjects){
+      subject(subjects) {
         this.subjects = subjects
       }
     },
     computed: {
-      getDate(){
-        let dd = (new Date).getDate();
-        if (dd < 10) dd = '0' + dd;
+      getDate() {
+        let dd = (new Date).getDate()
+        if (dd < 10) dd = '0' + dd
 
-        let mm = (new Date).getMonth() + 1;
-        if (mm < 10) mm = '0' + mm;
+        let mm = (new Date).getMonth() + 1
+        if (mm < 10) mm = '0' + mm
 
-        let yy = (new Date).getFullYear();
-        if (yy < 10) yy = '0' + yy;
+        let yy = (new Date).getFullYear()
+        if (yy < 10) yy = '0' + yy
 
-        return yy + '-' + mm + '-' + dd;
+        return yy + '-' + mm + '-' + dd
       }
     }
   }
@@ -154,7 +161,7 @@
       cursor: pointer;
       background-color: #39A098;
       border: 0;
-      
+
     }
   }
 </style>

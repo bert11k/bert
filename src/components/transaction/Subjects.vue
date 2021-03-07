@@ -2,12 +2,11 @@
   <div class="subjects">
     <h2>Предмет договора</h2>
     <div class="form">
-<!--      <input placeholder="Товар" type="text" v-model.trim="title">-->
-      <select v-model="title">
-        <option value="def" selected hidden disabled>Товар</option>
-        <option :value="item.title" v-for="item of catalog" :key="item.title">{{item.title}}</option>
+      <select @change="changeTitle" v-model="title">
+        <option disabled hidden selected value="def">Товар</option>
+        <option :key="item.title" :value="item.title" v-for="item of catalog">{{item.title}}</option>
       </select>
-      <input placeholder="Кол-во" type="number" v-model.trim="num">
+      <input :max="this.maxNum" min="0" placeholder="Кол-во" type="number" v-model.trim="num" :key="maxNum">
       <button @click="addSubject">Добавить</button>
     </div>
     <div class="table">
@@ -19,7 +18,7 @@
       <div :key="subject.title" class="line" v-for="subject of subjects">
         <h5>{{subject.title}}</h5>
         <h5>{{subject.num}}</h5>
-        <h5>сумма</h5>
+        <h5>{{+cost * +subject.num}}р.</h5>
       </div>
     </div>
   </div>
@@ -34,6 +33,8 @@
         title: '',
         num: 1,
         subjects: this.subjs,
+        maxNum: 0,
+        cost: '',
       }
     },
     methods: {
@@ -42,15 +43,31 @@
           const idx = this.subjects.findIndex(subj => subj.title === this.title)
           if (idx !== -1) {
 
-            if(+this.num === 0) this.subjects = this.subjects.filter(subject => subject.title !== this.title)
-            else this.subjects[idx].num = this.num
+            if (+this.num === 0) this.subjects = this.subjects.filter(subject => subject.title !== this.title)
+            else {
+              this.subjects[idx].num = this.num
+              this.subjects[idx].sum = this.num * this.cost
 
-          } else this.subjects.push({title: this.title, num: this.num})
+            }
+
+          } else this.subjects.push({title: this.title, num: this.num, sum: this.cost * this.num, itemKey: this.itemKey})
 
           this.title = ''
           this.num = 1
           this.$emit('subjects', this.subjects)
         }
+
+      },
+      changeTitle() {
+        const catalog = Object.values(this.catalog)
+        catalog.forEach(item => {
+          if(item.title === this.title) {
+            this.cost = +item.cost
+            this.maxNum = +item.num
+            this.itemKey = item.key
+          }
+        })
+        this.num = 1
       }
     }
   }
@@ -64,7 +81,7 @@
     .form {
       display: flex;
 
-      input,select {
+      input, select {
         margin: 10px 10px 5px 0;
         height: 35px;
 
@@ -72,7 +89,8 @@
           width: 55px;
         }
       }
-      select{
+
+      select {
         width: 200px;
       }
 
@@ -83,7 +101,7 @@
         cursor: pointer;
         background-color: #39A098;
         border: 0;
-      
+
       }
     }
 
@@ -97,13 +115,15 @@
         display: flex;
         justify-content: space-between;
 
-        h4:last-of-type, h5:last-of-type{
+        h4:last-of-type, h5:last-of-type {
           width: 50%;
         }
-        h5{
+
+        h5 {
           margin-left: 5px;
         }
-        h4,h5{
+
+        h4, h5 {
           margin-right: 10px;
           width: 100%;
         }

@@ -12,6 +12,7 @@ export default createStore({
     tasks: null,
     transactions: null,
     deal: null,
+    completedDeals: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -41,6 +42,9 @@ export default createStore({
     },
     setDeal(state, value) {
       state.deal = value
+    },
+    setCompletedDeals(state, value) {
+      state.completedDeals = value
     }
   },
   actions: {
@@ -80,6 +84,14 @@ export default createStore({
       ).val()
       commit('setCatalog', data)
     },
+    async changeCatalogNum({commit}, {key, num}) {
+      const data =
+          await firebase
+              .database()
+              .ref(`/catalog/${key}`)
+              .update({num})
+      commit('setCatalog', data)
+    },
     async createUser(
         {dispatch, commit, getters},
         {email, password, fio, phone, phoneWork, position}
@@ -111,17 +123,20 @@ export default createStore({
         {title, num, cost, category, type}
     ) {
       try {
-        await firebase
+        const ref = await firebase
             .database()
             .ref(`/catalog`)
             .push()
-            .set({
-              title,
-              num,
-              cost,
-              category,
-              type,
-            })
+
+        const key = ref.key
+        ref.set({
+          key,
+          title,
+          num,
+          cost,
+          category,
+          type,
+        })
       } catch (e) {
         throw e
       }
@@ -169,24 +184,59 @@ export default createStore({
         throw e
       }
     },
-
+    async fetchCompletedDeal({dispatch, commit}, {uid, year, month}) {
+      let data
+      if (month) {
+          data = (await firebase.database().ref(`/completedDeals/${uid}/${year}/${month}`).get()).val()
+      } else {
+        data = (await firebase.database().ref(`/completedDeals/${uid}/${year}`).get()).val()
+      }
+      commit('setCompletedDeals', data)
+    },
     async createReport(
         {dispatch, commit, getters},
-        {title, date, profit, type,}
+        {title, type}
     ) {
       const uid = getters.getUid,
           year = (new Date()).getFullYear(),
           month = (new Date()).toLocaleString('en-US', {month: 'long'})
+      let profit = 0
+      if (type === 'week' || type === 'month') {
+        await dispatch('fetchCompletedDeal', {uid, year, month})
+        if(type === 'week'){
+          let deals = getters.getCompletedDeals
+          deals = Object.values(deals).forEach(deal => {
+            if(Date.now() - Date.parse(deal.date) <= 604800000){
+              profit += deal.profit
+            }
+          })
+        } else {
+          const deals = getters.getCompletedDeals
+          Object.values(deals).forEach(deal => {
+            profit += deal.profit
+          })
+        }
+
+      } else if (type === 'year') {
+        await dispatch('fetchCompletedDeal', {uid, year})
+        const months = getters.getCompletedDeals
+        Object.values(months).forEach(month => {
+          Object.values(month).forEach(deal => {
+            profit += deal.profit
+          })
+        })
+      }
+
       try {
         const ref = await firebase
             .database()
-            .ref(`/reports/${uid}/${year}/${month}`)
+            .ref(`/reports/${uid}/${year}`)
             .push()
         const key = ref.key
         ref.set({
           key,
           title,
-          date,
+          date: Date.now(),
           profit,
           type,
           worker: uid,
@@ -195,16 +245,16 @@ export default createStore({
         throw e
       }
     },
-    async completeDeal({getters}, deal){
+    async completeDeal({getters}, deal) {
       const uid = getters.getUid,
-            year = (new Date()).getFullYear(),
-            month = (new Date()).toLocaleString('en-US', {month: 'long'})
-      try{
+          year = (new Date()).getFullYear(),
+          month = (new Date()).toLocaleString('en-US', {month: 'long'})
+      try {
         await firebase
             .database()
             .ref(`/completedDeals/${uid}/${year}/${month}/${deal.key}`)
             .set(deal)
-      } catch(e){
+      } catch (e) {
         throw e
       }
     },
@@ -252,5 +302,6 @@ export default createStore({
     getTransactions: s => s.transaction,
     getTasks: s => s.tasks,
     getDeal: s => s.deal,
+    getCompletedDeals: s => s.completedDeals,
   }
 })

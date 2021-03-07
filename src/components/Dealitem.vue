@@ -28,17 +28,8 @@
       }
     },
     methods:{
-      async statusChange(){
-        try{
-          await this.$store.dispatch('changeDealStatus', {...this.deal, status: this.status})
-          if(+this.status === 3){
-            await this.$store.dispatch('completeDeal', {...this.deal, status: this.status})
-          }
-          this.$toast.success('Сохранено')
-        } catch (e) {
-          this.$toast.error(e.message)
-        }
-
+      statusChange(){
+        this.$emit('statusChange', {...this.deal, status: this.status})
       }
     }
   }
