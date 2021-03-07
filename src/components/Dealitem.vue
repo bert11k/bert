@@ -10,8 +10,8 @@
       Статус заказа:
       <select id="status" name="stats" v-model="status" @change="statusChange">
         <option value="1">В ожидании</option>
-        <option  value="2">В отправке</option>
-        <option  value="3">Выполнен</option>
+        <option value="2">В отправке</option>
+        <option value="3">Выполнен</option>
         <option value="4">Отклонен</option>
       </select>
     </p>
@@ -28,14 +28,8 @@
       }
     },
     methods:{
-      async statusChange(){
-        try{
-          await this.$store.dispatch('changeDealStatus', {...this.deal, status: this.status})
-          this.$toast.success('Сохранено')
-        } catch (e) {
-          this.$toast.error(e.message)
-        }
-
+      statusChange(){
+        this.$emit('statusChange', {...this.deal, status: this.status})
       }
     }
   }

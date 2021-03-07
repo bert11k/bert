@@ -2,8 +2,8 @@
   <layout-main>
     <Loader v-if="loading"/>
     <div class="deal" v-else>
-      <Dealitem :deal="deal"/>
-      <Dealpred :subjects="deal.subjects"/>
+      <Dealitem  @statusChange="statusChange" :deal="deal"/>
+      <Dealpred  :subjects="deal.subjects"/>
     </div>
   </layout-main>
 </template>
@@ -24,6 +24,21 @@
       }
     },
     components: {Loader, LayoutMain, Dealitem, Dealpred},
+    methods:{
+      async statusChange(deal){
+        try{
+          await this.$store.dispatch('changeDealStatus', deal)
+          if(+deal.status === 3){
+            let profit = 0
+            this.deal.subjects.forEach(subj => profit += subj.sum)
+            await this.$store.dispatch('completeDeal', {...deal, profit, weekday: (new Date()).toLocaleString('ru', { weekday:'long'}),})
+          }
+          this.$toast.success('Сохранено')
+        } catch (e) {
+          this.$toast.error(e.message)
+        }
+      }
+    },
     async mounted(){
       await this.$store.dispatch('fetchDeal', this.key)
       this.deal = this.$store.getters.getDeal

@@ -46,6 +46,15 @@
         :class="{ active: active === 'report' }"
         class="item"
         to="/report"
+        v-if="isDiler"
+      >
+        <img alt="report" src="../assets/whitereport.png" />
+      </router-link>
+      <router-link
+        :class="{ active: active === 'reports' }"
+        class="item"
+        to="/reports"
+        v-if="isManager"
       >
         <img alt="report" src="../assets/whitereport.png" />
       </router-link>
@@ -85,6 +94,8 @@
           :class="{ active: active === 'report' }"
           key="5"
           v-show="showLink"
+
+    
         >
           Отчётность
         </div>
