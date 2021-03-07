@@ -195,7 +195,19 @@ export default createStore({
         throw e
       }
     },
-
+    async completeDeal({getters}, deal){
+      const uid = getters.getUid,
+            year = (new Date()).getFullYear(),
+            month = (new Date()).toLocaleString('en-US', {month: 'long'})
+      try{
+        await firebase
+            .database()
+            .ref(`/completedDeals/${uid}/${year}/${month}/${deal.key}`)
+            .set(deal)
+      } catch(e){
+        throw e
+      }
+    },
     async fetchTransactions({commit}) {
       const data = (
           await firebase
