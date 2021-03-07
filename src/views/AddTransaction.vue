@@ -47,7 +47,7 @@
           <button type="submit">Cоздать сделку</button>
         </form>
       </div>
-      <Subjects :subjs="subjects" @subjects="subject"/>
+      <Subjects :catalog="catalog" :subjs="subjects" @subjects="subject"/>
     </div>
 
   </main-layout>
@@ -70,11 +70,15 @@
         customer: '',
         num: '',
         subjects: [],
-        loading: false,
+        catalog: [],
+        loading: true,
       }
     },
-    mounted() {
+    async mounted() {
+      await this.$store.dispatch('fetchCatalog')
+      this.catalog = this.$store.getters.getCatalog
       this.date = this.getDate
+      this.loading = false
     },
     methods: {
       async submitHandler() {
