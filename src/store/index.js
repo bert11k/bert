@@ -1,5 +1,5 @@
-import { createStore } from "vuex";
-import firebase from "firebase/app";
+import {createStore} from 'vuex'
+import firebase from 'firebase/app'
 
 export default createStore({
   state: {
@@ -15,135 +15,135 @@ export default createStore({
   },
   mutations: {
     setCatalog(state, value) {
-      state.catalog = value;
+      state.catalog = value
     },
-    setUser(state, { uid }) {
-      state.user.isLogin = true;
-      state.user.uId = uid;
+    setUser(state, {uid}) {
+      state.user.isLogin = true
+      state.user.uId = uid
     },
     clearInfo(state) {
-      state.user = {};
-      state.user.isLogin = false;
+      state.user = {}
+      state.user.isLogin = false
     },
     setUserData(state, value) {
-      state.userData = value;
+      state.userData = value
     },
     signOut(state) {
-      state.user.isLogin = false;
-      state.user.uId = null;
-      state.user.useData = null;
+      state.user.isLogin = false
+      state.user.uId = null
+      state.user.useData = null
     },
     setTransactions(state, value) {
-      state.transaction = value;
+      state.transaction = value
     },
     setTasks(state, value) {
-      state.tasks = value;
+      state.tasks = value
     },
     setDeal(state, value) {
       state.deal = value
     }
   },
   actions: {
-    async login({ dispatch, commit }, { email, password }) {
+    async login({dispatch, commit}, {email, password}) {
       try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-        commit("setUser", firebase.auth().currentUser);
-        await dispatch("fetchUserData");
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+        commit('setUser', firebase.auth().currentUser)
+        await dispatch('fetchUserData')
       } catch (e) {
-        throw e;
+        throw e
       }
     },
-    async fetchUserData({ commit, getters }) {
+    async fetchUserData({commit, getters}) {
       try {
-        const uid = getters.getUid;
+        const uid = getters.getUid
         if (uid === null) {
-          throw "error";
+          throw 'error'
         }
         const userData = (
-          await firebase
-            .database()
-            .ref(`/users/${uid}`)
-            .once("value")
-        ).val();
-        commit("setUserData", userData);
-        return userData;
+            await firebase
+                .database()
+                .ref(`/users/${uid}`)
+                .once('value')
+        ).val()
+        commit('setUserData', userData)
+        return userData
       } catch (e) {
-        throw e;
+        throw e
       }
     },
-    async fetchCatalog({ commit }) {
+    async fetchCatalog({commit}) {
       const data = (
-        await firebase
-          .database()
-          .ref(`/catalog`)
-          .get()
-      ).val();
-      commit("setCatalog", data);
+          await firebase
+              .database()
+              .ref(`/catalog`)
+              .get()
+      ).val()
+      commit('setCatalog', data)
     },
     async createUser(
-      { dispatch, commit, getters },
-      { email, password, fio, phone, phoneWork, position }
+        {dispatch, commit, getters},
+        {email, password, fio, phone, phoneWork, position}
     ) {
       try {
-        const userTmp = { uid: getters._user.uId };
-        await firebase.auth().createUserWithEmailAndPassword(email, password);
-        const uid = await firebase.auth().currentUser.uid;
+        const userTmp = {uid: getters._user.uId}
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+        const uid = await firebase.auth().currentUser.uid
         await firebase
-          .database()
-          .ref(`/users/${uid}/`)
-          .set({
-            email,
-            fio,
-            phonehome: phone,
-            phonework: phoneWork,
-            position,
-          });
-        await firebase.auth().signOut();
-        commit("clearInfo");
-        commit("setUser", userTmp);
-        await dispatch("fetchUserData");
+            .database()
+            .ref(`/users/${uid}/`)
+            .set({
+              email,
+              fio,
+              phonehome: phone,
+              phonework: phoneWork,
+              position,
+            })
+        await firebase.auth().signOut()
+        commit('clearInfo')
+        commit('setUser', userTmp)
+        await dispatch('fetchUserData')
       } catch (e) {
-        throw e;
+        throw e
       }
     },
     async createProduct(
-      { dispatch, commit, getters },
-      { title, num, cost, category, type }
+        {dispatch, commit},
+        {title, num, cost, category, type}
     ) {
       try {
         await firebase
-          .database()
-          .ref(`/catalog`)
-          .push()
-          .set({
-            title,
-            num,
-            cost,
-            category,
-            type,
-          });
+            .database()
+            .ref(`/catalog`)
+            .push()
+            .set({
+              title,
+              num,
+              cost,
+              category,
+              type,
+            })
       } catch (e) {
-        throw e;
+        throw e
       }
     },
 
     async createTask(
-      { dispatch, commit },
-      { title, date, contact, description }
+        {dispatch, commit},
+        {title, date, contact, description}
     ) {
       try {
         await firebase
-          .database()
-          .ref(`/task`)
-          .push()
-          .set({
-            title,
-            date,
-            contact,
-            description,
-          });
+            .database()
+            .ref(`/task`)
+            .push()
+            .set({
+              title,
+              date,
+              contact,
+              description,
+            })
       } catch (e) {
-        throw e;
+        throw e
       }
     },
 
@@ -166,57 +166,59 @@ export default createStore({
           subjects,
         })
       } catch (e) {
-        throw e;
+        throw e
       }
     },
 
     async createReport(
-      { dispatch, commit },
-      { title, customer, titleProduct, responsible, priceOne, priceEnd, dataFirst, dataEnd}
+        {dispatch, commit, getters},
+        {title, date, profit, type,}
     ) {
+      const uid = getters.getUid,
+          year = (new Date()).getFullYear(),
+          month = (new Date()).toLocaleString('en-US', {month: 'long'})
       try {
-        await firebase
-          .database()
-          .ref(`/report`)
-          .push()
-          .set({
-            title,
-            customer,
-            titleProduct,
-            responsible,
-            priceOne,
-            priceEnd,
-            dataFirst,
-            dataEnd
-          });
+        const ref = await firebase
+            .database()
+            .ref(`/reports/${uid}/${year}/${month}`)
+            .push()
+        const key = ref.key
+        ref.set({
+          key,
+          title,
+          date,
+          profit,
+          type,
+          worker: uid,
+        })
       } catch (e) {
-        throw e;
+        throw e
       }
     },
 
-    async fetchTransactions({ commit }) {
+    async fetchTransactions({commit}) {
       const data = (
-        await firebase
-          .database()
-          .ref(`/transactions`)
-          .get()
-      ).val();
-      commit("setTransactions", data);
+          await firebase
+              .database()
+              .ref(`/transactions`)
+              .get()
+      ).val()
+      commit('setTransactions', data)
     },
-    async fetchTasks({ commit }) {
+    async fetchTasks({commit}) {
       const data = (
-        await firebase
-          .database()
-          .ref(`/task`)
-          .get()
-      ).val();
-      commit("setTasks", data);
+          await firebase
+              .database()
+              .ref(`/task`)
+              .get()
+      ).val()
+      commit('setTasks', data)
     },
     async fetchDeal({commit}, key) {
       const data = (await firebase.database().ref(`/transactions/${key}`).get()).val()
       commit('setDeal', data)
     },
-    async changeDealStatus({commit}, deal){
+    async changeDealStatus({commit}, deal) {
       await firebase.database().ref(`/transactions/${deal.key}`).set(deal)
     },
     async savePhoto({}, file) {
