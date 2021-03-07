@@ -15,7 +15,7 @@
           <h3>Ответственный</h3>
         </div>
         <div class="line">
-          <h4>1</h4>
+          <h4><router-link to="/reportdeal">1</router-link></h4>
           <h4>2</h4>
           <h4>3</h4>
           <h4>4</h4>
