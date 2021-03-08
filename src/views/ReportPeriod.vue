@@ -4,18 +4,18 @@
     <div v-else>
     <div>
         <div class="scrndHeader">
-        <h1>Отчётность</h1>
+        <h1>Отчёт за неделю</h1>
       </div>
       <div class="table">
         <div class="line">
           <h3>Наименование товара</h3>
-          <h3>Дата сдачи</h3>
-          <h3>Тип отчёта</h3>
+          <h3>Оргазнизация</h3>
+          <h3>Дата открытия/Закрытия</h3>
+          <h3>Предмет договора</h3>
           <h3>Прибыль</h3>
-          <h3>Ответственный</h3>
         </div>
         <div class="line">
-          <h4><router-link to="/reportperiod">1</router-link></h4>
+          <h4><router-link to="/reportdeal">1</router-link></h4>
           <h4>2</h4>
           <h4>3</h4>
           <h4>4</h4>
