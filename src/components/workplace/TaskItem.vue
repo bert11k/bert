@@ -1,8 +1,8 @@
 <template>
   <div class="task">
     <p>{{task.date}}</p>
+    <p>Для связи:{{task.contact}}</p>
     <p>{{task.title}}</p>
-    <p>{{task.contact}}</p>
     <p>{{task.description}}</p>
   </div>
 </template>
