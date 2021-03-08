@@ -78,7 +78,7 @@
           this.$toast.success('Сохранено')
         } catch (e) {
           this.$toast.error(e.message)
-          console.log(e)
+          console.error(e)
         } finally {
           this.loading = false
         }

@@ -124,16 +124,15 @@ export default createStore({
     ) {
       try {
         let  done
-        const prevStorage = getters.getCatalog
+        const prevStorage = Object.values(getters.getCatalog)
         for (const item of prevStorage) {
           if (item.title === title) {
-            num += item.num
             await firebase
                 .database()
                 .ref(`/catalog/${item.key}`).set({
-                  key,
+                  key: item.key,
                   title,
-                  num,
+                  num: +item.num + +num,
                   cost,
                   category,
                   type,
