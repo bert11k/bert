@@ -55,5 +55,9 @@
     cursor: pointer;
     background-color: #39A098;
     border: 0;
+
+    a:hover{
+        color: white;
+    }
   }
 </style>
