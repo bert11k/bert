@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Order from "../components/Order";
+import Order from "../transaction/Order";
 export default {
   name: "TransactionDay",
   props: ['transactions'],

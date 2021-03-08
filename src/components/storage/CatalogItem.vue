@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div>
-      <img alt="img" src="./../assets/placeholder.jpg">
+      <img alt="img" src="../../assets/placeholder.jpg">
       <div class="info">
         <div><h3>{{item.title}}</h3></div>
         <div>

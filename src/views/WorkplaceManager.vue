@@ -21,8 +21,8 @@
 
 <script>
 import LayoutMain from "../layouts/LayoutMain.vue";
-import Transaction from "../components/Transaction.vue";
-import Task from "../components/Task.vue";
+import Transaction from "../components/workplace/Transaction.vue";
+import Task from "../components/workplace/Task.vue";
 import Loader from '../components/Loader'
 
 export default {

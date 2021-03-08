@@ -27,8 +27,8 @@
 
 <script>
   import LayoutMain from '../layouts/LayoutMain.vue'
-  import FilterItem from '../components/FilterItem'
-  import CatalogItem from '../components/CatalogItem'
+  import FilterItem from '../components/storage/FilterItem'
+  import CatalogItem from '../components/storage/CatalogItem'
   import Loader from '../components/Loader'
 
   export default {

@@ -10,8 +10,8 @@
 
 <script>
   import LayoutMain from '../layouts/LayoutMain.vue'
-  import Dealitem from '../components/Dealitem.vue'
-  import Dealpred from '../components/Dealpred.vue'
+  import Dealitem from '../components/deal/Dealitem.vue'
+  import Dealpred from '../components/deal/Dealpred.vue'
   import Loader from '../components/Loader'
 
   export default {

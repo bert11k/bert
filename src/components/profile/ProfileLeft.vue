@@ -1,6 +1,6 @@
 <template>
   <div class="contentLeft">
-    <img src="../assets/profiles.jpg" alt="" />
+    <img src="../../assets/profiles.jpg" alt="" />
     <div class="infoProfileRight">
       <div>
         <p>ФИО</p>

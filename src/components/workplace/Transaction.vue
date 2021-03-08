@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Order from "./Order.vue";
+import Order from "../transaction/Order.vue";
 export default {
   name: "Transaction",
   props: ['transactions'],
