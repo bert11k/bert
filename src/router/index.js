@@ -46,7 +46,7 @@ const routes = [
     component: () => import('../views/Report.vue')
   },
   {
-    path: '/reportperiod',
+    path: '/reportperiod/:worker/:key',
     name: 'reportperiod',
     component: () => import('../views/ReportPeriod.vue')
   },
