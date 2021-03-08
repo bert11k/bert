@@ -4,17 +4,27 @@
     <div class="reportdeal" v-else>
       <div class="textinformation">
         <div id="print">
-          <p>Закзчик: ООО ТРАНСНЕФТЬ</p>
-          <p>Дата подачи сделки: 24.02.2021</p>
-          <p>Дата окончания сделки: 25.02.2021</p>
-          <p>Наименование проданного товара: Бензин</p>
-          <p>Количество проданного товара: 20т</p>
-          <p>Ответственный сотрудник за сделку: Каримов</p>
-          <p>Цена за 1 тонну товара: 54 600р</p>
-          <p>Конечная цена за продажу: 1 000 000р</p>
-        </div>
+          <div>
+            <p>Наименование: {{deal.title}}</p>
+            <p>Закзчик: {{deal.customer}}</p>
+            <p>Дата подачи сделки: {{deal.date}}</p>
+            <p>Адрес заказчика: {{deal.address}}</p>
+            <p>Вид сделки: {{deal.type}}</p>
+            <p>Номер договора: {{deal.num}}</p>
+            <p>Номер прибыль: {{deal.num}}</p>
+          </div>
 
-        <br>
+          <div class="printLast">
+            <h3>Предметы договора</h3>
+            <ol>
+              <li :key="subj.key" class="subj" v-for="subj of deal.subjects">
+                <p>Наименование товара: {{subj.title}}</p>
+                <p>Количество товара: {{subj.num}}</p>
+                <p>Сумма заказа: {{subj.sum}}р.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
         <button @click="print">Распечатать</button>
       </div>
     </div>
@@ -27,7 +37,18 @@
 
   export default {
     name: 'ReportDeal',
+    data() {
+      return {
+        loading: true,
+        deal: null,
+      }
+    },
     components: {Loader, MainLayout},
+    async mounted() {
+      await this.$store.dispatch('fetchDeal', this.$route.params.key)
+      this.deal = this.$store.getters.getDeal
+      this.loading = false
+    },
     methods: {
       print() {
         this.$htmlToPaper('print')
@@ -45,6 +66,26 @@
     .textinformation {
       font-size: 1.5rem;
       line-height: 50px;
+
+      #print {
+        display: flex;
+        justify-content: space-between;
+
+        .printLast{
+          width: 40%;
+        }
+
+        .subj {
+
+          padding-bottom: 1rem;
+          border-bottom: 1px solid black;
+
+          p {
+            font-size: 1.3rem;
+            line-height: 1.5rem;
+          }
+        }
+      }
     }
   }
 
@@ -56,8 +97,8 @@
     background-color: #39A098;
     border: 0;
 
-    a:hover{
-        color: white;
+    a:hover {
+      color: white;
     }
   }
 </style>
