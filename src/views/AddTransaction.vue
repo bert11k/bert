@@ -34,7 +34,7 @@
             <option disabled selected value="">Статус</option>
             <option value="1">В обработке</option>
             <option value="2">В ожидании</option>
-            <option value="3">Выполняется</option>
+            <option value="3">Выполнен</option>
             <option value="4">Отклонен</option>
           </select
           ><br/>
@@ -44,7 +44,7 @@
             <option value="розничная">Розничная</option>
           </select
           ><br/>
-          <button type="submit">Cоздать сделку</button>
+          <button type="submit">Создать сделку</button>
         </form>
       </div>
       <Subjects :catalog="catalog" :subjs="subjects" @subjects="subject"/>

@@ -187,7 +187,7 @@ export default createStore({
     async fetchCompletedDeal({dispatch, commit}, {uid, year, month}) {
       let data
       if (month) {
-          data = (await firebase.database().ref(`/completedDeals/${uid}/${year}/${month}`).get()).val()
+        data = (await firebase.database().ref(`/completedDeals/${uid}/${year}/${month}`).get()).val()
       } else {
         data = (await firebase.database().ref(`/completedDeals/${uid}/${year}`).get()).val()
       }
@@ -203,10 +203,10 @@ export default createStore({
       let profit = 0
       if (type === 'week' || type === 'month') {
         await dispatch('fetchCompletedDeal', {uid, year, month})
-        if(type === 'week'){
+        if (type === 'week') {
           let deals = getters.getCompletedDeals
           deals = Object.values(deals).forEach(deal => {
-            if(Date.now() - Date.parse(deal.date) <= 604800000){
+            if (Date.now() - Date.parse(deal.date) <= 604800000) {
               profit += deal.profit
             }
           })
@@ -259,12 +259,13 @@ export default createStore({
       }
     },
     async fetchTransactions({commit}) {
-      const data = (
+      let data = (
           await firebase
               .database()
               .ref(`/transactions`)
               .get()
       ).val()
+      data = Object.values(data).filter(item => +item.status !== 3 && +item.status !== 4)
       commit('setTransactions', data)
     },
     async fetchTasks({commit}) {
