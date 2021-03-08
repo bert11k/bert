@@ -69,6 +69,7 @@
           num: this.num,
           cost: this.cost,
           type: this.type,
+          photoName: this.$refs.file.files[0].name,
         }
         try {
           await this.$store.dispatch('saveProductImg', this.$refs.file.files[0])

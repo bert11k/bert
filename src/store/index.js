@@ -76,12 +76,15 @@ export default createStore({
       }
     },
     async fetchCatalog({commit}) {
-      const data = (
+      let data = (
           await firebase
               .database()
               .ref(`/catalog`)
               .get()
       ).val()
+      for (const item of Object.values(data)) {
+        item.img = await firebase.storage().ref(`product`).child(`${item.photoName}`).getDownloadURL()
+      }
       commit('setCatalog', data)
     },
     async changeCatalogNum({commit}, {key, num}) {
@@ -120,7 +123,7 @@ export default createStore({
     },
     async createProduct(
         {dispatch, commit, getters},
-        {title, num, cost, category, type}
+        {title, num, cost, category, type, photoName}
     ) {
       try {
         let  done
@@ -136,6 +139,7 @@ export default createStore({
                   cost,
                   category,
                   type,
+                  photoName,
                 })
             done = true
             break;
@@ -155,6 +159,7 @@ export default createStore({
             cost,
             category,
             type,
+            photoName,
           })
         }
 
