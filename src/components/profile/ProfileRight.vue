@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import Completed from "../components/Completed"
-import DeadLine from "../components/DeadLine"
-import WorkTime from "../components/WorkTime"
+import Completed from "./Completed"
+import DeadLine from "./DeadLine"
+import WorkTime from "./WorkTime"
 export default {
   name: "ProfileRight",
   components: {Completed,DeadLine,WorkTime},

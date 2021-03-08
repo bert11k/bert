@@ -1,7 +1,7 @@
 <template>
   <section>
     <div>
-      <img src="./../assets/transact.png" alt="transact" />
+      <img src="../../assets/transact.png" alt="transact" />
       <p><router-link :to="'/deal/' + transaction.key">{{transaction.title}}<br /></router-link>{{transaction.customer}}</p>
       <div class="btn"><router-link :to="'/deal/' + transaction.key">Сменить статус</router-link></div>
     </div>

@@ -11,8 +11,8 @@
 <script>
   import LayoutMain from '../layouts/LayoutMain.vue'
   import Header from '../components/Header'
-  import ProfileLeft from '../components/ProfileLeft'
-  import ProfileRight from '../components/ProfileRight'
+  import ProfileLeft from '../components/profile/ProfileLeft'
+  import ProfileRight from '../components/profile/ProfileRight'
   import Loader from '../components/Loader'
 
   export default {
@@ -21,7 +21,7 @@
       userData: {},
       loading: true,
     }),
-    components: {Loader, Header, ProfileLeft, ProfileRight, LayoutMain},
+    components: {Loader, ProfileLeft, ProfileRight, LayoutMain},
     async mounted() {
       try {
         if (!this.$store.getters.getUserData) throw new Error()

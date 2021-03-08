@@ -12,10 +12,10 @@
 
 <script>
 import LayoutMain from "../layouts/LayoutMain.vue";
-import TransactionDay from "../components/TransactionDay.vue";
-import Task from "../components/Task.vue";
-import Transaction from "../components/Transaction.vue";
-import Refer from "../components/Refer.vue";
+import TransactionDay from "../components/workplace/TransactionDay.vue";
+import Task from "../components/workplace/Task.vue";
+import Transaction from "../components/workplace/Transaction.vue";
+import Refer from "../components/workplace/Refer.vue";
 import Loader from '../components/Loader'
 export default {
   name: "Workplace",

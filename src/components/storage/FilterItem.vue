@@ -1,5 +1,5 @@
 <template>
-  <li @click="click" :class="{'active' : !!actv}"><input  :id="id" name="filter" type="radio"><label :for="id">{{value}}</label></li>
+  <li @click="click" :class="{'active' : !!actv}"><input :id="id" name="filter" type="radio"><label :for="id">{{value}}</label></li>
 </template>
 
 <script>
