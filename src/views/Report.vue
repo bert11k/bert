@@ -64,7 +64,7 @@
 
 <style lang="scss" scoped>
   .report {
-    margin-top: 10px;
+    margin-top: 5px;
     background-color: #fff;
     padding: 30px;
   }

@@ -36,9 +36,9 @@
 </script>
 <style lang="scss" scoped>
   .content {
-    margin: 10px auto auto;
+    margin: 5px auto auto;
     display: grid;
-    grid-gap: 10px;
+    grid-gap: 5px;
     grid-template-columns: 1fr 3fr;
   }
 </style>

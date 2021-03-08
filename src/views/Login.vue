@@ -14,11 +14,6 @@
           <img src="../assets/pass.png" alt="2" />
           <input type="text" placeholder="Пароль" required v-model.trim="password"/>
         </div>
-
-        <div class="checkpass">
-          <input id="checkbox" type="checkbox" v-model="isChecked" required/>
-          <label for="checkbox">Запомнить меня?</label><br />
-        </div>
         <button type="submit">Авторизоваться</button>
         <br>  
         <small class="error" :class="{'display':error}">Неверный логин или пароль</small>
@@ -36,7 +31,6 @@ export default {
   data: ()=>({
     email: '',
     password: '',
-    isChecked: false,
     error: false,
     loading: false,
   }),
@@ -61,7 +55,6 @@ export default {
       }
       this.email = ''
       this.password = ''
-      this.isChecked = ''
       this.loading = false
     },
 
