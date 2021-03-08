@@ -13,6 +13,8 @@ export default createStore({
     transactions: null,
     deal: null,
     completedDeals: null,
+    reports: null,
+    reportDeals: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -45,7 +47,13 @@ export default createStore({
     },
     setCompletedDeals(state, value) {
       state.completedDeals = value
-    }
+    },
+    setReports(state, value) {
+      state.reports = value
+    },
+    setReportDeals(state, value){
+      state.reportDeals = value
+    },
   },
   actions: {
     async login({dispatch, commit}, {email, password}) {
@@ -126,7 +134,7 @@ export default createStore({
         {title, num, cost, category, type, photoName}
     ) {
       try {
-        let  done
+        let done
         const prevStorage = Object.values(getters.getCatalog)
         for (const item of prevStorage) {
           if (item.title === title) {
@@ -142,10 +150,10 @@ export default createStore({
                   photoName,
                 })
             done = true
-            break;
+            break
           }
         }
-        if(!done){
+        if (!done) {
           const ref = await firebase
               .database()
               .ref(`/catalog`)
@@ -227,6 +235,7 @@ export default createStore({
           year = (new Date()).getFullYear(),
           month = (new Date()).toLocaleString('en-US', {month: 'long'})
       let profit = 0
+      let dealsToBD = []
       if (type === 'week' || type === 'month') {
         await dispatch('fetchCompletedDeal', {uid, year, month})
         if (type === 'week') {
@@ -234,12 +243,14 @@ export default createStore({
           deals = Object.values(deals).forEach(deal => {
             if (Date.now() - Date.parse(deal.date) <= 604800000) {
               profit += deal.profit
+              dealsToBD.push(deal.key)
             }
           })
         } else {
           const deals = getters.getCompletedDeals
           Object.values(deals).forEach(deal => {
             profit += deal.profit
+            dealsToBD.push(deal.key)
           })
         }
 
@@ -249,6 +260,7 @@ export default createStore({
         Object.values(months).forEach(month => {
           Object.values(month).forEach(deal => {
             profit += deal.profit
+            dealsToBD.push(deal.key)
           })
         })
       }
@@ -266,6 +278,7 @@ export default createStore({
           profit,
           type,
           worker: uid,
+          deals: dealsToBD,
         })
       } catch (e) {
         throw e
@@ -303,6 +316,42 @@ export default createStore({
       ).val()
       commit('setTasks', data)
     },
+    async fetchWorker({}, uid) {
+      return (await firebase.database().ref(`/users/${uid}`).get()).val().fio
+    },
+    async fetchReports({commit, dispatch}) {
+      const data = (await firebase.database().ref(`/reports`).get()).val()
+      let result = []
+      const reportTypos = {
+        week: 'Неделя',
+        month: 'Месяц',
+        year: 'Год',
+      }
+      for (const user of Object.values(data)) {
+        const year = (new Date()).toLocaleString('en-US', {year: 'numeric'})
+        let res = []
+        for (const report of Object.values(user[year])) {
+          report.date = new Date(report.date).toLocaleString('ru', {year: 'numeric', month: 'long', day: 'numeric'})
+          report.workerKey = report.worker
+          report.worker = await dispatch('fetchWorker', report.worker)
+          report.type = reportTypos[report.type]
+          res.push(report)
+        }
+        result.push(res)
+      }
+      commit('setReports', ...result)
+    },
+    async fetchReportDeals({commit, dispatch, getters}, {key, worker}){
+      const year = (new Date()).toLocaleString('en-US', {year: 'numeric'})
+      const data = (await firebase.database().ref(`reports/${worker}/${year}/${key}`).get()).val().deals
+      let deals = []
+      for(const deal of data){
+        await dispatch('fetchDeal', deal)
+        deals.push(getters.getDeal)
+      }
+
+      commit('setReportDeals', deals)
+    },
     async fetchDeal({commit}, key) {
       const data = (await firebase.database().ref(`/transactions/${key}`).get()).val()
       commit('setDeal', data)
@@ -330,5 +379,7 @@ export default createStore({
     getTasks: s => s.tasks,
     getDeal: s => s.deal,
     getCompletedDeals: s => s.completedDeals,
+    getReports: s => s.reports,
+    getReportDeals: s => s.reportDeals,
   }
 })
