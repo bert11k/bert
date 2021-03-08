@@ -6,13 +6,14 @@
         <div><h3>{{item.title}}</h3></div>
         <div>
           <p>Категория: {{item.category}}</p>
-          <p>Тип: {{item.type}}</p>
-          <p>Наличие: {{item.num}}</p>
+
+          <p>Наличие: {{item.num}}{{item.type}}</p>
+
         </div>
       </div>
     </div>
     <div class="cost">
-      <p>Цена: <br> {{item.cost}}р.</p>
+      <p>Цена за 1 у.е.: <br> {{item.cost}}р.</p>
     </div>
   </div>
 </template>

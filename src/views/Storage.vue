@@ -76,7 +76,7 @@
         const catalogTmp = Object.values(await this.$store.getters.getCatalog)
         this.catalog.items = catalogTmp.filter(item => {
 
-          if (+item.category === this.filter[id].value) return item
+          if (item.category.toLowerCase().trim() === this.filter[id].value.toLowerCase().trim()) return item
 
         })
         this.loading = false

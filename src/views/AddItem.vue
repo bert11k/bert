@@ -18,7 +18,7 @@
             v-model="title"
         /><br/>
         <input
-            placeholder="Тип"
+            placeholder="Еденица измерения"
             required
             type="text"
             v-model="type"
