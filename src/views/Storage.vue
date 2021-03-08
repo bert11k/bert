@@ -43,22 +43,22 @@
         filter: [
           {
             id: 0,
-            value: 1,
+            value: "Бензин",
             active: false
           },
           {
             id: 1,
-            value: 2,
+            value: "Нефтяные масла",
             active: false
           },
           {
             id: 2,
-            value: 3,
+            value: "Керосин",
             active: false
           },
           {
             id: 3,
-            value: 4,
+            value: "Лигроин",
             active: false
           },
         ],

@@ -6,10 +6,10 @@
         <h2>Добавить товар</h2>
         <select required v-model="category">
           <option disabled selected value="null">Категория</option>
-          <option value="1">Категория 1</option>
-          <option value="2">Категория 2</option>
-          <option value="3">Категория 3</option>
-          <option value="4">Категория 4</option>
+          <option value="Бензин">Бензин</option>
+          <option value="Нефтяные масла">Нефтяные масла</option>
+          <option value="Керосин">Керосин</option>
+          <option value="Лигроин">Лигроин</option>
         </select><br/>
         <input
             placeholder="Название"
