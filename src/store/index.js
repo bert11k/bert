@@ -119,24 +119,46 @@ export default createStore({
       }
     },
     async createProduct(
-        {dispatch, commit},
+        {dispatch, commit, getters},
         {title, num, cost, category, type}
     ) {
       try {
-        const ref = await firebase
-            .database()
-            .ref(`/catalog`)
-            .push()
+        let  done
+        const prevStorage = getters.getCatalog
+        for (const item of prevStorage) {
+          if (item.title === title) {
+            num += item.num
+            await firebase
+                .database()
+                .ref(`/catalog/${item.key}`).set({
+                  key,
+                  title,
+                  num,
+                  cost,
+                  category,
+                  type,
+                })
+            done = true
+            break;
+          }
+        }
+        if(!done){
+          const ref = await firebase
+              .database()
+              .ref(`/catalog`)
+              .push()
 
-        const key = ref.key
-        ref.set({
-          key,
-          title,
-          num,
-          cost,
-          category,
-          type,
-        })
+          const key = ref.key
+          ref.set({
+            key,
+            title,
+            num,
+            cost,
+            category,
+            type,
+          })
+        }
+
       } catch (e) {
         throw e
       }
