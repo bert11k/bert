@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import Toaster from '@meforma/vue-toaster'
 import firebase from 'firebase'
+import VueHtmlToPaper from './plugins/VueHtmlToPaper'
 import 'firebase/database'
 import 'firebase/storage'
 
@@ -20,4 +21,6 @@ const config = {
 firebase.initializeApp(config)
 firebase.storage()
 
-createApp(App).use(store).use(router).use(Toaster, {position: 'top-right'}).mount('#app')
+const app = createApp(App)
+app.use(VueHtmlToPaper)
+app.use(store).use(router).use(Toaster, {position: 'top-right'}).mount('#app')
