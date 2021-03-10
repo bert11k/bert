@@ -110,8 +110,6 @@
           :class="{ active: active === 'planing' }"
           key="6"
           v-show="showLink"
-
-    
         >
           Планирование
         </div>
