@@ -55,8 +55,6 @@
         } finally {
           this.loading = false
         }
-
-
       }
     },
   }
@@ -67,6 +65,7 @@
     margin-top: 5px;
     background-color: #fff;
     padding: 30px;
+
   }
 
   input {
