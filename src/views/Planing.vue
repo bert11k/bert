@@ -1,13 +1,16 @@
 <template>
   <main-layout>
     <Loader v-if="loading"/>
-    <div class="scrndHeader">
-      <h1>Планирование продаж</h1>
+    <div class="comp" v-else>
+      <div class="scrndHeader">
+        <h1>Планирование продаж</h1>
+      </div>
+      <Navigation :active="active" @click="changeActive"/>
+      <div class="planing">
+        <div>Цель - <span :contenteditable="isManager">9</span> рублей</div>
+      </div>
     </div>
-    <Navigation />
-    <div class="planing">
-      <div>Цель - <span :contenteditable="isManager">9</span> рублей</div>
-    </div>
+
   </main-layout>
 </template>
 
@@ -21,6 +24,14 @@
     data() {
       return {
         loading: true,
+        active: 0,
+      }
+    },
+    methods: {
+      changeActive(e) {
+        if (e.target.dataset.idx) {
+          this.active = +e.target.dataset.idx
+        }
       }
     },
     components: {Navigation, Loader, MainLayout},
@@ -36,14 +47,16 @@
 </script>
 
 <style lang="scss" scoped>
+  .comp {
+    height: calc(100% - 36px);
+  }
+
   .planing {
     background-color: #fff;
     margin-top: 5px;
     height: calc(100% - 174px);
   }
 
-
-    
   .scrndHeader {
     background-color: #fff;
     margin: 5px 0;

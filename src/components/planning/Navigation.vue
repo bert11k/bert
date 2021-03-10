@@ -1,20 +1,21 @@
 <template>
   <div class="navigation">
-    <div class="navigation-btn">
+        <div class="navigation-btn" data-idx="0" :class="{'navigation-btn-active': active === 0}">
       На Год
-    </div>
-    <div class="navigation-btn navigation-btn-active">
-      На месяц
-    </div>
-    <div class="navigation-btn">
-      На неделю
-    </div>
   </div>
-</template>
+  <div class="navigation-btn" data-idx="1" :class="{'navigation-btn-active': active === 1}">
+      На месяц
+  </div>
+  <div class="navigation-btn" data-idx="2" :class="{'navigation-btn-active': active === 2}">
+      На неделю
+  </div>
+  </div>
+  </template>
 
-<script>
+  <script>
   export default {
-    name: 'Navigation'
+    name: 'Navigation',
+    props: ['active'],
   }
 </script>
 
@@ -23,11 +24,13 @@
     display: flex;
     background-color: #fff;
     gap: 10px;
+    padding-left: 10px;
 
     &-btn {
-      width: 90px;
+      width: 100px;
+      text-align: center;
       height: 100%;
-      padding: 5px;
+      padding: 5px 0;
 
       &:hover, &-active {
         background-color: #39a098;
