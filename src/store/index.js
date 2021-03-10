@@ -231,9 +231,9 @@ export default createStore({
     async fetchCompletedDeal({dispatch, commit}, {uid, year, month}) {
       let data
       if (month) {
-        data = (await firebase.database().ref(`/completedDeals/${uid}/${year}/${month}`).get()).val()
+        data = (await firebase.database().ref(`/users/${uid}/completedDeals/${year}/${month}`).get()).val()
       } else {
-        data = (await firebase.database().ref(`/completedDeals/${uid}/${year}`).get()).val()
+        data = (await firebase.database().ref(`/users/${uid}/completedDeals/${year}`).get()).val()
       }
       commit('setCompletedDeals', data)
     },
@@ -301,7 +301,7 @@ export default createStore({
       try {
         await firebase
             .database()
-            .ref(`/completedDeals/${uid}/${year}/${month}/${deal.key}`)
+            .ref(`/users/${uid}/completedDeals/${year}/${month}/${deal.key}`)
             .set(deal)
       } catch (e) {
         throw e
