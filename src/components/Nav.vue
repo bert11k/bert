@@ -91,7 +91,7 @@
           Склад
         </div>
         <div
-            :class="{ active: active === 'report' }"
+            :class="{ active: active === 'reports' }"
             key="5"
             v-show="showLink"
         >
