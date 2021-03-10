@@ -1,6 +1,6 @@
 <template>
 	<div id="content" v-if="!loading">
-		<Header :fio="userdata.fio"/>
+		<Header :fio="userdata.fio" :img="userdata.img"/>
 		<slot @userdata="userdata" />
 	</div>
 </template>

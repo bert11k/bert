@@ -131,7 +131,7 @@ export default createStore({
               position,
               img: photo,
             })
-        await firebase.auth().signOut()
+        // await firebase.auth().signOut()
         commit('clearInfo')
         commit('setUser', userTmp)
         await dispatch('fetchUserData')
