@@ -203,7 +203,6 @@
     padding-top: 5px;
     padding-bottom: 5px;
     cursor: pointer;
-    transition: all 0.5s ease-in-out;
     margin-bottom: 30px;
     z-index: 99999;
     img {
@@ -231,7 +230,7 @@
   }
   .fade-enter-active,
   .fade-leave-active {
-    transition: all 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
 
   .fade-enter-from,
