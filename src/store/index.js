@@ -85,6 +85,7 @@ export default createStore({
                 .ref(`/users/${uid}`)
                 .once('value')
         ).val()
+        userData.img = await firebase.storage().ref(`images`).child(`${userData.img}`).getDownloadURL()
         commit('setUserData', userData)
         return userData
       } catch (e) {
@@ -113,7 +114,7 @@ export default createStore({
     },
     async createUser(
         {dispatch, commit, getters},
-        {email, password, fio, phone, phoneWork, position}
+        {email, password, fio, phone, phoneWork, position, photo}
     ) {
       try {
         const userTmp = {uid: getters._user.uId}
@@ -128,6 +129,7 @@ export default createStore({
               phonehome: phone,
               phonework: phoneWork,
               position,
+              img: photo,
             })
         await firebase.auth().signOut()
         commit('clearInfo')
