@@ -7,7 +7,7 @@
       </div>
       <Navigation :active="active" @click="changeActive"/>
       <div class="planing">
-        <h3>Цель - <span @dblclick="changeble = true"  v-show="!changeble">{{active}}</span> <input type="text" @keyup.enter="changeble = false" v-model.trim="active" v-show="changeble"> рублей</h3>
+        <h3>Цель - <span @dblclick="changeble = true"  v-show="!changeble">{{target}}</span> <input type="text" @keyup.enter="changeble = false" v-model.trim="target" v-show="changeble"> рублей</h3>
         <div class="progress">
           <div class="done">
             Выполенено:<br/>
