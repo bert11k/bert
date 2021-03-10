@@ -12,7 +12,7 @@
 
         <div>
           <img src="../assets/pass.png" alt="2" />
-          <input type="text" placeholder="Пароль" required v-model.trim="password"/>
+          <input type="password" placeholder="Пароль" required v-model.trim="password"/>
         </div>
         <button type="submit">Авторизоваться</button>
         <br>  

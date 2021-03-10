@@ -13,6 +13,7 @@
       <div class="workplacemanager">
         <Transaction :transactions="transactions"/>
         <Task :tasks="tasks"/>
+        <CompleteTransaction/>
       </div>
     </div>
 
@@ -24,6 +25,7 @@ import LayoutMain from "../layouts/LayoutMain.vue";
 import Transaction from "../components/workplace/Transaction.vue";
 import Task from "../components/workplace/Task.vue";
 import Loader from '../components/Loader'
+import CompleteTransaction from "../components/workplace/CompleteTransaction.vue";
 
 export default {
   name: "Workplace",
@@ -34,7 +36,7 @@ export default {
       tasks: null,
     }
   },
-  components: {Loader, LayoutMain, Task, Transaction },
+  components: {Loader, LayoutMain, Task, Transaction, CompleteTransaction},
   async mounted() {
     try {
       await this.$store.dispatch('fetchTransactions')
