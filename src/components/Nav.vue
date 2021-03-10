@@ -58,6 +58,15 @@
       >
         <img alt="report" src="../assets/whitereport.png" />
       </router-link>
+
+      <router-link
+        :class="{ active: active === 'planing' }"
+        class="item"
+        to="/planing"
+    
+      >
+        <img alt="planing" src="../assets/planingwhite.png" />
+      </router-link>
     </div>
     <div class="nav-links">
       <transition-group name="fade">
@@ -98,6 +107,15 @@
     
         >
           Отчётность
+        </div>
+        <div
+          :class="{ active: active === 'planing' }"
+          key="6"
+          v-show="showLink"
+
+    
+        >
+          Планирование
         </div>
       </transition-group>
     </div>
