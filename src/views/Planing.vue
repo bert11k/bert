@@ -7,19 +7,18 @@
       </div>
       <Navigation :active="active" @click="changeActive"/>
       <div class="planing">
-          
-        <div>Цель - <span :contenteditable="isManager">9</span> рублей</div>
+        <h3>Цель - <span @dblclick="changeble = true"  v-show="!changeble">{{active}}</span> <input type="text" @keyup.enter="changeble = false" v-model.trim="active" v-show="changeble"> рублей</h3>
         <div class="progress">
           <div class="done">
-            Выполенено:<br />
+            Выполенено:<br/>
             125 000 руб.
           </div>
           <div class="stay">
-            Осталось:<br />
+            Осталось:<br/>
             125 000 руб.
           </div>
           <div class="completed">
-            План выполнен на:<br />
+            План выполнен на:<br/>
             50%
           </div>
         </div>
@@ -32,12 +31,15 @@
   import MainLayout from '../layouts/LayoutMain'
   import Loader from '../components/Loader'
   import Navigation from '../components/planning/Navigation'
+
   export default {
     name: 'Planing',
     data() {
       return {
         loading: true,
         active: 0,
+        target: 10,
+        changeble: false,
       }
     },
     methods: {
@@ -45,7 +47,7 @@
         if (e.target.dataset.idx) {
           this.active = +e.target.dataset.idx
         }
-      }
+      },
     },
     components: {Navigation, Loader, MainLayout},
     async mounted() {
@@ -68,6 +70,8 @@
     background-color: #fff;
     margin-top: 5px;
     height: calc(100% - 174px);
+    position: relative;
+    padding: 10px;
   }
 
   .scrndHeader {
@@ -81,24 +85,34 @@
     font-weight: bold;
     cursor: pointer;
   }
+
   .progress {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding-top: 50px;
-  div {
-    text-align: center;
-    font-size: 1.4rem;
-    padding: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    div {
+      text-align: center;
+      font-size: 1.4rem;
+      padding: 50px;
+    }
+
+    .done {
+      background-color: #39a098;
+      color: white;
+    }
+
+    .stay {
+      background-color: #c4c4c4;
+    }
+
+    .completed {
+      color: white;
+      background-color: #374664;
+    }
   }
-  .done {
-    background-color: #39a098;
-  }
-  .stay {
-    background-color: #c4c4c4;
-  }
-  .completed {
-    background-color: #374664;
-  }
-}
 
 </style>

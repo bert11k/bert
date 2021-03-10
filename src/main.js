@@ -9,6 +9,8 @@ import VueHtmlToPaper from './plugins/VueHtmlToPaper'
 import 'firebase/database'
 import 'firebase/storage'
 
+
+
 const config = {
   apiKey: 'AIzaSyAIgQOB9LHJA6bbAr3zgW9fk6mxVAu4Vrc',
   authDomain: 'kpdp-db010.firebaseapp.com',

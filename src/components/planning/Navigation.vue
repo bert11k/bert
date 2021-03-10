@@ -31,6 +31,7 @@
       text-align: center;
       height: 100%;
       padding: 5px 0;
+      user-select: none;
 
       &:hover, &-active {
         background-color: #39a098;
