@@ -11,6 +11,8 @@ export default createStore({
     },
     tasks: null,
     transactions: null,
+    transactionsComp: null,
+    transactionsNotComp: null,
     deal: null,
     completedDeals: null,
     reports: null,
@@ -38,6 +40,12 @@ export default createStore({
     },
     setTransactions(state, value) {
       state.transaction = value
+    },
+    setCompleteTransactions(state, value) {
+      state.transactionsComp = value
+    },
+    setNotCompleteTransactions(state, value) {
+      state.transactionsNotComp = value
     },
     setTasks(state, value) {
       state.tasks = value
@@ -297,15 +305,27 @@ export default createStore({
         throw e
       }
     },
-    async fetchTransactions({commit}) {
+    async fetchAllTransactions({commit}) {
       let data = (
           await firebase
               .database()
               .ref(`/transactions`)
               .get()
       ).val()
-      data = Object.values(data).filter(item => +item.status !== 3 && +item.status !== 4)
+      data = Object.values(data)
       commit('setTransactions', data)
+    },
+    async fetchTransactions({commit, dispatch, getters}) {
+      await dispatch('fetchAllTransactions')
+      let data = getters.getTransactions
+      data = data.filter(item => +item.status !== 3 && +item.status !== 4)
+      commit('setNotCompleteTransactions', data)
+    },
+    async fetchCompleteTransactions({commit, dispatch, getters}) {
+      await dispatch('fetchAllTransactions')
+      let data = getters.getTransactions
+      data = data.filter(deal => +deal.status === 3)
+      commit('setCompleteTransactions', data)
     },
     async fetchTasks({commit}) {
       const data = (
@@ -376,6 +396,8 @@ export default createStore({
     getUserData: s => s.userData,
     getCatalog: s => s.catalog,
     getTransactions: s => s.transaction,
+    getCompleteTransactions: s => s.transactionsComp,
+    getNotCompleteTransactions: s => s.transactionsNotComp,
     getTasks: s => s.tasks,
     getDeal: s => s.deal,
     getCompletedDeals: s => s.completedDeals,

@@ -13,7 +13,7 @@
       <div class="workplacemanager">
         <Transaction :transactions="transactions"/>
         <Task :tasks="tasks"/>
-        <CompleteTransaction/>
+        <CompleteTransaction :transactions="completedTransactions"/>
       </div>
     </div>
 
@@ -34,14 +34,17 @@ export default {
       loading: true,
       transactions: null,
       tasks: null,
+      completedTransactions: null,
     }
   },
   components: {Loader, LayoutMain, Task, Transaction, CompleteTransaction},
   async mounted() {
     try {
       await this.$store.dispatch('fetchTransactions')
+      await this.$store.dispatch('fetchCompleteTransactions')
       await this.$store.dispatch('fetchTasks')
-      this.transactions = this.$store.getters.getTransactions
+      this.transactions = this.$store.getters.getNotCompleteTransactions
+      this.completedTransactions = this.$store.getters.getCompleteTransactions
       this.tasks = this.$store.getters.getTasks
     } catch (e) {
       this.$toast.error(e.message)
