@@ -68,7 +68,6 @@
     margin-top: 5px;
     padding: 30px;
     background-color: #fff;
-    max-height: 60vh;
     overflow-y: auto;
 
 
