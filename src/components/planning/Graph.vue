@@ -4,8 +4,9 @@
     <div class="fio">
       <p>КТОТО ТАМ КТОТОТАМЫЧ</p>
     </div>
-    <div>
-      ГРАФИК
+    <div class="graphLine">
+      <div class="graphColor" :style="{width: 40 + '%'}">40%</div>
+      <span class="sum">400000р.</span>
     </div>
   </div>
 </template>
@@ -21,7 +22,7 @@
     display: flex;
     justify-content: space-between;
     height: 50px;
-    margin: 10px 0;
+    margin: 10px;
     align-items: center;
     gap: 15px;
     border: 0;
@@ -40,8 +41,28 @@
       width: 350px;
     }
 
-    :last-child{
+    .graphLine{
+      background-color: #fff;
+      margin-right: 10px;
       width: 100%;
+      height: 20px;
+      position: relative;
+
+      .sum{
+        position: absolute;
+        right: 10px;
+        top: 0;
+        font-weight: bold;
+        color: black;
+      }
+
+      .graphColor{
+        height: 100%;
+        z-index: 1000;
+        background-color: #39a098;
+        text-align: center;
+        color: white;
+      }
     }
   }
 </style>
