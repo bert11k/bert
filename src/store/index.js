@@ -17,6 +17,8 @@ export default createStore({
     completedDeals: null,
     reports: null,
     reportDeals: null,
+    planTarget: null,
+    dealers: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -59,8 +61,14 @@ export default createStore({
     setReports(state, value) {
       state.reports = value
     },
-    setReportDeals(state, value){
+    setReportDeals(state, value) {
       state.reportDeals = value
+    },
+    setPlanTarget(state, value){
+      state.planTarget = value
+    },
+    setDealers(state, value){
+      state.dealers = value
     },
   },
   actions: {
@@ -363,20 +371,42 @@ export default createStore({
       }
       commit('setReports', ...result)
     },
-    async fetchReportDeals({commit, dispatch, getters}, {key, worker}){
+    async fetchReportDeals({commit, dispatch, getters}, {key, worker}) {
       const year = (new Date()).toLocaleString('en-US', {year: 'numeric'})
       const data = (await firebase.database().ref(`reports/${worker}/${year}/${key}`).get()).val().deals
       let deals = []
-      for(const deal of data){
+      for (const deal of data) {
         await dispatch('fetchDeal', deal)
         deals.push(getters.getDeal)
       }
 
       commit('setReportDeals', deals)
     },
+    async createPlaningTarget({commit}, {target, type}) {
+      const types = ['Year', 'Month', 'Week']
+      const date = types[type]
+      await firebase.database().ref(`/planing/${date}`).set({
+        target,
+      })
+      commit('setPlanTarget', target)
+    },
+    async fetchTarget({commit}, type){
+      const types = ['Year', 'Month', 'Week']
+      const date = types[type]
+      const data = (await firebase.database().ref(`/planing/${date}`).get()).val()
+      commit('setPlanTarget', data.target)
+    },
     async fetchDeal({commit}, key) {
       const data = (await firebase.database().ref(`/transactions/${key}`).get()).val()
       commit('setDeal', data)
+    },
+    async fetchDealers({commit}){
+      const data = (await firebase.database().ref(`/users`).get()).val()
+      let dealers = Object.values(data).filter(user => user.position.toLowerCase().trim() === "дилер")
+      for(const dealer of dealers){
+        dealer.img = await firebase.storage().ref(`images`).child(`${dealer.img}`).getDownloadURL()
+      }
+      commit('setDealers', dealers)
     },
     async changeDealStatus({commit}, deal) {
       await firebase.database().ref(`/transactions/${deal.key}`).set(deal)
@@ -405,5 +435,7 @@ export default createStore({
     getCompletedDeals: s => s.completedDeals,
     getReports: s => s.reports,
     getReportDeals: s => s.reportDeals,
+    getPlanTarget: s => s.planTarget,
+    getDealers: s => s.dealers,
   }
 })

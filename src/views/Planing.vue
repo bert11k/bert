@@ -7,13 +7,13 @@
       </div>
       <Navigation :active="active" @click="changeActive"/>
       <div class="planing">
-        <h3>Цель - <span @dblclick="changeble = true" v-show="!changeble">{{target}}</span> <input @keyup.enter="changeTarget"
-                                                                                                   type="text"
-                                                                                                   v-model.trim="target"
-                                                                                                   v-show="changeble">
+        <h3>Цель - <span @dblclick="showInput" v-show="!changeble">{{target}}</span> <input @keyup.enter="changeTarget"
+                                                                                            type="text"
+                                                                                            v-model.trim="target"
+                                                                                            v-show="changeble">
           рублей</h3>
-        <Graphs/>
-        <Progress/>
+        <Graphs :dealers="dealers" :targets="dealerTarget"/>
+        <Progress :planData="planData"/>
       </div>
     </div>
   </main-layout>
@@ -33,26 +33,89 @@
         loading: true,
         active: 0,
         target: 10,
+        dealers: [],
+        dealerTarget: '',
         changeble: false,
+        planData: {
+          planCompleted: 0,
+          planCompletedPercentage: 0,
+          planNeed: 0,
+        },
       }
     },
     methods: {
-      changeActive(e) {
+      async changeActive(e) {
         if (e.target.dataset.idx) {
           this.active = +e.target.dataset.idx
+          this.fetchData()
         }
       },
-      changeTarget() {
+      async changeTarget() {
         if (this.target > 0) {
-          this.changeble = false
+          this.loading = true
+          await this.$store.dispatch('createPlaningTarget', {target: this.target, type: this.active})
+          this.target = this.$store.getters.getPlanTarget
+          this.changeble = this.loading = false
+          this.dealerTarget = Math.round(this.target / this.dealers.length)
+          this.dealersProfit()
+          this.$toast.success('Сохранено')
         } else {
           this.$toast.error('Цель должна быть больше нуля')
         }
+      },
+      showInput() {
+        if (this.$store.getters.getUserData.position === 'Менеджер') {
+          this.changeble = true
+        }
+      },
+      async fetchData() {
+        this.loading = true
+        await this.$store.dispatch('fetchDealers')
+        await this.$store.dispatch('fetchTarget', this.active)
+        this.target = this.$store.getters.getPlanTarget
+        this.dealers = this.$store.getters.getDealers
+        this.dealerTarget = Math.round(this.target / this.dealers.length)
+        this.dealersProfit()
+        this.loading = false
+      },
+      dealersProfit(){
+        this.planData.planCompletedPercentage = this.planData.planNeed = this.planData.planCompleted = 0
+        this.dealers.forEach(dealer => {
+          dealer.profit = 0
+          if (dealer.completedDeals) {
+            if (this.active === 0) {
+              Object.values(dealer.completedDeals[new Date().getFullYear()]).forEach(month => {
+                Object.values(month).forEach(deal => {
+                  dealer.profit += +deal.profit
+                })
+              })
+            } else if (this.active === 1) {
+              Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+                dealer.profit += +deal.profit
+              })
+            } else {
+              Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+                if (Date.now() - Date.parse(deal.date) <= 604800000) {
+                  dealer.profit += +deal.profit
+                }
+              })
+            }
+          } else {
+            dealer.profit = 0
+          }
+          dealer.percent = Math.round( dealer.profit / this.target * 100)
+          if(dealer.percent > 100) dealer.percent = 100
+          this.planData.planCompleted += dealer.profit
+        })
+        this.planData.planNeed = +this.target - +this.planData.planCompleted
+        if(this.planData.planNeed < 0) this.planData.planNeed = 0
+
+        this.planData.planCompletedPercentage = Math.round(+this.planData.planCompleted / +this.target * 100)
       }
     },
     components: {Graphs, Progress, Navigation, Loader, MainLayout},
     async mounted() {
-      this.loading = false
+      this.fetchData()
     },
     computed: {
       isManager() {

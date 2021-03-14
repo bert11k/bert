@@ -1,6 +1,6 @@
 <template>
    <div class="graphs">
-     <Graph v-for="i of 15" :key="i"/>
+     <Graph v-for="dealer of dealers" :dealer="dealer" :target="targets" :key="dealer.fio"/>
    </div>
 </template>
 
@@ -8,6 +8,7 @@
   import Graph from './Graph'
   export default {
     name: 'Graphs',
+    props: ['dealers', 'targets'],
     components: {Graph}
   }
 </script>

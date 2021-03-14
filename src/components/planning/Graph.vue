@@ -1,19 +1,22 @@
 <template>
   <div class="graph">
-    <img src="../../assets/sklad.png" alt="">
+    <div class="img">
+      <img :src="dealer.img" alt="">
+    </div>
     <div class="fio">
-      <p>КТОТО ТАМ КТОТОТАМЫЧ</p>
+      <p>{{dealer.fio}}</p>
     </div>
     <div class="graphLine">
-      <div class="graphColor" :style="{width: 40 + '%'}">40%</div>
-      <span class="sum">400000р.</span>
+      <div class="graphColor" :style="{width: dealer.percent + '%'}">{{dealer.percent}}%</div>
+      <span class="sum">{{target}}р.</span>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'Graph'
+    name: 'Graph',
+    props: ['dealer','target'],
   }
 </script>
 
@@ -22,7 +25,7 @@
     display: flex;
     justify-content: space-between;
     height: 50px;
-    margin: 10px;
+    margin: 10px 10px 10px 0;
     align-items: center;
     gap: 15px;
     border: 0;
@@ -30,12 +33,20 @@
     background-color: rgba(58, 65, 161, 0.82);
     color: white;
 
-    img{
+    .img{
+      width: 100px;
       height: 100%;
-      border-radius: 5px;
+      max-width: 50px;
+      text-align: center;
       margin-left: 5px;
-      padding: 5px;
+      img{
+        max-width: 50px;
+        height: 100%;
+        border-radius: 5px;
+        padding: 5px;
+      }
     }
+
 
     .fio{
       width: 350px;

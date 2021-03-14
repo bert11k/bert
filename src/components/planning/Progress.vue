@@ -2,48 +2,49 @@
   <div class="progress">
     <div class="done">
       Выполенено:<br/>
-      125 000 руб.
+      {{planData.planCompleted}} руб.
     </div>
     <div class="stay">
       Осталось:<br/>
-      125 000 руб.
+      {{planData.planNeed}} руб.
     </div>
     <div class="completed">
       План выполнен на:<br/>
-      50%
+      {{planData.planCompletedPercentage}}%
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'Progress'
+    name: 'Progress',
+    props: ['planData']
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   .progress {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 
-  div {
-    text-align: center;
-    font-size: 1.4rem;
-    padding: 50px;
-  }
+    div {
+      text-align: center;
+      font-size: 1.4rem;
+      padding: 50px;
+    }
 
-  .done {
-    background-color: #39a098;
-    color: white;
-  }
+    .done {
+      background-color: #39a098;
+      color: white;
+    }
 
-  .stay {
-    background-color: #c4c4c4;
-  }
+    .stay {
+      background-color: #c4c4c4;
+    }
 
-  .completed {
-    color: white;
-    background-color: #374664;
-  }
+    .completed {
+      color: white;
+      background-color: #374664;
+    }
   }
 </style>
