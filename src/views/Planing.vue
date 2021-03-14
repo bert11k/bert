@@ -7,21 +7,13 @@
       </div>
       <Navigation :active="active" @click="changeActive"/>
       <div class="planing">
-        <h3>Цель - <span @dblclick="changeble = true"  v-show="!changeble">{{target}}</span> <input type="text" @keyup.enter="changeble = false" v-model.trim="target" v-show="changeble"> рублей</h3>
-        <div class="progress">
-          <div class="done">
-            Выполенено:<br/>
-            125 000 руб.
-          </div>
-          <div class="stay">
-            Осталось:<br/>
-            125 000 руб.
-          </div>
-          <div class="completed">
-            План выполнен на:<br/>
-            50%
-          </div>
-        </div>
+        <h3>Цель - <span @dblclick="changeble = true" v-show="!changeble">{{target}}</span> <input @keyup.enter="changeTarget"
+                                                                                                   type="text"
+                                                                                                   v-model.trim="target"
+                                                                                                   v-show="changeble">
+          рублей</h3>
+        <Graphs/>
+        <Progress/>
       </div>
     </div>
   </main-layout>
@@ -31,6 +23,8 @@
   import MainLayout from '../layouts/LayoutMain'
   import Loader from '../components/Loader'
   import Navigation from '../components/planning/Navigation'
+  import Progress from '../components/planning/Progress'
+  import Graphs from '../components/planning/Graphs'
 
   export default {
     name: 'Planing',
@@ -48,8 +42,15 @@
           this.active = +e.target.dataset.idx
         }
       },
+      changeTarget() {
+        if (this.target > 0) {
+          this.changeble = false
+        } else {
+          this.$toast.error('Цель должна быть больше нуля')
+        }
+      }
     },
-    components: {Navigation, Loader, MainLayout},
+    components: {Graphs, Progress, Navigation, Loader, MainLayout},
     async mounted() {
       this.loading = false
     },
@@ -64,54 +65,24 @@
 <style lang="scss" scoped>
   .comp {
     height: calc(100% - 36px);
-  }
 
-  .planing {
-    background-color: #fff;
-    margin-top: 5px;
-    height: calc(100% - 174px);
-    position: relative;
-    padding: 10px;
-  }
-
-  .scrndHeader {
-    background-color: #fff;
-    margin: 5px 0;
-    padding: 10px;
-  }
-
-  .btn {
-    color: #5c6bd4;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .progress {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    div {
-      text-align: center;
-      font-size: 1.4rem;
-      padding: 50px;
+    .planing {
+      background-color: #fff;
+      margin-top: 5px;
+      height: calc(100% - 174px);
+      padding: 10px;
     }
 
-    .done {
-      background-color: #39a098;
-      color: white;
+    .scrndHeader {
+      background-color: #fff;
+      margin: 5px 0;
+      padding: 10px;
     }
 
-    .stay {
-      background-color: #c4c4c4;
-    }
-
-    .completed {
-      color: white;
-      background-color: #374664;
+    .btn {
+      color: #5c6bd4;
+      font-weight: bold;
+      cursor: pointer;
     }
   }
 
