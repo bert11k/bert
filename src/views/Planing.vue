@@ -57,7 +57,6 @@
           this.target = this.$store.getters.getPlanTarget
           this.changeble = this.loading = false
           this.dealerTarget = Math.round(this.target / this.dealers.length)
-          this.dealersProfit()
           this.$toast.success('Сохранено')
         } else {
           this.$toast.error('Цель должна быть больше нуля')
@@ -70,46 +69,27 @@
       },
       async fetchData() {
         this.loading = true
-        await this.$store.dispatch('fetchDealers')
+        if(this.active === 0) {
+          await this.$store.dispatch('fetchDealersStatisticPerYear')
+        } else if(this.active === 1){
+          await this.$store.dispatch('fetchDealersStatisticPerMonth')
+        } else {
+          await this.$store.dispatch('fetchDealersStatisticPerWeek')
+        }
         await this.$store.dispatch('fetchTarget', this.active)
         this.target = this.$store.getters.getPlanTarget
         this.dealers = this.$store.getters.getDealers
         this.dealerTarget = Math.round(this.target / this.dealers.length)
-        this.dealersProfit()
+        this.planComplete()
         this.loading = false
       },
-      dealersProfit(){
+      planComplete(){
         this.planData.planCompletedPercentage = this.planData.planNeed = this.planData.planCompleted = 0
         this.dealers.forEach(dealer => {
-          dealer.profit = 0
-          if (dealer.completedDeals) {
-            if (this.active === 0) {
-              Object.values(dealer.completedDeals[new Date().getFullYear()]).forEach(month => {
-                Object.values(month).forEach(deal => {
-                  dealer.profit += +deal.profit
-                })
-              })
-            } else if (this.active === 1) {
-              Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
-                dealer.profit += +deal.profit
-              })
-            } else {
-              Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
-                if (Date.now() - Date.parse(deal.date) <= 604800000) {
-                  dealer.profit += +deal.profit
-                }
-              })
-            }
-          } else {
-            dealer.profit = 0
-          }
-          dealer.percent = Math.round( dealer.profit / this.target * 100)
-          if(dealer.percent > 100) dealer.percent = 100
           this.planData.planCompleted += dealer.profit
         })
         this.planData.planNeed = +this.target - +this.planData.planCompleted
         if(this.planData.planNeed < 0) this.planData.planNeed = 0
-
         this.planData.planCompletedPercentage = Math.round(+this.planData.planCompleted / +this.target * 100)
       }
     },

@@ -64,10 +64,10 @@ export default createStore({
     setReportDeals(state, value) {
       state.reportDeals = value
     },
-    setPlanTarget(state, value){
+    setPlanTarget(state, value) {
       state.planTarget = value
     },
-    setDealers(state, value){
+    setDealers(state, value) {
       state.dealers = value
     },
   },
@@ -390,7 +390,7 @@ export default createStore({
       })
       commit('setPlanTarget', target)
     },
-    async fetchTarget({commit}, type){
+    async fetchTarget({commit}, type) {
       const types = ['Year', 'Month', 'Week']
       const date = types[type]
       const data = (await firebase.database().ref(`/planing/${date}`).get()).val()
@@ -400,12 +400,73 @@ export default createStore({
       const data = (await firebase.database().ref(`/transactions/${key}`).get()).val()
       commit('setDeal', data)
     },
-    async fetchDealers({commit}){
+    async fetchDealers({commit}) {
       const data = (await firebase.database().ref(`/users`).get()).val()
-      let dealers = Object.values(data).filter(user => user.position.toLowerCase().trim() === "дилер")
-      for(const dealer of dealers){
+      let dealers = Object.values(data).filter(user => user.position.toLowerCase().trim() === 'дилер')
+      for (const dealer of dealers) {
         dealer.img = await firebase.storage().ref(`images`).child(`${dealer.img}`).getDownloadURL()
       }
+      commit('setDealers', dealers)
+    },
+    async fetchDealersStatisticPerYear({commit, dispatch, getters}) {
+      await dispatch('fetchDealers')
+      await dispatch('fetchTarget', 0)
+      const target = getters.getPlanTarget
+      const dealers = getters.getDealers
+      dealers.forEach(dealer => {
+        dealer.profit = 0
+        if (dealer.completedDeals) {
+          Object.values(dealer.completedDeals[new Date().getFullYear()]).forEach(month => {
+            Object.values(month).forEach(deal => {
+              dealer.profit += +deal.profit
+            })
+          })
+        } else {
+          dealer.profit = 0
+        }
+        dealer.percent = Math.round(dealer.profit / target * 100)
+        if (dealer.percent > 100) dealer.percent = 100
+      })
+      commit('setDealers', dealers)
+    },
+    async fetchDealersStatisticPerMonth({commit, dispatch, getters}) {
+      await dispatch('fetchDealers')
+      await dispatch('fetchTarget', 1)
+      const target = getters.getPlanTarget
+      const dealers = getters.getDealers
+      dealers.forEach(dealer => {
+        dealer.profit = 0
+        if (dealer.completedDeals) {
+          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+            dealer.profit += +deal.profit
+          })
+        } else {
+          dealer.profit = 0
+        }
+        dealer.percent = Math.round(dealer.profit / target * 100)
+        if (dealer.percent > 100) dealer.percent = 100
+        commit('setDealers', dealers)
+      })
+    },
+    async fetchDealersStatisticPerWeek({commit, dispatch, getters}) {
+      await dispatch('fetchDealers')
+      await dispatch('fetchTarget', 2)
+      const target = getters.getPlanTarget
+      const dealers = getters.getDealers
+      dealers.forEach(dealer => {
+        dealer.profit = 0
+        if (dealer.completedDeals) {
+          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+            if (Date.now() - Date.parse(deal.date) <= 604800000) {
+              dealer.profit += +deal.profit
+            }
+          })
+        } else {
+          dealer.profit = 0
+        }
+        dealer.percent = Math.round(dealer.profit / target * 100)
+        if (dealer.percent > 100) dealer.percent = 100
+      })
       commit('setDealers', dealers)
     },
     async changeDealStatus({commit}, deal) {
