@@ -481,6 +481,7 @@ export default createStore({
       await ref.put(file)
     },
   },
+  
   modules: {},
   getters: {
     _user: s => s.user,
