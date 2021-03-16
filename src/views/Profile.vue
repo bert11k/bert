@@ -30,7 +30,7 @@
       try {
         if (!this.$store.getters.getUserData) throw new Error()
         this.userData = await this.$store.dispatch('fetchUserData')
-        await this.$store.dispatch('fetchDealersStatisticPerYear', {uid: true})
+        await this.$store.dispatch('fetchDealersStatisticPerYear', {uid: true, update: true})
         this.completed.perYear = (this.$store.getters.getDealers)[0].percent
         await this.$store.dispatch('fetchDealersStatisticPerMonth', {uid: true})
         this.completed.perMonth = (this.$store.getters.getDealers)[0].percent
