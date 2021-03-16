@@ -70,11 +70,11 @@
       async fetchData() {
         this.loading = true
         if(this.active === 0) {
-          await this.$store.dispatch('fetchDealersStatisticPerYear')
+          await this.$store.dispatch('fetchDealersStatisticPerYear', {update: true})
         } else if(this.active === 1){
-          await this.$store.dispatch('fetchDealersStatisticPerMonth')
+          await this.$store.dispatch('fetchDealersStatisticPerMonth', {update: true})
         } else {
-          await this.$store.dispatch('fetchDealersStatisticPerWeek')
+          await this.$store.dispatch('fetchDealersStatisticPerWeek', {update: true})
         }
         await this.$store.dispatch('fetchTarget', this.active)
         this.target = this.$store.getters.getPlanTarget

@@ -400,16 +400,25 @@ export default createStore({
       const data = (await firebase.database().ref(`/transactions/${key}`).get()).val()
       commit('setDeal', data)
     },
-    async fetchDealers({commit}) {
-      const data = (await firebase.database().ref(`/users`).get()).val()
-      let dealers = Object.values(data).filter(user => user.position.toLowerCase().trim() === 'дилер')
-      for (const dealer of dealers) {
-        dealer.img = await firebase.storage().ref(`images`).child(`${dealer.img}`).getDownloadURL()
+    async fetchDealers({commit, getters}, bool) {
+      let dealers
+      if(!bool){
+        const data = (await firebase.database().ref(`/users`).get()).val()
+        dealers = Object.values(data).filter(user => user.position.toLowerCase().trim() === 'дилер')
+        for (const dealer of dealers) {
+          dealer.img = await firebase.storage().ref(`images`).child(`${dealer.img}`).getDownloadURL()
+        }
+        commit('setDealers', dealers)
+      } else {
+        const uid = getters.getUid
+        dealers = (await firebase.database().ref(`/users/${uid}`).get()).val()
+        commit('setDealers', [dealers])
       }
-      commit('setDealers', dealers)
     },
-    async fetchDealersStatisticPerYear({commit, dispatch, getters}) {
-      await dispatch('fetchDealers')
+    async fetchDealersStatisticPerYear({commit, dispatch, getters}, {uid, update}) {
+      if(!getters.getDealers || update){
+        await dispatch('fetchDealers', uid)
+      }
       await dispatch('fetchTarget', 0)
       const target = getters.getPlanTarget
       const dealers = getters.getDealers
@@ -429,8 +438,10 @@ export default createStore({
       })
       commit('setDealers', dealers)
     },
-    async fetchDealersStatisticPerMonth({commit, dispatch, getters}) {
-      await dispatch('fetchDealers')
+    async fetchDealersStatisticPerMonth({commit, dispatch, getters},{uid, update}) {
+      if(!getters.getDealers || update){
+        await dispatch('fetchDealers', uid)
+      }
       await dispatch('fetchTarget', 1)
       const target = getters.getPlanTarget
       const dealers = getters.getDealers
@@ -448,8 +459,10 @@ export default createStore({
         commit('setDealers', dealers)
       })
     },
-    async fetchDealersStatisticPerWeek({commit, dispatch, getters}) {
-      await dispatch('fetchDealers')
+    async fetchDealersStatisticPerWeek({commit, dispatch, getters}, {uid, update}) {
+      if(!getters.getDealers || update){
+        await dispatch('fetchDealers', uid)
+      }
       await dispatch('fetchTarget', 2)
       const target = getters.getPlanTarget
       const dealers = getters.getDealers

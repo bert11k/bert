@@ -2,11 +2,9 @@
   <div>
     <h3 id="NameCompleted">Выполнение плана:</h3>
     <div class="completed">
-      <p>План недели выполнен на: 85%</p>
-      <p>Квартальный план выполнен на: 55%</p>
-
-      <p>План за ноябрь выполнен на: 70%</p>
-      <p>Годовой план выполнен на: 70%</p>
+      <p>План недели выполнен на: {{completed.perWeek}}%</p>
+      <p>План за ноябрь выполнен на: {{completed.perMonth}}%</p>
+      <p>Годовой план выполнен на: {{completed.perYear}}%</p>
     </div>
   </div>
 </template>
@@ -14,6 +12,7 @@
 <script>
 export default {
   name: "Completed",
+  props: ['completed'],
 };
 </script>
 <style lang="scss" scoped>

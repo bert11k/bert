@@ -1,6 +1,6 @@
 <template>
   <div class="contentRight">
-    <Completed/>
+    <Completed :completed="completed"/>
     <DeadLine/>
     <WorkTime/>
   </div>
@@ -13,6 +13,7 @@
 
   export default {
     name: 'ProfileRight',
+    props: ['completed'],
     components: {Completed, DeadLine, WorkTime},
   }
 </script>
