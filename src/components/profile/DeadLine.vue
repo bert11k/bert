@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="DeadLine">
-      <p>До сдачи отчета за неделю осталось: {{deadline}}</p>
+      <p :class="{red: days < 1}">До сдачи отчета за неделю осталось: {{deadline}}</p>
       <router-link to="/report">Сдать отчёт</router-link>
     </div>
   </div>
@@ -10,17 +10,21 @@
 <script>
   export default {
     name: 'DeadLine',
-    computed:{
-      deadline(){
-        const days = 7 - new Date().getDay()
-        if(days < 1){
+    data() {
+      return{
+        days: 7 - new Date().getDay()
+      }
+    },
+    computed: {
+      deadline() {
+        if (this.days < 1) {
           return `${24 - new Date().getHours()} часов`
-        } else if(days === 1){
-          return `${days} день`
-        } else if(days > 1 && days < 5){
-          return `${days} дня`
-        } else{
-          return `${days} дней`
+        } else if (this.days === 1) {
+          return `${this.days} день`
+        } else if (this.days > 1 && this.days < 5) {
+          return `$this.{days} дня`
+        } else {
+          return `${this.days} дней`
         }
       },
     },
@@ -57,5 +61,8 @@
     a:hover {
       color: white;
     }
+  }
+  .red{
+    color: red;
   }
 </style>
