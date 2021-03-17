@@ -11,10 +11,14 @@ export default createStore({
     },
     tasks: null,
     transactions: null,
+    transactionsComp: null,
+    transactionsNotComp: null,
     deal: null,
     completedDeals: null,
     reports: null,
     reportDeals: null,
+    planTarget: null,
+    dealers: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -39,6 +43,12 @@ export default createStore({
     setTransactions(state, value) {
       state.transaction = value
     },
+    setCompleteTransactions(state, value) {
+      state.transactionsComp = value
+    },
+    setNotCompleteTransactions(state, value) {
+      state.transactionsNotComp = value
+    },
     setTasks(state, value) {
       state.tasks = value
     },
@@ -51,8 +61,14 @@ export default createStore({
     setReports(state, value) {
       state.reports = value
     },
-    setReportDeals(state, value){
+    setReportDeals(state, value) {
       state.reportDeals = value
+    },
+    setPlanTarget(state, value) {
+      state.planTarget = value
+    },
+    setDealers(state, value) {
+      state.dealers = value
     },
   },
   actions: {
@@ -77,6 +93,7 @@ export default createStore({
                 .ref(`/users/${uid}`)
                 .once('value')
         ).val()
+        userData.img = await firebase.storage().ref(`images`).child(`${userData.img}`).getDownloadURL()
         commit('setUserData', userData)
         return userData
       } catch (e) {
@@ -105,7 +122,7 @@ export default createStore({
     },
     async createUser(
         {dispatch, commit, getters},
-        {email, password, fio, phone, phoneWork, position}
+        {email, password, fio, phone, phoneWork, position, photo}
     ) {
       try {
         const userTmp = {uid: getters._user.uId}
@@ -120,8 +137,9 @@ export default createStore({
               phonehome: phone,
               phonework: phoneWork,
               position,
+              img: photo,
             })
-        await firebase.auth().signOut()
+        // await firebase.auth().signOut()
         commit('clearInfo')
         commit('setUser', userTmp)
         await dispatch('fetchUserData')
@@ -221,9 +239,9 @@ export default createStore({
     async fetchCompletedDeal({dispatch, commit}, {uid, year, month}) {
       let data
       if (month) {
-        data = (await firebase.database().ref(`/completedDeals/${uid}/${year}/${month}`).get()).val()
+        data = (await firebase.database().ref(`/users/${uid}/completedDeals/${year}/${month}`).get()).val()
       } else {
-        data = (await firebase.database().ref(`/completedDeals/${uid}/${year}`).get()).val()
+        data = (await firebase.database().ref(`/users/${uid}/completedDeals/${year}`).get()).val()
       }
       commit('setCompletedDeals', data)
     },
@@ -291,21 +309,33 @@ export default createStore({
       try {
         await firebase
             .database()
-            .ref(`/completedDeals/${uid}/${year}/${month}/${deal.key}`)
+            .ref(`/users/${uid}/completedDeals/${year}/${month}/${deal.key}`)
             .set(deal)
       } catch (e) {
         throw e
       }
     },
-    async fetchTransactions({commit}) {
+    async fetchAllTransactions({commit}) {
       let data = (
           await firebase
               .database()
               .ref(`/transactions`)
               .get()
       ).val()
-      data = Object.values(data).filter(item => +item.status !== 3 && +item.status !== 4)
+      data = Object.values(data)
       commit('setTransactions', data)
+    },
+    async fetchTransactions({commit, dispatch, getters}) {
+      await dispatch('fetchAllTransactions')
+      let data = getters.getTransactions
+      data = data.filter(item => +item.status !== 3 && +item.status !== 4)
+      commit('setNotCompleteTransactions', data)
+    },
+    async fetchCompleteTransactions({commit, dispatch, getters}) {
+      await dispatch('fetchAllTransactions')
+      let data = getters.getTransactions
+      data = data.filter(deal => +deal.status === 3)
+      commit('setCompleteTransactions', data)
     },
     async fetchTasks({commit}) {
       const data = (
@@ -341,20 +371,116 @@ export default createStore({
       }
       commit('setReports', ...result)
     },
-    async fetchReportDeals({commit, dispatch, getters}, {key, worker}){
+    async fetchReportDeals({commit, dispatch, getters}, {key, worker}) {
       const year = (new Date()).toLocaleString('en-US', {year: 'numeric'})
       const data = (await firebase.database().ref(`reports/${worker}/${year}/${key}`).get()).val().deals
       let deals = []
-      for(const deal of data){
+      for (const deal of data) {
         await dispatch('fetchDeal', deal)
         deals.push(getters.getDeal)
       }
 
       commit('setReportDeals', deals)
     },
+    async createPlaningTarget({commit}, {target, type}) {
+      const types = ['Year', 'Month', 'Week']
+      const date = types[type]
+      await firebase.database().ref(`/planing/${date}`).set({
+        target,
+      })
+      commit('setPlanTarget', target)
+    },
+    async fetchTarget({commit}, type) {
+      const types = ['Year', 'Month', 'Week']
+      const date = types[type]
+      const data = (await firebase.database().ref(`/planing/${date}`).get()).val()
+      commit('setPlanTarget', data.target)
+    },
     async fetchDeal({commit}, key) {
       const data = (await firebase.database().ref(`/transactions/${key}`).get()).val()
       commit('setDeal', data)
+    },
+    async fetchDealers({commit, getters}, bool) {
+      let dealers
+      if(!bool){
+        const data = (await firebase.database().ref(`/users`).get()).val()
+        dealers = Object.values(data).filter(user => user.position.toLowerCase().trim() === 'дилер')
+        for (const dealer of dealers) {
+          dealer.img = await firebase.storage().ref(`images`).child(`${dealer.img}`).getDownloadURL()
+        }
+        commit('setDealers', dealers)
+      } else {
+        const uid = getters.getUid
+        dealers = (await firebase.database().ref(`/users/${uid}`).get()).val()
+        commit('setDealers', [dealers])
+      }
+    },
+    async fetchDealersStatisticPerYear({commit, dispatch, getters}, {uid, update}) {
+      if(!getters.getDealers || update){
+        await dispatch('fetchDealers', uid)
+      }
+      await dispatch('fetchTarget', 0)
+      const target = getters.getPlanTarget
+      const dealers = getters.getDealers
+      dealers.forEach(dealer => {
+        dealer.profit = 0
+        if (dealer.completedDeals) {
+          Object.values(dealer.completedDeals[new Date().getFullYear()]).forEach(month => {
+            Object.values(month).forEach(deal => {
+              dealer.profit += +deal.profit
+            })
+          })
+        } else {
+          dealer.profit = 0
+        }
+        dealer.percent = Math.round(dealer.profit / target * 100)
+        if (dealer.percent > 100) dealer.percent = 100
+      })
+      commit('setDealers', dealers)
+    },
+    async fetchDealersStatisticPerMonth({commit, dispatch, getters},{uid, update}) {
+      if(!getters.getDealers || update){
+        await dispatch('fetchDealers', uid)
+      }
+      await dispatch('fetchTarget', 1)
+      const target = getters.getPlanTarget
+      const dealers = getters.getDealers
+      dealers.forEach(dealer => {
+        dealer.profit = 0
+        if (dealer.completedDeals) {
+          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+            dealer.profit += +deal.profit
+          })
+        } else {
+          dealer.profit = 0
+        }
+        dealer.percent = Math.round(dealer.profit / target * 100)
+        if (dealer.percent > 100) dealer.percent = 100
+        commit('setDealers', dealers)
+      })
+    },
+    async fetchDealersStatisticPerWeek({commit, dispatch, getters}, {uid, update}) {
+      if(!getters.getDealers || update){
+        await dispatch('fetchDealers', uid)
+      }
+      await dispatch('fetchTarget', 2)
+      const target = getters.getPlanTarget
+      const dealers = getters.getDealers
+      dealers.forEach(dealer => {
+        dealer.profit = 0
+        if (dealer.completedDeals) {
+          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+            if (Date.now() - Date.parse(deal.date) <= 604800000) {
+              dealer.profit += +deal.profit
+            }
+          })
+        } else {
+          dealer.profit = 0
+        }
+        dealer.percent = Math.round(dealer.profit / target * 100)
+        if (dealer.percent > 100) dealer.percent = 100
+      })
+      commit('setDealers', dealers)
     },
     async changeDealStatus({commit}, deal) {
       await firebase.database().ref(`/transactions/${deal.key}`).set(deal)
@@ -368,6 +494,7 @@ export default createStore({
       await ref.put(file)
     },
   },
+  
   modules: {},
   getters: {
     _user: s => s.user,
@@ -376,10 +503,14 @@ export default createStore({
     getUserData: s => s.userData,
     getCatalog: s => s.catalog,
     getTransactions: s => s.transaction,
+    getCompleteTransactions: s => s.transactionsComp,
+    getNotCompleteTransactions: s => s.transactionsNotComp,
     getTasks: s => s.tasks,
     getDeal: s => s.deal,
     getCompletedDeals: s => s.completedDeals,
     getReports: s => s.reports,
     getReportDeals: s => s.reportDeals,
+    getPlanTarget: s => s.planTarget,
+    getDealers: s => s.dealers,
   }
 })

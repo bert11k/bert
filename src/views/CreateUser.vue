@@ -77,6 +77,7 @@ export default {
         phone: this.phone,
         phoneWork: this.phoneWork,
         position: this.position,
+        photo: this.$refs.file.files[0].name
       };
       try {
         await this.$store.dispatch('savePhoto', this.$refs.file.files[0])

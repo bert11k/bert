@@ -18,7 +18,7 @@
       <div :key="subject.title" class="line" v-for="subject of subjects">
         <h5>{{subject.title}}</h5>
         <h5>{{subject.num}}</h5>
-        <h5>{{+cost * +subject.num}}р.</h5>
+        <h5>{{subject.sum}}р.</h5>
       </div>
     </div>
   </div>
@@ -40,6 +40,14 @@
     methods: {
       addSubject() {
         if (this.title !== '' && this.num !== '') {
+          if(this.num > this.maxNum){
+            this.$toast.error('На складе недостаточно товаров')
+            return
+          }
+          if(this.num < 0 ){
+            this.$toast.error('Количество должно быть положительно')
+            return
+          }
           const idx = this.subjects.findIndex(subj => subj.title === this.title)
           if (idx !== -1) {
 

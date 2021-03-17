@@ -14,7 +14,7 @@
             <h3>Прибыль</h3>
             <h3>Ответственный</h3>
           </div>
-          <div class="line" v-for="report of reports" :key="report.key">
+          <div :key="report.key" class="line" v-for="report of reports">
             <h4>
               <router-link :to="'/reportperiod/' + report.workerKey + '/' + report.key">{{report.title}}</router-link>
             </h4>
@@ -35,14 +35,14 @@
 
   export default {
     name: 'Reports',
-    data(){
-      return{
+    data() {
+      return {
         loading: true,
         reports: [],
       }
     },
     components: {Loader, LayoutMain},
-    async mounted(){
+    async mounted() {
       await this.$store.dispatch('fetchReports')
       this.reports = this.$store.getters.getReports
       this.loading = false
@@ -68,9 +68,7 @@
     margin-top: 5px;
     padding: 30px;
     background-color: #fff;
-    max-height: 60vh;
     overflow-y: auto;
-
 
     .line {
       display: flex;
@@ -87,7 +85,6 @@
         text-align: center;
         width: 100%;
       }
-
     }
   }
 </style>

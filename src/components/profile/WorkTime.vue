@@ -3,17 +3,17 @@
     <div>
       <img src="../../assets/1.png" alt="1" />
       <p>Всего рабочее время</p>
-      <p>250:50</p>
+      <p>40ч</p>
     </div>
     <div>
       <img src="../../assets/2.png" alt="2" />
       <p>Текущий месяц</p>
-      <p>19:00</p>
+      <p>{{(new Date()).toLocaleString('ru-RU', {month: 'long'})}}</p>
     </div>
     <div>
       <img src="../../assets/3.png" alt="3" />
-      <p>Текущая неделя</p>
-      <p>50:50</p>
+      <p>Текущая неделя:</p>
+      <p>{{(new Date()).toLocaleString('ru-RU', {weekday: 'long'})}}</p>
     </div>
   </div>
 </template>

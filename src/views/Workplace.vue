@@ -31,7 +31,7 @@ export default {
     try {
       await this.$store.dispatch('fetchTransactions')
       await this.$store.dispatch('fetchTasks')
-      this.transactions = this.$store.getters.getTransactions
+      this.transactions = this.$store.getters.getNotCompleteTransactions
       this.tasks = this.$store.getters.getTasks
     } catch (e) {
       this.$toast.error(e.message)
