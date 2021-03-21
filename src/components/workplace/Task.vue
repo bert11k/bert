@@ -1,7 +1,7 @@
 <template>
   <div class="taskdiv">
     <h3>Задачи</h3>
-    <TaskItem :task="i" v-for="i of tasks" :key="i.title" />
+    <TaskItem @deleteTask="deleteTask" :task="i" v-for="i of tasks" :key="i.title" />
   </div>
 </template>
 
@@ -11,6 +11,12 @@ export default {
   name: "Task",
   props:['tasks'],
   components: { TaskItem },
+  methods:{
+    deleteTask(key) {
+      this.$emit('deleteTask', key)
+    },
+  },
+  emits: ['deleteTask'],
 };
 </script>
 <style lang="scss" scoped>

@@ -12,7 +12,7 @@
       </div>
       <div class="workplacemanager">
         <Transaction :transactions="transactions"/>
-        <Task :tasks="tasks"/>
+        <Task :tasks="tasks" @deleteTask="deleteTask"/>
         <CompleteTransaction :transactions="completedTransactions"/>
       </div>
     </div>
@@ -36,6 +36,18 @@ export default {
       tasks: null,
       completedTransactions: null,
     }
+  },
+  methods:{
+    async deleteTask(key){
+      try{
+        await this.$store.dispatch('deleteTask', key)
+        this.$toast.success('Удалено')
+      }catch (e) {
+        this.$toast.error(e.message)
+      } finally {
+        this.tasks = await this.$store.getters.getTasks
+      }
+    },
   },
   components: {Loader, LayoutMain, Task, Transaction, CompleteTransaction},
   async mounted() {

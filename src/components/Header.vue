@@ -2,12 +2,8 @@
   <header>
     <h2>{{ fio }}</h2>
     <form>
-      <div class="search">
-        <img alt="1" src="../assets/search.png"/>
-        <input
-            placeholder="Искать сотрудника, документ, прочее..."
-            type="text"
-        />
+      <div class="time">
+      <b>Добрый день сегодня: {{new Date().toLocaleString('ru-RU', {day: 'numeric', month: 'long', year: 'numeric'})}}</b>
       </div>
     </form>
 
@@ -37,6 +33,8 @@
     },
     props: ['fio', 'img'],
   }
+  
+  	
 </script>
 <style lang="scss" scoped>
   header {

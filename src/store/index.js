@@ -344,7 +344,20 @@ export default createStore({
               .ref(`/task`)
               .get()
       ).val()
-      commit('setTasks', data)
+      if(data){
+        let vals = Object.values(data)
+        vals.forEach((obj, i) => {
+          obj.key = Object.keys(data)[i]
+        })
+        commit('setTasks', vals)
+      } else {
+        commit('setTasks', [])
+      }
+
+    },
+    async deleteTask({dispatch}, key){
+      await firebase.database().ref(`/task/${key}`).remove()
+      await dispatch('fetchTasks')
     },
     async fetchWorker({}, uid) {
       return (await firebase.database().ref(`/users/${uid}`).get()).val().fio
