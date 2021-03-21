@@ -1,6 +1,6 @@
 <template>
   <div class="task">
-    <p>{{task.date}}</p>
+    <p class="fLine">{{task.date}} <span @click="deleteTask">&times;</span></p>
     <p>Для связи:{{task.contact}}</p>
     <p>{{task.title}}</p>
     <p>{{task.description}}</p>
@@ -10,7 +10,13 @@
 <script>
 export default {
   name: "TaskItem",
-  props: ['task']
+  methods:{
+    deleteTask(){
+      this.$emit('deleteTask', this.task.key)
+    },
+  },
+  props: ['task'],
+  emits: ['deleteTask'],
 };
 </script>
 <style lang="scss" scoped>
@@ -22,6 +28,17 @@ export default {
   padding: 10px 10px 10px 20px;
   width: 90%;
   border-radius: 10px;
+
+  .fLine{
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.3rem;
+
+    span{
+      cursor: pointer;
+      font-size: 1.3rem;
+    }
+  }
 
   a {
     font-size: 13px;

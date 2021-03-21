@@ -4,7 +4,7 @@
     <div class="workplace" v-else>
         <TransactionDay :transactions="transactions"/>
         <Transaction :transactions="transactions"/>
-        <Task :tasks="tasks"/>
+        <Task @deleteTask="deleteTask" :tasks="tasks"/>
         <Refer />
     </div>
   </layout-main>
@@ -26,6 +26,19 @@ export default {
       transactions: null,
       tasks: null,
     }
+  },
+  methods:{
+    async deleteTask(key){
+      try{
+        await this.$store.dispatch('deleteTask', key)
+        this.$toast.success('Удалено')
+      }catch (e) {
+        this.$toast.error(e.message)
+      } finally {
+        this.tasks = await this.$store.getters.getTasks
+      }
+
+    },
   },
   async mounted() {
     try {
