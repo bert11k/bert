@@ -22,7 +22,7 @@
         } else if (this.days === 1) {
           return `${this.days} день`
         } else if (this.days > 1 && this.days < 5) {
-          return `$this.{days} дня`
+          return `${this.days} дня`
         } else {
           return `${this.days} дней`
         }
