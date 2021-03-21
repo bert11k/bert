@@ -20,7 +20,7 @@
     mounted() {
       setTimeout(() => {
         this.$refs.graphColor.style.width = this.dealer.percent + '%'
-      }, 0)
+      }, 10)
     },
   }
 </script>
