@@ -22,14 +22,13 @@ export default {
   left: 115px;
 }
 .completed {
-  margin: auto;
   width: 80%;
   height: 150px;
   background-color: #c4c4c4;
   display: grid;
   grid-template-columns: 2fr 2fr;
   border-radius: 15px;
-  margin-top: 50px;
+  margin: 50px auto auto;
 
   p {
     margin-left: 80px;

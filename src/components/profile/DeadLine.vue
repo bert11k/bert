@@ -35,21 +35,21 @@
     display: flex;
     border: 1.8px solid black;
     width: 70%;
-    height: 50px;
     margin: 50px auto auto;
+    text-align: center;
+    justify-content: space-between;
+    padding: 0 10px;
 
     p {
       font-size: 20px;
       padding-top: 10px;
-      margin-left: 100px;
     }
 
     a {
       display: block;
       padding: 5px 10px;
-      height: 30px;
+      margin-bottom: 7px;
       margin-top: 7px;
-      margin-left: 70px;
       background-color: #39a098;
       border-radius: 20px;
       border: 0;

@@ -171,12 +171,14 @@
   .container {
     padding-top: 25px;
     background-color: #374664;
+    position: fixed;
     width: 70px;
     outline: 0;
     z-index: 999;
-    min-height: 100%;
+    min-height: 100vh;
+    height: 100%;
     transition: all .5s;
-    position: relative;
+    -webkit-app-region: drag;
   }
 
   .container .control {
@@ -186,11 +188,13 @@
     width: 70px;
     cursor: pointer;
     margin-bottom: 25px;
+    -webkit-app-region: no-drag;
   }
 
   .container .control img {
     height: 50px;
     transition: all 0.5s ease-in-out;
+    -webkit-app-region: no-drag;
   }
 
   .container.show {
@@ -199,10 +203,12 @@
 
   .container .active, .container .active img {
     background-color: #39a098!important;
+    -webkit-app-region: no-drag;
   }
 
   .container.show .control > img {
     transform: rotateZ(-180deg);
+    -webkit-app-region: no-drag;
   }
 
   .container .nav-icons {
@@ -213,6 +219,7 @@
     width: 70px;
     cursor: pointer;
     float: left;
+    -webkit-app-region: no-drag;
   }
 
   .container .nav-icons .item {
@@ -221,16 +228,19 @@
     cursor: pointer;
     margin-bottom: 30px;
     z-index: 99999;
+    -webkit-app-region: no-drag;
     img {
       width: 70px;
       height: 70px;
       z-index: 99999;
       background-color: #374664;
+      -webkit-app-region: no-drag;
     }
   }
 
   .container .nav-links {
     float: left;
+    -webkit-app-region: no-drag;
   }
 
   .container .nav-links div {
