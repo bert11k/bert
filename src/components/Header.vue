@@ -18,6 +18,8 @@
 </template>
 
 <script>
+  //import {ipcRenderer} from 'electron'
+  const {ipcRenderer} = window.require('electron')
   export default {
     name: 'header',
     data() {
@@ -27,6 +29,7 @@
     },
     methods: {
       signOut() {
+        ipcRenderer.send('exit')
         this.$store.commit('signOut')
         this.$router.push('/login')
       }

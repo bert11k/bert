@@ -75,4 +75,9 @@
   button{
     cursor: pointer;
   }
+  @media screen and (max-width: 1366px){
+    .grid{
+      width: 100%;
+    }
+  }
 </style>

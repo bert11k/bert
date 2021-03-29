@@ -52,6 +52,7 @@
           await this.$store.dispatch('login', formData)
           await this.$router.push('/')
         } catch (e) {
+          console.error(e)
           this.$toast.error('Неверный логин или пароль')
           this.error = true
         }
@@ -142,8 +143,6 @@
       box-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
       border: 1px solid black;
     }
-
-
   }
 
 </style>

@@ -46,9 +46,11 @@
 </script>
 <style lang="scss" scoped>
   .content {
+    width: 100%;
     margin: 5px auto auto;
     display: grid;
     grid-gap: 5px;
     grid-template-columns: 1fr 3fr;
+    overflow-x: hidden;
   }
 </style>
