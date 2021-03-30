@@ -23,7 +23,7 @@ async function createWindow() {
     }
   })
 
-  ipcMain.on('print', () => win.webContents.print({ silent: true }))
+  ipcMain.on('print', () => win.webContents.print({ silent: false }))
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
