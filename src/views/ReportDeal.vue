@@ -34,6 +34,7 @@
 <script>
   import MainLayout from '../layouts/LayoutMain'
   import Loader from '../components/Loader'
+  const {ipcRenderer} = window.require('electron')
 
   export default {
     name: 'ReportDeal',
@@ -51,7 +52,7 @@
     },
     methods: {
       print() {
-        this.$htmlToPaper('print')
+        ipcRenderer.send('print')
       }
     }
   }

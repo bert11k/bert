@@ -18,7 +18,6 @@
 </template>
 
 <script>
-  //import {ipcRenderer} from 'electron'
   const {ipcRenderer} = window.require('electron')
   export default {
     name: 'header',
