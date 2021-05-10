@@ -382,7 +382,8 @@ export default createStore({
         }
         result.push(res)
       }
-      commit('setReports', ...result || [])
+      result = result.reduce((a, b) => a.concat(b))
+      commit('setReports', result || [])
     },
     async fetchReportDeals({commit, dispatch, getters}, {key, worker}) {
       const year = (new Date()).toLocaleString('en-US', {year: 'numeric'})

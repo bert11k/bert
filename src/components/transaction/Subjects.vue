@@ -49,15 +49,15 @@
             return
           }
           const idx = this.subjects.findIndex(subj => subj.title === this.title)
+          if (this.num > 100) {
+            this.cost = Math.ceil(this.cost * 0.95);
+          }
           if (idx !== -1) {
-
             if (+this.num === 0) this.subjects = this.subjects.filter(subject => subject.title !== this.title)
             else {
               this.subjects[idx].num = this.num
               this.subjects[idx].sum = this.num * this.cost
-
             }
-
           } else this.subjects.push({title: this.title, num: this.num, sum: this.cost * this.num, itemKey: this.itemKey})
 
           this.title = ''
