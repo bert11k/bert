@@ -38,10 +38,9 @@
             <option value="4">Отклонен</option>
           </select
           ><br/>
-          <select required v-model="type">
-            <option disabled selected value="">Вид сделки:</option>
-            <option value="оптовая">Оптовая</option>
-            <option value="розничная">Розничная</option>
+          <select required v-model="dealer">
+            <option disabled selected value="">Дилер:</option>
+            <option v-for="dealer in dealers" :key="dealer.uid" :value="dealer.uid">{{dealer.fio}}</option>
           </select
           ><br/>
           <button type="submit">Создать сделку</button>
@@ -66,17 +65,20 @@
         date: '',
         address: '',
         status: '',
-        type: '',
+        dealer: '',
         customer: '',
         num: '',
         subjects: [],
         catalog: [],
         loading: true,
+        dealers: [],
       }
     },
     async mounted() {
       await this.$store.dispatch('fetchCatalog')
       this.catalog = this.$store.getters.getCatalog
+      await this.$store.dispatch('fetchDealersWithoutImg')
+      this.dealers = this.$store.getters.getDealers
       this.date = this.getDate
       this.loading = false
     },
@@ -92,6 +94,7 @@
           customer: this.customer,
           num: this.num,
           subjects: this.subjects,
+          dealer: this.dealer,
         }
         if(this.subjects.length){
           try {
