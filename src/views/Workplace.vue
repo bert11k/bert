@@ -43,7 +43,8 @@
     },
     async mounted() {
       try {
-        await this.$store.dispatch('fetchTransactions')
+        const uid = this.$store.getters.getUid
+        await this.$store.dispatch('fetchTransactions', uid)
         await this.$store.dispatch('fetchTasks')
         this.transactions = this.$store.getters.getNotCompleteTransactions
         this.tasks = this.$store.getters.getTasks

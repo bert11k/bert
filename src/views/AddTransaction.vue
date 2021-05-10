@@ -114,7 +114,6 @@
             this.loading = false
           }
         }
-
       },
       subject(subjects) {
         this.subjects = subjects
