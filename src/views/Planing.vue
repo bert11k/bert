@@ -58,6 +58,7 @@
           this.changeble = this.loading = false
           this.dealerTarget = Math.round(this.target / this.dealers.length)
           this.$toast.success('Сохранено')
+          this.fetchData()
         } else {
           this.$toast.error('Цель должна быть больше нуля')
         }
@@ -69,9 +70,9 @@
       },
       async fetchData() {
         this.loading = true
-        if(this.active === 0) {
+        if (this.active === 0) {
           await this.$store.dispatch('fetchDealersStatisticPerYear', {update: true})
-        } else if(this.active === 1){
+        } else if (this.active === 1) {
           await this.$store.dispatch('fetchDealersStatisticPerMonth', {update: true})
         } else {
           await this.$store.dispatch('fetchDealersStatisticPerWeek', {update: true})
@@ -83,13 +84,13 @@
         this.planComplete()
         this.loading = false
       },
-      planComplete(){
+      planComplete() {
         this.planData.planCompletedPercentage = this.planData.planNeed = this.planData.planCompleted = 0
         this.dealers.forEach(dealer => {
           this.planData.planCompleted += dealer.profit
         })
         this.planData.planNeed = +this.target - +this.planData.planCompleted
-        if(this.planData.planNeed < 0) this.planData.planNeed = 0
+        if (this.planData.planNeed < 0) this.planData.planNeed = 0
         this.planData.planCompletedPercentage = Math.round(+this.planData.planCompleted / +this.target * 100)
       }
     },

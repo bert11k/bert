@@ -73,6 +73,8 @@
     .line {
       display: flex;
       justify-content: space-around;
+      padding: 5px 0;
+      border-bottom: 1px solid black;
 
       h3 {
         font-size: 1.4rem;

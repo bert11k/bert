@@ -382,7 +382,7 @@ export default createStore({
         }
         result.push(res)
       }
-      commit('setReports', ...result)
+      commit('setReports', ...result || [])
     },
     async fetchReportDeals({commit, dispatch, getters}, {key, worker}) {
       const year = (new Date()).toLocaleString('en-US', {year: 'numeric'})
@@ -450,7 +450,7 @@ export default createStore({
         } else {
           dealer.profit = 0
         }
-        dealer.percent = Math.round(dealer.profit / target * 100)
+        dealer.percent = Math.round(dealer.profit / (target / dealers.length) * 100)
         if (dealer.percent > 100) dealer.percent = 100
       })
       commit('setDealers', dealers)
@@ -471,7 +471,7 @@ export default createStore({
         } else {
           dealer.profit = 0
         }
-        dealer.percent = Math.round(dealer.profit / target * 100)
+        dealer.percent = Math.round(dealer.profit / (target / dealers.length) * 100)
         if (dealer.percent > 100) dealer.percent = 100
         commit('setDealers', dealers)
       })
@@ -494,7 +494,7 @@ export default createStore({
         } else {
           dealer.profit = 0
         }
-        dealer.percent = Math.round(dealer.profit / target * 100)
+        dealer.percent = Math.round(dealer.profit / (target / dealers.length) * 100)
         if (dealer.percent > 100) dealer.percent = 100
       })
       commit('setDealers', dealers)
