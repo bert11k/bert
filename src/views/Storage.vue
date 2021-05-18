@@ -1,6 +1,5 @@
 <template>
   <layout-main>
-
     <div>
       <div class="scrndHeader">
         <h1>Продукты</h1>
@@ -13,7 +12,7 @@
       <div class="content" v-else>
         <div class="filter">
           <ul>
-            <FilterItem :actv="i.active" :id="i.id" :key="i.id" :value="i.value" @selectFilter="selectFilter"
+            <FilterItem :actv="i.active" :id="i.id" :key="i.id" :value="i.title" @selectFilter="selectFilter"
                         v-for="i of filter"/>
           </ul>
         </div>
@@ -41,51 +40,45 @@
           title: 'Каталог',
           items: [],
         },
-        filter: [
-          {
-            id: 0,
-            value: 'Бензин',
-            active: false
-          },
-          {
-            id: 1,
-            value: 'Нефтяные масла',
-            active: false
-          },
-          {
-            id: 2,
-            value: 'Керосин',
-            active: false
-          },
-          {
-            id: 3,
-            value: 'Лигроин',
-            active: false
-          },
-        ],
-
+        filter: [],
+        active: null,
       }
     },
     components: {Loader, FilterItem, LayoutMain, CatalogItem},
     methods: {
       async selectFilter(id) {
         this.loading = true
-        this.filter.forEach(item => item.active = false)
-        this.filter[id].active = true
-        this.catalog.title = this.filter[id].value
+        if(id !== this.active){
+          this.active = id
+          this.filter.forEach(item => item.active = false)
+          this.filter[id].active = true
+          this.catalog.title = this.filter[id].value
 
-        const catalogTmp = Object.values(await this.$store.getters.getCatalog)
-        this.catalog.items = catalogTmp.filter(item => {
+          const catalogTmp = Object.values(await this.$store.getters.getCatalog)
+          this.catalog.items = catalogTmp.filter(item => {
+            if (item.category.toLowerCase().trim() === this.filter[id].title.toLowerCase().trim()) return item
+          })
+        } else {
+          this.active = null
+          this.filter.forEach(item => item.active = false)
+          this.catalog.items = Object.values(await this.$store.getters.getCatalog)
+        }
 
-          if (item.category.toLowerCase().trim() === this.filter[id].value.toLowerCase().trim()) return item
-
-        })
         this.loading = false
       }
     },
     async mounted() {
       await this.$store.dispatch('fetchCatalog')
       this.catalog.items = this.$store.getters.getCatalog
+      await this.$store.dispatch('fetchCat')
+      const cats = this.$store.getters.getCat
+      this.filter = cats.map((item, idx) => {
+        return {
+          active: false,
+          id: idx,
+          title: item.title
+        }
+      })
       this.loading = false
     }
   }
@@ -95,6 +88,12 @@
     background-color: #fff;
     margin: 5px 0;
     padding: 10px;
+
+    div {
+      a {
+        margin-right: 10px;
+      }
+    }
 
     .btn {
       color: #5c6bd4;

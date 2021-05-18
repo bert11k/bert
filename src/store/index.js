@@ -20,6 +20,7 @@ export default createStore({
     planTarget: null,
     dealers: null,
     customers: null,
+    cat: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -73,7 +74,10 @@ export default createStore({
     },
     customers(state, value){
       state.customers = value
-    }
+    },
+    setCat(state, value){
+      state.cat = value
+    },
   },
   actions: {
     async login({dispatch, commit}, {email, password}) {
@@ -542,6 +546,20 @@ export default createStore({
       const data = (await firebase.database().ref(`/customers`).get()).val()
       commit('customers', data)
     },
+    async addCat({}, title){
+      const data = (await firebase.database().ref(`/categories/${title}`).get()).val()
+      if(!data) {
+        await firebase.database().ref(`/categories/${title}`).set({
+          title
+        })
+      } else {
+        throw new Error("Такая категория уже существует")
+      }
+    },
+    async fetchCat({commit}){
+      const data = (await firebase.database().ref(`/categories`).get()).val()
+      commit('setCat', Object.values(data))
+    },
   },
 
   modules: {},
@@ -562,5 +580,6 @@ export default createStore({
     getPlanTarget: s => s.planTarget,
     getDealers: s => s.dealers,
     getCustomers: s => s.customers,
+    getCat: s => s.cat,
   }
 })

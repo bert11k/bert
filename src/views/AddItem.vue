@@ -6,10 +6,7 @@
         <h2>Добавить товар</h2>
         <select required v-model="category">
           <option disabled selected value="null">Категория</option>
-          <option value="Бензин">Бензин</option>
-          <option value="Нефтяные масла">Нефтяные масла</option>
-          <option value="Керосин">Керосин</option>
-          <option value="Лигроин">Лигроин</option>
+          <option v-for="cat in cats" :value="cat.title" :key="cat.title">{{cat.title}}</option>
         </select><br/>
         <input
             placeholder="Название"
@@ -35,7 +32,6 @@
             type="number"
             v-model="cost"
         /><br/>
-
         <input @change="loadPhoto" accept=".jpg,.png,.bmp,.jpeg" ref="file" required style="display:none" type="file"/>
         <button @click="addPhoto">Добавить фото</button>
         <button type="submit">Добавить товар</button>
@@ -59,7 +55,12 @@
       num: '',
       cost: '',
       loading: false,
+      cats: [],
     }),
+    async mounted(){
+      await this.$store.dispatch('fetchCat')
+      this.cats = this.$store.getters.getCat
+    },
     methods: {
       async submitHandler() {
         this.loading = true

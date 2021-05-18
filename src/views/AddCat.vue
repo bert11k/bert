@@ -1,7 +1,6 @@
 <template>
   <main-layout>
-    <Loader v-if="loading"/>
-    <div class="addCat" v-else>
+    <div class="addCat">
       <form @submit.prevent="submitHandler">
         <h2>Добавить категорию</h2>
         <input
@@ -10,9 +9,6 @@
             type="text"
             v-model="title"
         /><br/>
-        
-
-    
         <button type="submit">Добавить категорию</button>
         <br/>
       </form>
@@ -22,14 +18,24 @@
 
 <script>
   import MainLayout from '../layouts/LayoutMain'
-  import Loader from '../components/Loader'
 
   export default {
     name: 'AddCat',
-    components: {Loader, MainLayout},
+    components: {MainLayout},
     data: () => ({
       title: '',
     }),
+    methods: {
+      async submitHandler() {
+        try{
+          await this.$store.dispatch('addCat', this.title)
+          this.$toast.success('Добавлено')
+        } catch (e) {
+          this.$toast.error(e)
+        }
+
+      },
+    },
   }
 </script>
 
@@ -60,7 +66,7 @@
       cursor: pointer;
       background-color: #39A098;
       border: 0;
-      
+
     }
   }
 
