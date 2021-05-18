@@ -90,6 +90,11 @@ const routes = [
     meta: {show: 'workplace'},
     component: () => import('../views/AddTask.vue')
   },
+  {
+    path: '/customers',
+    name: 'customers',
+    component: () => import('../views/Customers.vue')
+  },
 ]
 
 
