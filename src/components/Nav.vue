@@ -73,7 +73,7 @@
           to="/customers"
 
       >
-        <img alt="planing" src="../assets/planingwhite.png" />
+        <img alt="planing" src="../assets/customwhite.png" />
       </router-link>
     </div>
     <div class="nav-links">

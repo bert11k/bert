@@ -2,8 +2,8 @@
   <layout-main>
     <Loader v-if="loading"/>
   <div class="customers" v-else>
-    <h2>Учет заказчиков</h2>
     <div class="table">
+       <h2>Учет заказчиков</h2><br>
       <div class="line">
         <h3>Заказчик</h3>
         <h3>Последняя сделка</h3>
