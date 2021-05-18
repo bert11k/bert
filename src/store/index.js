@@ -390,6 +390,10 @@ export default createStore({
       await firebase.database().ref(`/task/${key}`).remove()
       await dispatch('fetchTasks')
     },
+    async deleteItem({dispatch}, {key, img}) {
+      await firebase.database().ref(`/catalog/${key}`).remove()
+      await firebase.storage().ref(`product/${img}`).delete()
+    },
     async fetchWorker({}, uid) {
       return (await firebase.database().ref(`/users/${uid}`).get()).val().fio
     },
@@ -561,7 +565,6 @@ export default createStore({
       commit('setCat', Object.values(data))
     },
   },
-
   modules: {},
   getters: {
     _user: s => s.user,

@@ -18,7 +18,7 @@
         </div>
         <div class="catalog">
           <h2>{{catalog.title}}</h2>
-          <CatalogItem :item="item" :key="item.title" v-for="item of catalog.items"/>
+          <CatalogItem :item="item" :key="item.title" @delItem="delItem" v-for="item of catalog.items"/>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
     methods: {
       async selectFilter(id) {
         this.loading = true
-        if(id !== this.active){
+        if (id !== this.active) {
           this.active = id
           this.filter.forEach(item => item.active = false)
           this.filter[id].active = true
@@ -64,6 +64,18 @@
           this.catalog.items = Object.values(await this.$store.getters.getCatalog)
         }
 
+        this.loading = false
+      },
+      async delItem({key, img}) {
+        this.loading = true
+        try {
+          await this.$store.dispatch('deleteItem', {key, img})
+          this.$toast.success('Удалено')
+          await this.$store.dispatch('fetchCatalog')
+          this.catalog.items = this.$store.getters.getCatalog
+        } catch (e) {
+          this.$toast.error(e)
+        }
         this.loading = false
       }
     },
