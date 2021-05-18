@@ -9,7 +9,6 @@
             <p>Закзчик: {{deal.customer}}</p>
             <p>Дата подачи сделки: {{deal.date}}</p>
             <p>Адрес заказчика: {{deal.address}}</p>
-            <p>Вид сделки: {{deal.type}}</p>
             <p>Номер договора: {{deal.num}}</p>
             <p>Номер прибыль: {{deal.num}}</p>
           </div>

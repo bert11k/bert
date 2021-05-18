@@ -67,6 +67,12 @@ const routes = [
     component: () => import('../views/AddItem.vue')
   },
   {
+    path: '/addcat',
+    name: 'addCat',
+    meta: {show: 'storage'},
+    component: () => import('../views/AddCat.vue')
+  },
+  {
     path: '/deal/:key',
     name: 'deal',
     meta: {show: 'workplace'},

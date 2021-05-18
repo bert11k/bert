@@ -6,6 +6,7 @@
         <h1>Продукты</h1>
         <div>
           <router-link class="btn" to="addItem">Добавить продукт</router-link>
+          <router-link class="btn" to="addCat">Добавить категорию</router-link>
         </div>
       </div>
       <Loader v-if="loading"/>

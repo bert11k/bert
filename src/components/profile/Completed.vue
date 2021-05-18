@@ -3,7 +3,7 @@
     <h3 id="NameCompleted">Выполнение плана:</h3>
     <div class="completed">
       <p>План недели выполнен на: {{completed.perWeek}}%</p>
-      <p>План за ноябрь выполнен на: {{completed.perMonth}}%</p>
+      <p>План за {{(new Date()).toLocaleString('ru-RU', {month: 'long'})}} выполнен на: {{completed.perMonth}}%</p>
       <p>Годовой план выполнен на: {{completed.perYear}}%</p>
     </div>
   </div>
