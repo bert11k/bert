@@ -67,6 +67,14 @@
       >
         <img alt="planing" src="../assets/planingwhite.png" />
       </router-link>
+      <router-link
+          :class="{ active: active === 'customers' }"
+          class="item"
+          to="/customers"
+
+      >
+        <img alt="planing" src="../assets/planingwhite.png" />
+      </router-link>
     </div>
     <div class="nav-links">
       <transition-group name="fade">
@@ -112,6 +120,13 @@
           v-show="showLink"
         >
           Планирование
+        </div>
+        <div
+            :class="{ active: active === 'customers' }"
+            key="7"
+            v-show="showLink"
+        >
+          Заказчики
         </div>
       </transition-group>
     </div>

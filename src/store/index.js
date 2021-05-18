@@ -19,6 +19,7 @@ export default createStore({
     reportDeals: null,
     planTarget: null,
     dealers: null,
+    customers: null,
   },
   mutations: {
     setCatalog(state, value) {
@@ -70,6 +71,9 @@ export default createStore({
     setDealers(state, value) {
       state.dealers = value
     },
+    customers(state, value){
+      state.customers = value
+    }
   },
   actions: {
     async login({dispatch, commit}, {email, password}) {
@@ -232,6 +236,17 @@ export default createStore({
           dealer,
           subjects,
         })
+        const data = (await firebase.database().ref(`/customers/${customer}`).get()).val()
+        let p = 0, lastDeal = "None"
+        if (data) {
+          p = +data.profit
+          lastDeal = data.lastDeal
+        }
+        await firebase.database().ref(`/customers/${customer}`).set({
+          customer: customer,
+          lastDeal,
+          profit: +p,
+        })
       } catch (e) {
         throw e
       }
@@ -311,6 +326,18 @@ export default createStore({
             .database()
             .ref(`/users/${uid}/completedDeals/${year}/${month}/${deal.key}`)
             .set(deal)
+        const data = (await firebase.database().ref(`/customers/${deal.customer}`).get()).val()
+        let dProfit = 0
+        deal.subjects.forEach(item => dProfit += item.sum)
+        let p = 0
+        if (data) {
+          p = +data.profit
+        }
+        await firebase.database().ref(`/customers/${deal.customer}`).set({
+          customer: deal.customer,
+          lastDeal: deal.title,
+          profit: +dProfit + +p
+        })
       } catch (e) {
         throw e
       }
@@ -511,6 +538,10 @@ export default createStore({
       const ref = await firebase.storage().ref(`product/${file.name}`)
       await ref.put(file)
     },
+    async fetchCustomers({commit}) {
+      const data = (await firebase.database().ref(`/customers`).get()).val()
+      commit('customers', data)
+    },
   },
 
   modules: {},
@@ -530,5 +561,6 @@ export default createStore({
     getReportDeals: s => s.reportDeals,
     getPlanTarget: s => s.planTarget,
     getDealers: s => s.dealers,
+    getCustomers: s => s.customers,
   }
 })

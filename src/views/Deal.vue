@@ -42,7 +42,7 @@
     async mounted(){
       await this.$store.dispatch('fetchDeal', this.key)
       this.deal = this.$store.getters.getDeal
-      this.loading =  false
+      this.loading = false
     },
   }
 </script>
