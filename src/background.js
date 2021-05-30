@@ -15,10 +15,15 @@ async function createWindow() {
     height: 900,
     minWidth: 1024,
     minHeight: 600,
+<<<<<<< HEAD
     frame: true,
+=======
+    frame: false,
+    transparent: true,
+>>>>>>> 389f392aa6e0dc8ab15fedd2c0d81d9798bf700a
     webPreferences: {
       nodeIntegration: true,
-      devTools: true,
+      devTools: false,
     }
   })
 
