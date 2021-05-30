@@ -240,13 +240,13 @@ export default createStore({
           dealer,
           subjects,
         })
-        const data = (await firebase.database().ref(`/customers/${customer}`).get()).val()
+        const data = (await firebase.database().ref(`/customers/${customer.toLowerCase()}`).get()).val()
         let p = 0, lastDeal = "None"
         if (data) {
           p = +data.profit
           lastDeal = data.lastDeal
         }
-        await firebase.database().ref(`/customers/${customer}`).set({
+        await firebase.database().ref(`/customers/${customer.toLowerCase()}`).set({
           customer: customer,
           lastDeal,
           profit: +p,
@@ -330,14 +330,14 @@ export default createStore({
             .database()
             .ref(`/users/${uid}/completedDeals/${year}/${month}/${deal.key}`)
             .set(deal)
-        const data = (await firebase.database().ref(`/customers/${deal.customer}`).get()).val()
+        const data = (await firebase.database().ref(`/customers/${deal.customer.toLowerCase()}`).get()).val()
         let dProfit = 0
         deal.subjects.forEach(item => dProfit += item.sum)
         let p = 0
         if (data) {
           p = +data.profit
         }
-        await firebase.database().ref(`/customers/${deal.customer}`).set({
+        await firebase.database().ref(`/customers/${deal.customer.toLowerCase()}`).set({
           customer: deal.customer,
           lastDeal: deal.title,
           profit: +dProfit + +p
@@ -548,7 +548,7 @@ export default createStore({
     },
     async fetchCustomers({commit}) {
       const data = (await firebase.database().ref(`/customers`).get()).val()
-      commit('customers', data)
+      commit('customers', Object.values(data))
     },
     async addCat({}, title){
       const data = (await firebase.database().ref(`/categories/${title}`).get()).val()
