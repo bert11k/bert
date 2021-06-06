@@ -72,10 +72,10 @@ export default createStore({
     setDealers(state, value) {
       state.dealers = value
     },
-    customers(state, value){
+    customers(state, value) {
       state.customers = value
     },
-    setCat(state, value){
+    setCat(state, value) {
       state.cat = value
     },
   },
@@ -241,7 +241,7 @@ export default createStore({
           subjects,
         })
         const data = (await firebase.database().ref(`/customers/${customer.toLowerCase()}`).get()).val()
-        let p = 0, lastDeal = "None"
+        let p = 0, lastDeal = 'None'
         if (data) {
           p = +data.profit
           lastDeal = data.lastDeal
@@ -316,6 +316,7 @@ export default createStore({
           type,
           worker: uid,
           deals: dealsToBD,
+          inArchive: false,
         })
       } catch (e) {
         throw e
@@ -550,20 +551,39 @@ export default createStore({
       const data = (await firebase.database().ref(`/customers`).get()).val()
       commit('customers', Object.values(data))
     },
-    async addCat({}, title){
+    async addCat({}, title) {
       const data = (await firebase.database().ref(`/categories/${title}`).get()).val()
-      if(!data) {
+      if (!data) {
         await firebase.database().ref(`/categories/${title}`).set({
           title
         })
       } else {
-        throw new Error("Такая категория уже существует")
+        throw new Error('Такая категория уже существует')
       }
     },
-    async fetchCat({commit}){
+    async fetchCat({commit}) {
       const data = (await firebase.database().ref(`/categories`).get()).val()
       commit('setCat', Object.values(data))
     },
+    toArchive: async function ({}, {key, worker, year}) {
+      const users = Object.values((
+          await firebase
+              .database()
+              .ref(`/users/`)
+              .once('value')
+      ).val())
+      let workerUid
+      for (const user of users) {
+        if (user.fio === worker) {
+          workerUid = user.uid
+          break
+        }
+      }
+      if (workerUid === undefined) {
+        throw new Error('Ошибка')
+      }
+      await firebase.database().ref(`/reports/${workerUid}/${year}/${key}`).update({inArchive: true})
+    }
   },
   modules: {},
   getters: {

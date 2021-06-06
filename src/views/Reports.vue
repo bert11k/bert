@@ -4,18 +4,28 @@
     <div v-else>
       <div>
         <div class="scrndHeader">
-          <h1>Отчётность</h1>
+          <h1 @click="archive = false">Отчётность |</h1>
+          <h1 @click="archive = true">Архив</h1>
         </div>
         <div class="table">
           <div class="line">
             <h3 @click="sortTitle" data-idx="0">Наименование отчета <span
                 :class="{opened: +sorted[0] === 1 }">&triangledown; </span></h3>
-            <h3 @click="sortDate" data-idx="1">Дата сдачи <span :class="{opened: +sorted[1] === 1   }">&triangledown;</span></h3>
-            <h3 @click="sortType" data-idx="2">Тип отчёта <span :class="{opened: +sorted[2] === 1  }">&triangledown;</span></h3>
-            <h3 @click="sortProfit" data-idx="3">Прибыль <span :class="{opened: +sorted[3] === 1  }">&triangledown;</span></h3>
-            <h3 @click="sortDiler" data-idx="4">Ответственный <span :class="{opened: +sorted[4] === 1  }">&triangledown;</span></h3>
+            <h3 @click="sortDate" data-idx="1">Дата сдачи <span
+                :class="{opened: +sorted[1] === 1   }">&triangledown;</span></h3>
+            <h3 @click="sortType" data-idx="2">Тип отчёта <span
+                :class="{opened: +sorted[2] === 1  }">&triangledown;</span></h3>
+            <h3 @click="sortProfit" data-idx="3">Прибыль <span
+                :class="{opened: +sorted[3] === 1  }">&triangledown;</span></h3>
+            <h3 @click="sortDiler" data-idx="4">Ответственный <span
+                :class="{opened: +sorted[4] === 1  }">&triangledown;</span></h3>
           </div>
-          <div :key="report.key" class="line" v-for="report of reports">
+          <div :key="report.key" class="line"
+               v-for="report of reports.filter(report => (report.inArchive || false) === archive)">
+            <div :data-date="report.date" :data-key="report.key" :data-worker="report.worker" @click="toArchive"
+                 class="toArchive" v-if="!archive">
+              &andd;
+            </div>
             <h4>
               <router-link :to="'/reportperiod/' + report.workerKey + '/' + report.key">{{report.title}}</router-link>
             </h4>
@@ -29,7 +39,6 @@
     </div>
   </layout-main>
 </template>
-
 <script>
   import LayoutMain from '../layouts/LayoutMain.vue'
   import Loader from '../components/Loader'
@@ -40,7 +49,8 @@
       return {
         loading: true,
         reports: [],
-        sorted: [0, 0, 0, 0, 0]
+        archive: false,
+        sorted: [0, 0, 0, 0, 0],
       }
     },
     components: {Loader, LayoutMain},
@@ -86,9 +96,9 @@
           return 0
         })
       },
-      sortTitle(e){
+      sortTitle(e) {
         this.sort(e)
-        this.reports.sort((a,b) => {
+        this.reports.sort((a, b) => {
           if (a.title > b.title) {
             return -this.sorted[+e.target.dataset.idx]
           }
@@ -98,9 +108,9 @@
           return 0
         })
       },
-      sortType(e){
+      sortType(e) {
         this.sort(e)
-        this.reports.sort((a,b) => {
+        this.reports.sort((a, b) => {
           if (a.type > b.type) {
             return -this.sorted[+e.target.dataset.idx]
           }
@@ -110,9 +120,9 @@
           return 0
         })
       },
-      sortProfit(e){
+      sortProfit(e) {
         this.sort(e)
-        this.reports.sort((a,b) => {
+        this.reports.sort((a, b) => {
           if (a.profit > b.profit) {
             return -this.sorted[+e.target.dataset.idx]
           }
@@ -122,9 +132,9 @@
           return 0
         })
       },
-      sortDiler(e){
+      sortDiler(e) {
         this.sort(e)
-        this.reports.sort((a,b) => {
+        this.reports.sort((a, b) => {
           if (a.worker > b.worker) {
             return -this.sorted[+e.target.dataset.idx]
           }
@@ -137,12 +147,25 @@
       sort(e) {
         this.sorted[+e.target.dataset.idx] = this.sorted[+e.target.dataset.idx] ? -this.sorted[+e.target.dataset.idx] : 1
         this.sorted = this.sorted.map((item, i) => {
-          if (i !== +e.target.dataset.idx){
+          if (i !== +e.target.dataset.idx) {
             item = 0
           }
           return item
         })
-      }
+      },
+      async toArchive(e) {
+        this.loading = true
+        const year = e.target.dataset.date.split(' ')[2]
+        try {
+          await this.$store.dispatch('toArchive', {key: e.target.dataset.key, worker: e.target.dataset.worker, year})
+          await this.$store.dispatch('fetchReports')
+          this.reports = this.$store.getters.getReports
+        } catch (e) {
+          this.$toast.error(e.message)
+        } finally {
+          this.loading = false
+        }
+      },
     }
   }
 </script>
@@ -151,6 +174,12 @@
     background-color: #fff;
     margin: 5px 0;
     padding: 10px;
+    display: flex;
+
+    h1 {
+      cursor: pointer;
+      margin-right: 10px;
+    }
   }
 
   h2 {
@@ -172,6 +201,12 @@
       justify-content: space-around;
       padding: 5px 0;
       border-bottom: 1px solid black;
+      position: relative;
+
+      .toArchive {
+        display: inline-block;
+        cursor: pointer;
+      }
 
       h3 {
         font-size: 1.4rem;
