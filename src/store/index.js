@@ -502,7 +502,7 @@ export default createStore({
       dealers.forEach(dealer => {
         dealer.profit = 0
         if (dealer.completedDeals) {
-          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})] || []).forEach(deal => {
             dealer.profit += +deal.profit
           })
         } else {
@@ -523,7 +523,7 @@ export default createStore({
       dealers.forEach(dealer => {
         dealer.profit = 0
         if (dealer.completedDeals) {
-          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})]).forEach(deal => {
+          Object.values(dealer.completedDeals[new Date().getFullYear()][(new Date()).toLocaleString('en-US', {month: 'long'})] || []).forEach(deal => {
             if (Date.now() - Date.parse(deal.date) <= 604800000) {
               dealer.profit += +deal.profit
             }
