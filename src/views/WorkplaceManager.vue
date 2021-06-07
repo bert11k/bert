@@ -52,10 +52,10 @@ export default {
   components: {Loader, LayoutMain, Task, Transaction, CompleteTransaction},
   async mounted() {
     try {
-      await this.$store.dispatch('fetchTransactions')
+      await this.$store.dispatch('fetchAllTransactions')
       await this.$store.dispatch('fetchCompleteTransactions')
       await this.$store.dispatch('fetchTasks')
-      this.transactions = this.$store.getters.getNotCompleteTransactions
+      this.transactions = this.$store.getters.getTransactions
       this.completedTransactions = this.$store.getters.getCompleteTransactions
       this.tasks = this.$store.getters.getTasks
     } catch (e) {
